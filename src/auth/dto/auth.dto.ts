@@ -1,17 +1,16 @@
+import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
+
 export class AuthDto {
+  @IsEmail()
+  @IsNotEmpty()
   email: string;
+
+  @IsString()
+  @IsNotEmpty()
   password: string;
 
-  role: string;
+  role?: string;
 
   firstName?: string;
   lastName?: string;
-
-  address: {
-    postalCode: string;
-    street: string;
-    city: string;
-    province: string;
-    country: string;
-  };
 }

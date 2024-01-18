@@ -22,6 +22,8 @@ model User {
   firstName String?
   lastName  String?
 
+  role String? @default("user")
+
   jobs    UserJobApplication[]
   address Address?
 
