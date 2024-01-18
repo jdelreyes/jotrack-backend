@@ -1,5 +1,6 @@
 # added by @jdelreyes
 .env
+prisma/migrations
 
 # compiled output
 /dist
