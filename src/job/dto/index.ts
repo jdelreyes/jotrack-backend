@@ -1,1 +1,1 @@
-export * as
+export * as jobDto from './jobDto';
