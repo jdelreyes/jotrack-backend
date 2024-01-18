@@ -9,7 +9,9 @@ Content-Type: application/json
 
 {
   "email": "email@domain.com",
-  "password": "password"
+  "password": "password",
+  "firstName": "firstName",
+  "lastName": "lastName"
 }
 
 ###
