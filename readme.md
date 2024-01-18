@@ -3,9 +3,11 @@
 ## Database Design
 ![UML of the database](docs/assets/images/database-design.drawio.png)
 
+## Installation
+
 ## API Endpoints
 
-### Authentication - `/api/auth`
+### Auth - `/api/auth`
 
 | Endpoint  | Method | Description     |
 |-----------|--------|-----------------|

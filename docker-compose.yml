@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  postgresql-jotrack:
+    image: postgres:13
+    container_name: postgresql-jotrack
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: postgresql-jotrack
+    restart: unless-stopped
+
+networks:
+  jotrack:
