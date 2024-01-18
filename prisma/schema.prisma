@@ -19,10 +19,10 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  role String @default("user")
+
   firstName String?
   lastName  String?
-
-  role String? @default("user")
 
   jobs    UserJobApplication[]
   address Address?
