@@ -8,6 +8,6 @@ export class JobService {
 
   // todo need dto as parameter
   createJob() {
-    return null;
+    return 'some';
   }
 }

@@ -1,0 +1,38 @@
+# variables
+@hostname=localhost
+@port=8000
+
+@userId={{userId}}
+
+POST http://{{hostname}}:{{port}}/api/auth/signup
+Content-Type: application/json
+
+{
+  "email": "email@domain.com",
+  "password": "password"
+}
+
+###
+
+POST http://{{hostname}}:{{port}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "email@domain.com",
+  "password": "password"
+}
+
+###
+
+GET http://{{hostname}}:{{port}}/api/users
+
+###
+
+PUT http://{{hostname}}:{{port}}/api/users/{{userId}}
+
+###
+
+DELETE http://{{hostname}}:{{port}}/api/users/{{userId}}
+
+###
+
