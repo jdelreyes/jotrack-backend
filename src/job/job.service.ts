@@ -5,7 +5,7 @@ import { PrismaService } from '../prisma/prisma.service';
 export class JobService {
   constructor(private prismaService: PrismaService) {}
 
-  getJobs() {
+  retrieveJobs() {
     return null;
   }
 
@@ -17,7 +17,5 @@ export class JobService {
     return 'some';
   }
 
-  deleteJob() {
-
-  }
+  deleteJob() {}
 }

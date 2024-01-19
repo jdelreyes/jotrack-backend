@@ -1,22 +1,25 @@
-# variables
+### variables
 @hostname=localhost
 @port=8000
 
 @userId={{userId}}
 
-POST http://{{hostname}}:{{port}}/api/auth/signup
+###
+
+POST http://{{hostname}}:{{port}}/api/auth/signup HTTP/1.1
 Content-Type: application/json
 
 {
   "email": "email@domain.com",
   "password": "password",
+  "role": "user",
   "firstName": "firstName",
-  "lastName": "lastName"
+  "lastName": "lastName",
 }
 
 ###
 
-POST http://{{hostname}}:{{port}}/api/auth/login
+POST http://{{hostname}}:{{port}}/api/auth/login HTTP/1.1
 Content-Type: application/json
 
 {
@@ -26,11 +29,11 @@ Content-Type: application/json
 
 ###
 
-GET http://{{hostname}}:{{port}}/api/users
+GET http://{{hostname}}:{{port}}/api/users HTTP/1.1
 
 ###
 
-PUT http://{{hostname}}:{{port}}/api/users/{{userId}}
+PUT http://{{hostname}}:{{port}}/api/users/{{userId}} HTTP/1.1
 
 ###
 
