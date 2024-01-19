@@ -29,11 +29,12 @@ export class AuthService {
     if (!passwordMatches)
       throw new ForbiddenException('credentials are incorrect');
 
-    const payload = {
+    const jwtPayload = {
       sub: user.id,
-      name: `${user.firstName} ${user.lastName}`,
+      fullName: `${user.firstName} ${user.lastName}`,
+      role: user.role,
     };
-    const token: string = await this.jwtService.signAsync(payload);
+    const token: string = await this.jwtService.signAsync(jwtPayload);
 
     return { access_token: token, user: { ...user } };
   }

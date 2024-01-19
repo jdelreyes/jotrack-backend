@@ -33,6 +33,14 @@ model User {
 model Job {
   id Int @id @default(autoincrement())
 
+  title       String
+  description String
+  companyName String
+  // requirements   String
+  // qualifications String
+
+  dateSubmitted DateTime @default(now())
+
   users UserJobApplication[]
 
   @@map("jobs")
