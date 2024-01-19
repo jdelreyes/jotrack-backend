@@ -1,46 +1,56 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { AuthDto } from './dto';
+import { AuthLogInDto } from './dto/login';
+import { AuthSignUpDto } from './dto/signup';
 import * as argon from 'argon2';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
-  constructor(private prismaService: PrismaService) {}
+  constructor(
+    private prismaService: PrismaService,
+    private jwtService: JwtService,
+  ) {}
 
-  async login(authDto: AuthDto) {
+  public async login(authLogInDto: AuthLogInDto) {
     const user = await this.prismaService.user.findUnique({
       where: {
-        email: authDto.email,
+        email: authLogInDto.email,
       },
     });
     if (!user) throw new ForbiddenException('credentials are incorrect');
 
-    const passwordMatches = await argon.verify(user.hash, authDto.password);
+    const passwordMatches = await argon.verify(
+      user.hash,
+      authLogInDto.password,
+    );
 
     if (!passwordMatches)
       throw new ForbiddenException('credentials are incorrect');
 
-    delete user.hash;
-    return user;
+    const jwtPayload = {
+      sub: user.id,
+      fullName: `${user.firstName} ${user.lastName}`,
+      role: user.role,
+    };
+    const token: string = await this.jwtService.signAsync(jwtPayload);
+
+    return { access_token: token, user: { ...user } };
   }
 
-  async signup(authDto: AuthDto) {
-    const hash: string = await argon.hash(authDto.password);
+  public async signup(authSignUpDto: AuthSignUpDto) {
     try {
-      delete authDto.password;
+      const hash: string = await argon.hash(authSignUpDto.password);
+
+      delete authSignUpDto.password;
 
       const user = await this.prismaService.user.create({
         data: {
-          email: authDto.email,
+          ...authSignUpDto,
           hash,
-          role: authDto.role,
-          firstName: authDto.firstName,
-          lastName: authDto.lastName,
         },
       });
-
-      delete user.hash;
 
       return user;
     } catch (error) {

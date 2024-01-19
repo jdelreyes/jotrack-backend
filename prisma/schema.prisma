@@ -21,8 +21,8 @@ model User {
 
   role String @default("user")
 
-  firstName String?
-  lastName  String?
+  firstName String
+  lastName  String
 
   jobs    UserJobApplication[]
   address Address?
@@ -32,6 +32,14 @@ model User {
 
 model Job {
   id Int @id @default(autoincrement())
+
+  title       String
+  description String
+  companyName String
+  // requirements   String
+  // qualifications String
+
+  dateSubmitted DateTime @default(now())
 
   users UserJobApplication[]
 
