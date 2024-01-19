@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  NotFoundException,
+  Injectable,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { JobDto } from './dto/jobDto';
 
@@ -24,14 +28,32 @@ export class JobService {
     }
   }
 
-  public async updateJob(jobDto: JobDto) {
-    // const retrievedJob = await this.prismaService.job.findU
+  public async updateJob(jobId: number, jobDto: JobDto) {
+    try {
+      const job = await this.prismaService.job.update({
+        where: {
+          id: jobId,
+        },
+        data: {
+          ...jobDto,
+        },
+      });
 
-    // const updatedJob = await this.prismaService.job.update({where: {
-    //   id:
-    // }})
-    return 'some';
+      return job;
+    } catch (error) {
+      throw new BadRequestException('fields must be completed');
+    }
   }
 
-  public async deleteJob() {}
+  public async deleteJob(jobId: number) {
+    try {
+      await this.prismaService.job.delete({
+        where: {
+          id: jobId,
+        },
+      });
+    } catch (error) {
+      throw new NotFoundException('job does not exist');
+    }
+  }
 }

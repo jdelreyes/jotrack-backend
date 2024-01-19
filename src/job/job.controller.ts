@@ -27,16 +27,15 @@ export class JobController {
     return this.jobService.createJob(jobDto);
   }
 
-  // todo how do i have path param
-  @Put(':id')
+  @Put(':jobId')
   @HttpCode(200)
-  updateJob(@Param() id: string | number, @Body() jobDto: JobDto) {
-    console.log(id, jobDto);
+  updateJob(@Param() params: { jobId: string }, @Body() jobDto: JobDto) {
+    return this.jobService.updateJob(parseInt(params.jobId, 10), jobDto);
   }
 
-  @Delete(':id')
+  @Delete(':jobId')
   @HttpCode(204)
-  deleteJob(@Param() id: string | number, @Body() jobDto: JobDto) {
-    console.log(id, jobDto);
+  deleteJob(@Param() params: { jobId: string }) {
+    return this.jobService.deleteJob(parseInt(params.jobId, 10));
   }
 }
