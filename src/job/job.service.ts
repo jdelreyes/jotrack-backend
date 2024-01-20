@@ -45,7 +45,7 @@ export class JobService {
     }
   }
 
-  public async deleteJob(jobId: number) {
+  public async removeJob(jobId: number) {
     try {
       await this.prismaService.job.delete({
         where: {

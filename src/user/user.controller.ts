@@ -1,4 +1,11 @@
-import { Controller, Delete, Get, HttpCode, Put } from '@nestjs/common';
+import {
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Put,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 
 @Controller('/api/users')
@@ -6,20 +13,20 @@ export class UserController {
   constructor(private userService: UserService) {}
 
   @Get()
-  @HttpCode(200)
+  @HttpCode(HttpStatus.OK)
   public retrieveUsers() {
     return this.userService.retrieveUsers();
   }
 
   @Put()
-  @HttpCode(200)
+  @HttpCode(HttpStatus.OK)
   public updateUser() {
     return '';
   }
 
   @Delete()
-  @HttpCode(204)
-  public deleteUser() {
+  @HttpCode(HttpStatus.NO_CONTENT)
+  public removeUser() {
     return '';
   }
 }

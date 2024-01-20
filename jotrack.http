@@ -15,7 +15,7 @@ Content-Type: application/json
   "password": "password",
   "role": "user",
   "firstName": "firstName",
-  "lastName": "lastName",
+  "lastName": "lastName"
 }
 
 ### log-in user
