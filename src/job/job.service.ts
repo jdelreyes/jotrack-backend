@@ -5,12 +5,13 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { JobDto } from './dto/jobDto';
+import { Job } from '@prisma/client';
 
 @Injectable()
 export class JobService {
   constructor(private prismaService: PrismaService) {}
 
-  public async retrieveJobs(): Promise<{ id: number }[]> {
+  public async retrieveJobs(): Promise<Job[]> {
     return await this.prismaService.job.findMany();
   }
 

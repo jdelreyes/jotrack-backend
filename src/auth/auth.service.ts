@@ -5,6 +5,7 @@ import { AuthSignUpDto } from './dto/signup';
 import * as argon from 'argon2';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { JwtService } from '@nestjs/jwt';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
@@ -13,7 +14,9 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  public async login(authLogInDto: AuthLogInDto) {
+  public async login(
+    authLogInDto: AuthLogInDto,
+  ): Promise<{ access_token: string; user: User }> {
     const user = await this.prismaService.user.findUnique({
       where: {
         email: authLogInDto.email,
@@ -39,7 +42,7 @@ export class AuthService {
     return { access_token: token, user: { ...user } };
   }
 
-  public async signup(authSignUpDto: AuthSignUpDto) {
+  public async signup(authSignUpDto: AuthSignUpDto): Promise<User> {
     try {
       const hash: string = await argon.hash(authSignUpDto.password);
 
