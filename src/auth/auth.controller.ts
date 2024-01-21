@@ -1,22 +1,16 @@
-import {
-  Body,
-  Controller,
-  Get,
-  HttpCode,
-  HttpStatus,
-  Post,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { AuthGuard } from './guard';
 import { AuthLogInDto } from './dto/login';
 import { AuthSignUpDto } from './dto/signup';
 import { User } from '@prisma/client';
+import { Roles } from './decorator/roles.decorator';
+import { RoleEnum } from './enum';
 
 @Controller('/api/auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
+  @Roles(RoleEnum.ADMIN)
   @Post('/login')
   @HttpCode(HttpStatus.OK)
   public login(
@@ -29,12 +23,5 @@ export class AuthController {
   @HttpCode(HttpStatus.CREATED)
   public signup(@Body() authSignUpDto: AuthSignUpDto): Promise<User> {
     return this.authService.signup(authSignUpDto);
-  }
-
-  @UseGuards(AuthGuard)
-  @Get()
-  @HttpCode(HttpStatus.ACCEPTED)
-  public getProfile() {
-    return 'successful';
   }
 }

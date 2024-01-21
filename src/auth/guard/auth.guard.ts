@@ -17,17 +17,16 @@ export class AuthGuard implements CanActivate {
     private reflector: Reflector,
   ) {}
 
-  async canActivate(context: ExecutionContext): Promise<boolean> {
+  async canActivate(executionContext: ExecutionContext): Promise<boolean> {
     const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
-      context.getHandler(),
-      context.getClass(),
+      executionContext.getHandler(),
+      executionContext.getClass(),
     ]);
     if (isPublic) {
-      // 💡 See this condition
       return true;
     }
 
-    const request = context.switchToHttp().getRequest();
+    const request = executionContext.switchToHttp().getRequest();
     const token = this.extractTokenFromHeader(request);
     if (!token) {
       throw new UnauthorizedException();
@@ -36,9 +35,8 @@ export class AuthGuard implements CanActivate {
       const payload = await this.jwtService.verifyAsync(token, {
         secret: jwtConstants.secret,
       });
-      // 💡 We're assigning the payload to the request object here
-      // so that we can access it in our route handlers
       request['user'] = payload;
+      console.log(request['user']);
     } catch {
       throw new UnauthorizedException();
     }
