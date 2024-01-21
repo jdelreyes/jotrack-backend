@@ -7,36 +7,41 @@ import {
   Put,
   Delete,
   Param,
+  UseGuards,
+  HttpStatus,
 } from '@nestjs/common';
 import { JobService } from './job.service';
 import { JobDto } from './dto/jobDto';
+import { AuthGuard } from 'src/auth/guard';
 
 @Controller('/api/jobs')
 export class JobController {
   constructor(private jobService: JobService) {}
 
   @Get()
-  @HttpCode(200)
+  @HttpCode(HttpStatus.OK)
   retrieveJobs() {
     return this.jobService.retrieveJobs();
   }
 
   @Post()
-  @HttpCode(201)
+  @UseGuards(AuthGuard)
+  @HttpCode(HttpStatus.CREATED)
   createJob(@Body() jobDto: JobDto) {
     return this.jobService.createJob(jobDto);
   }
 
-  // todo how do i have path param
-  @Put(':id')
-  @HttpCode(200)
-  updateJob(@Param() id: string | number, @Body() jobDto: JobDto) {
-    console.log(id, jobDto);
+  @Put('/:jobId')
+  @UseGuards(AuthGuard)
+  @HttpCode(HttpStatus.OK)
+  updateJob(@Param() params: { jobId: string }, @Body() jobDto: JobDto) {
+    return this.jobService.updateJob(parseInt(params.jobId, 10), jobDto);
   }
 
-  @Delete(':id')
-  @HttpCode(204)
-  deleteJob(@Param() id: string | number, @Body() jobDto: JobDto) {
-    console.log(id, jobDto);
+  @Delete('/:jobId')
+  @UseGuards(AuthGuard)
+  @HttpCode(HttpStatus.NO_CONTENT)
+  deleteJob(@Param() params: { jobId: string }) {
+    return this.jobService.removeJob(parseInt(params.jobId, 10));
   }
 }

@@ -1,5 +1,5 @@
 import { IsEmail, IsEnum, IsNotEmpty, IsString } from 'class-validator';
-import { AuthEnum } from '../../enums';
+import { RoleEnum } from '../../enum';
 
 export class AuthSignUpDto {
   @IsEmail()
@@ -11,7 +11,7 @@ export class AuthSignUpDto {
   password: string;
 
   @IsString()
-  @IsEnum(AuthEnum)
+  @IsEnum(RoleEnum)
   role?: string;
 
   @IsString()

@@ -6,13 +6,19 @@
 
 ## Installation
 
-1. Make copy of `.env.template` file.
+1. Install dependencies
+
+   ```shell
+   npm i
+   ```
+
+2. Make copy of `.env.template` file.
 
    ```shell
    cp .env.template .env
    ```
 
-2. Populate fields in `.env` file.
+3. Populate fields in `.env` file.
 
    ```makefile
    # ...
@@ -20,27 +26,27 @@
    JWT_SECRET="your_jwt_secret" # change
    ```
 
-3. Initiate a database migration.
-
-   ```shell
-   npx prisma migrate dev
-   ```
-
 ## Running
 
-1. Instantiate and PostgreSQL Docker image and run it as a Docker container.
+1. Instantiate a PostgreSQL Docker image and run it as a Docker container.
 
    ```shell
    docker compose up postgresql-jotrack -d
    ```
 
-2. Deploy a database migration.
+2. Initiate and deploy a database migration.
+
+   ```shell
+   npx prisma migrate dev
+   ```
+
+3. Deploy the database migration.
 
    ```shell
    npx prisma migrate deploy
    ```
 
-3. Start the application
+4. Start the application
 
    ```shell
    npm run start:dev

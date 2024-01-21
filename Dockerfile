@@ -1,4 +1,13 @@
-FROM ubuntu:latest
-LABEL authors="jeromedelosreyes"
+FROM node:20
+LABEL author="@jdelreyes"
 
-ENTRYPOINT ["top", "-b"]
+# Create app directory
+WORKDIR /usr/src/app
+
+COPY package*.json ./
+
+RUN npm install
+
+COPY . .
+
+CMD [ "npm", "run", "start" ]

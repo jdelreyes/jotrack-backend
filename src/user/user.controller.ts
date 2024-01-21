@@ -1,25 +1,44 @@
-import { Controller, Delete, Get, HttpCode, Put } from '@nestjs/common';
+import {
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Post,
+  Put,
+  UseGuards,
+} from '@nestjs/common';
 import { UserService } from './user.service';
+import { AuthGuard } from 'src/auth/guard';
 
 @Controller('/api/users')
 export class UserController {
   constructor(private userService: UserService) {}
 
   @Get()
-  @HttpCode(200)
+  @HttpCode(HttpStatus.OK)
   public retrieveUsers() {
     return this.userService.retrieveUsers();
   }
 
-  @Put()
-  @HttpCode(200)
+  @UseGuards(AuthGuard)
+  @Post()
+  @HttpCode(HttpStatus.CREATED)
+  public createUser() {
+    return '';
+  }
+
+  @UseGuards(AuthGuard)
+  @Put('/:id')
+  @HttpCode(HttpStatus.OK)
   public updateUser() {
     return '';
   }
 
-  @Delete()
-  @HttpCode(204)
-  public deleteUser() {
+  @Delete('/:id')
+  @UseGuards(AuthGuard)
+  @HttpCode(HttpStatus.NO_CONTENT)
+  public removeUser() {
     return '';
   }
 }
