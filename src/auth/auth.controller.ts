@@ -3,14 +3,11 @@ import { AuthService } from './auth.service';
 import { AuthLogInDto } from './dto/login';
 import { AuthSignUpDto } from './dto/signup';
 import { User } from '@prisma/client';
-import { Roles } from './decorator/roles.decorator';
-import { RoleEnum } from './enum';
 
 @Controller('/api/auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @Roles(RoleEnum.ADMIN)
   @Post('/login')
   @HttpCode(HttpStatus.OK)
   public login(

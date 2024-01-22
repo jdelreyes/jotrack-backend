@@ -6,7 +6,7 @@
 
 ## Installation
 
-1. Install dependencies
+1. Install dependencies.
 
    ```shell
    npm i
@@ -22,8 +22,6 @@
 
    ```makefile
    # ...
-   # db
-   DATABASE_URL="postgresql://admin:password@localhost:5432/postgresql-jotrack?schema=public" # change
    # jwt
    JWT_SECRET="your_jwt_secret" # change
    ```
