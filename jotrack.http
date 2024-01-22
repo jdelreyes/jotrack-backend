@@ -2,9 +2,9 @@
 @hostname=localhost
 @port=8000
 
-@userId=
-@jobId=
-@access_token=
+@userId=1
+@jobId=1
+@access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImZ1bGxOYW1lIjoiZmlyc3ROYW1lIGxhc3ROYW1lIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzA1ODY5ODAwLCJleHAiOjE3MDY0NzQ2MDB9.QpMoQvuZhXZ6DZ-wi8-E1ux_L-v1uGQUax2sjxNgh80
 
 ### create user
 
@@ -34,6 +34,11 @@ Content-Type: application/json
 GET http://{{hostname}}:{{port}}/api/users HTTP/1.1
 
 ### create user
+
+POST http://{{hostname}}:{{port}}/api/users HTTP/1.1
+Authorization: Bearer {{access_token}}
+
+### update user
 
 PUT http://{{hostname}}:{{port}}/api/users/{{userId}} HTTP/1.1
 Authorization: Bearer {{access_token}}
