@@ -29,7 +29,6 @@ export class RolesGuard implements CanActivate {
 
     const request = executionContext.switchToHttp().getRequest();
     const requestUserRole = request['user']?.role;
-    // todo: debug delete later
 
     const userRole = await this.verifyUserRole(request);
 
@@ -39,10 +38,14 @@ export class RolesGuard implements CanActivate {
   }
 
   private async verifyUserRole(request: any): Promise<string> {
-    const user = await this.prismaService.user.findUnique({
-      where: { id: request['user'].sub },
-    });
+    try {
+      const user = await this.prismaService.user.findUnique({
+        where: { id: request['user'].sub },
+      });
 
-    return user.role;
+      return user.role;
+    } catch (error) {
+      throw new UnauthorizedException();
+    }
   }
 }
