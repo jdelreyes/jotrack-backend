@@ -57,4 +57,16 @@ export class JobService {
       throw new NotFoundException('job does not exist');
     }
   }
+
+  public async retrieveJob(jobId: number): Promise<Job> {
+    try {
+      const job = await this.prismaService.job.findUnique({
+        where: { id: jobId },
+      });
+
+      return job;
+    } catch (error) {
+      throw new NotFoundException('job does not exist');
+    }
+  }
 }

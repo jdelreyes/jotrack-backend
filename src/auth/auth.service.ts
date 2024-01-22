@@ -1,4 +1,8 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { AuthLogInDto } from './dto/login';
 import { AuthSignUpDto } from './dto/signup';
@@ -61,7 +65,7 @@ export class AuthService {
         if (error.code === 'P2002')
           // code for field duplicate
           throw new ForbiddenException('credentials are taken');
-      throw Error;
+      throw new BadRequestException();
     }
   }
 }

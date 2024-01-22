@@ -50,4 +50,10 @@ export class JobController {
   deleteJob(@Param() params: { jobId: string }) {
     return this.jobService.removeJob(parseInt(params.jobId, 10));
   }
+
+  @Get('/:jobId')
+  @HttpCode(HttpStatus.OK)
+  retrieveUser(@Param() params: { jobId: string }) {
+    return this.jobService.retrieveJob(parseInt(params.jobId, 10));
+  }
 }
