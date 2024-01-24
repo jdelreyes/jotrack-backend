@@ -11,11 +11,11 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { JobService } from './job.service';
-import { JobDto } from './dto/jobDto';
+import { JobRequestDto, JobResponseDto } from './dto';
 import { AuthGuard } from 'src/auth/guard';
 import { Roles } from 'src/auth/decorator';
-import { RoleEnum } from 'src/auth/enum';
 import { RolesGuard } from 'src/auth/guard/roles.guard';
+import { Role } from 'src/auth/enum';
 
 @Controller('/api/jobs')
 export class JobController {
@@ -23,37 +23,42 @@ export class JobController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  retrieveJobs() {
+  public retrieveJobs() {
     return this.jobService.retrieveJobs();
   }
 
   @Post()
   @UseGuards(AuthGuard, RolesGuard)
-  @Roles(RoleEnum.ADMIN)
+  @Roles(Role.ADMIN)
   @HttpCode(HttpStatus.CREATED)
-  createJob(@Body() jobDto: JobDto) {
-    return this.jobService.createJob(jobDto);
+  public createJob(
+    @Body() jobResponseDto: JobRequestDto,
+  ): Promise<JobResponseDto> {
+    return this.jobService.createJob(jobResponseDto);
   }
 
   @Put('/:jobId')
   @UseGuards(AuthGuard, RolesGuard)
-  @Roles(RoleEnum.ADMIN)
+  @Roles(Role.ADMIN)
   @HttpCode(HttpStatus.OK)
-  updateJob(@Param() params: { jobId: string }, @Body() jobDto: JobDto) {
-    return this.jobService.updateJob(parseInt(params.jobId, 10), jobDto);
+  public updateJob(
+    @Param() params: { jobId: string },
+    @Body() jobRequestDto: JobRequestDto,
+  ) {
+    return this.jobService.updateJob(parseInt(params.jobId, 10), jobRequestDto);
   }
 
   @Delete('/:jobId')
   @UseGuards(AuthGuard, RolesGuard)
-  @Roles(RoleEnum.ADMIN)
+  @Roles(Role.ADMIN)
   @HttpCode(HttpStatus.NO_CONTENT)
-  deleteJob(@Param() params: { jobId: string }) {
+  public deleteJob(@Param() params: { jobId: string }) {
     return this.jobService.removeJob(parseInt(params.jobId, 10));
   }
 
   @Get('/:jobId')
   @HttpCode(HttpStatus.OK)
-  retrieveUser(@Param() params: { jobId: string }) {
+  public retrieveUser(@Param() params: { jobId: string }) {
     return this.jobService.retrieveJob(parseInt(params.jobId, 10));
   }
 }

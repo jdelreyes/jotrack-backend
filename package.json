@@ -2,9 +2,9 @@
   "name": "jotrack-backend",
   "version": "0.0.1",
   "description": "",
-  "author": "",
+  "author": "Jerome Delos Reyes",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "MIT",
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
@@ -20,8 +20,8 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "prisma:dev:deploy": "prisma migrate deploy",
-    "db:dev:rm": "docker stop postgresql-jotrack && docker rm postgresql-jotrack -v",
-    "db:dev:up": "docker run -d -p 5432:5432 --name postgresql-jotrack -e POSTGRES_USER=admin -e POSTGRES_PASSWORD=password -e POSTGRES_DB=postgresql-jotrack postgres:13",
+    "db:dev:rm": "docker compose rm postgresql-jotrack -s -f -v",
+    "db:dev:up": "docker compose up postgresql-jotrack -d",
     "db:dev:restart": "npm run db:dev:rm && npm run db:dev:up && sleep 1 && npm run prisma:dev:deploy"
   },
   "dependencies": {
@@ -29,10 +29,13 @@
     "@nestjs/config": "^3.1.1",
     "@nestjs/core": "^10.0.0",
     "@nestjs/jwt": "^10.2.0",
+    "@nestjs/passport": "^10.0.3",
     "@nestjs/platform-express": "^10.0.0",
     "@prisma/client": "^5.8.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
+    "passport": "^0.7.0",
+    "passport-jwt": "^4.0.1",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1"
   },
