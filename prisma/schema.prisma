@@ -16,13 +16,15 @@ model User {
   email String @unique
   hash  String
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  dateTimeCreated DateTime @default(now())
+  dateTimeUpdated DateTime @updatedAt
 
   role String @default("user")
 
   firstName String
   lastName  String
+
+  phoneNumber Float 
 
   jobs    UserJobApplication[]
   address Address?
@@ -33,13 +35,22 @@ model User {
 model Job {
   id Int @id @default(autoincrement())
 
-  title       String
-  description String
-  companyName String
-  // requirements   String
-  // qualifications String
+  title String
 
-  dateSubmitted DateTime @default(now())
+  description  String
+  position     String
+  requirements String
+
+  companyName String
+
+  postalCode String
+  street     String
+  city       String
+  province   String
+  country    String
+
+  dateTimeSubmitted DateTime @default(now())
+  dateTimeUpdated   DateTime @default(now())
 
   users UserJobApplication[]
 
@@ -49,13 +60,15 @@ model Job {
 model UserJobApplication {
   id Int @id @default(autoincrement())
 
+  status          String   @default("pending")
+  dateTimeApplied DateTime @default(now())
+  dateTimeUpdated DateTime @default(now())
+
   userId Int
   user   User @relation(fields: [userId], references: [id])
 
   jobId Int
   job   Job @relation(fields: [jobId], references: [id])
-
-  status String
 
   @@map("userJobApplications")
 }
@@ -75,14 +88,8 @@ model Address {
   @@map("addresses")
 }
 
-model Location {
+model Resume {
   id Int @id @default(autoincrement())
 
-  postalCode String
-  street     String
-  city       String
-  province   String
-  country    String
-
-  @@map("locations")
+  // todo
 }

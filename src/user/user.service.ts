@@ -1,60 +1,37 @@
 import {
   BadRequestException,
-  ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
 import { User } from '@prisma/client';
-import { UserDto } from './dto';
 import * as argon from 'argon2';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
+
+import { PrismaService } from '../prisma/prisma.service';
+import { ChangePasswordDto, UserRequestDto, UserResponseDto } from './dto';
 
 @Injectable()
 export class UserService {
   constructor(private prismaService: PrismaService) {}
 
-  public async retrieveUsers(): Promise<User[]> {
-    return this.prismaService.user.findMany();
+  public async retrieveUsers(): Promise<UserResponseDto[]> {
+    return (await this.prismaService.user.findMany()).map((user) =>
+      this.mapToUserResponseDto(user),
+    );
   }
 
-  public async createUser(userDto: UserDto): Promise<User> {
+  public async updateUser(
+    userId: number,
+    userRequestDto: UserRequestDto,
+  ): Promise<UserResponseDto> {
     try {
-      const hash: string = await argon.hash(userDto.password);
-
-      delete userDto.password;
-
-      const user: User = await this.prismaService.user.create({
-        data: {
-          ...userDto,
-          hash,
-        },
-      });
-
-      return user;
-    } catch (error) {
-      if (error instanceof PrismaClientKnownRequestError)
-        if (error.code === 'P2002')
-          // code for field duplicate
-          throw new ForbiddenException('credentials are taken');
-      throw new BadRequestException();
-    }
-  }
-
-  public async updateUser(userId: number, userDto: UserDto): Promise<User> {
-    try {
-      const hash = await argon.hash(userDto.password);
-
-      delete userDto.password;
-
-      const user = this.prismaService.user.update({
+      const user = await this.prismaService.user.update({
         where: {
           id: userId,
         },
-        data: { ...userDto, hash },
+        data: { ...userRequestDto },
       });
 
-      return user;
+      return this.mapToUserResponseDto(user);
     } catch (error) {
       throw new BadRequestException();
     }
@@ -82,5 +59,33 @@ export class UserService {
     } catch (error) {
       throw new NotFoundException('user does not exist');
     }
+  }
+
+  public async changePassword(
+    userId: number,
+    changePasswordDto: ChangePasswordDto,
+  ) {
+    try {
+      const hash: string = await argon.hash(changePasswordDto.password);
+
+      await this.prismaService.user.update({
+        where: { id: userId },
+        data: { hash },
+      });
+    } catch (error) {
+      throw new BadRequestException();
+    }
+  }
+
+  private mapToUserResponseDto(user: User) {
+    const userResponseDto: UserResponseDto = new UserResponseDto();
+
+    userResponseDto.id = user.id;
+    userResponseDto.email = user.email;
+    userResponseDto.firstName = user.firstName;
+    userResponseDto.lastName = user.lastName;
+    userResponseDto.phoneNumber = user.phoneNumber;
+
+    return userResponseDto;
   }
 }

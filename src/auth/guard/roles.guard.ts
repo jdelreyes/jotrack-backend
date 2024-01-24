@@ -5,7 +5,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { RoleEnum } from '../enum';
+import { Role } from '../enum';
 import { ROLES_KEY } from '../decorator/roles.decorator';
 import { PrismaService } from 'src/prisma/prisma.service';
 
@@ -19,10 +19,10 @@ export class RolesGuard implements CanActivate {
   public async canActivate(
     executionContext: ExecutionContext,
   ): Promise<boolean> {
-    const requiredRoles = this.reflector.getAllAndOverride<RoleEnum[]>(
-      ROLES_KEY,
-      [executionContext.getHandler(), executionContext.getClass()],
-    );
+    const requiredRoles = this.reflector.getAllAndOverride<Role[]>(ROLES_KEY, [
+      executionContext.getHandler(),
+      executionContext.getClass(),
+    ]);
     if (!requiredRoles) {
       return true;
     }

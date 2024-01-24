@@ -1,7 +1,6 @@
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { AuthLogInDto } from './dto/login';
-import { AuthSignUpDto } from './dto/signup';
+import { LogInDto, SignUpDto } from './dto';
 import { User } from '@prisma/client';
 
 @Controller('/api/auth')
@@ -11,14 +10,14 @@ export class AuthController {
   @Post('/login')
   @HttpCode(HttpStatus.OK)
   public login(
-    @Body() authLogInDto: AuthLogInDto,
-  ): Promise<{ access_token: string; user: User }> {
+    @Body() authLogInDto: LogInDto,
+  ): Promise<{ access_token: string }> {
     return this.authService.login(authLogInDto);
   }
 
   @Post('/signup')
   @HttpCode(HttpStatus.CREATED)
-  public signup(@Body() authSignUpDto: AuthSignUpDto): Promise<User> {
+  public signup(@Body() authSignUpDto: SignUpDto): Promise<User> {
     return this.authService.signup(authSignUpDto);
   }
 }
