@@ -67,34 +67,48 @@
 
 ### Auth - `/api/auth`
 
-### Legend
+### Legends
 
 - `V` - Visitor
 - `U` - User
 - `A` - Admin
 
-| Endpoint  | Method | Description     | Role Access |
-| --------- | ------ | --------------- | ----------- |
-| `/signup` | `POST` | Register a user | `V`         |
-| `/login`  | `POST` | Log in a user   | `V`         |
+| Endpoint  | Method | Description     | Role Access          |
+| --------- | ------ | --------------- | -------------------- |
+| `/signup` | `POST` | Register a user | <center>`V`</center> |
+| `/login`  | `POST` | Log in a user   | <center>`V`</center> |
 
 ### Users - `/api/users`
 
-| Endpoint      | Method   | Description     | Role Access   |
-| ------------- | -------- | --------------- | ------------- |
-| N/A           | `GET`    | Retrieve users  | `V`, `U`, `A` |
-| N/A           | `PUT`    | Change password | `U`, `A`      |
-| `/{{userId}}` | `PUT`    | Update a user   | `U`, `A`      |
-| `/{{userId}}` | `DELETE` | Remove a user   | `A`           |
-| `/{{userId}}` | `GET`    | Retrieve a user | `V`, `U`, `A` |
+| Endpoint      | Method   | Description     | Role Access                    |
+| ------------- | -------- | --------------- | ------------------------------ |
+| N/A           | `GET`    | Retrieve users  | <center>`V`, `U`, `A`</center> |
+| N/A           | `PUT`    | Change password | <center>`U`, `A`</center>      |
+| `/{{userId}}` | `PUT`    | Update a user   | <center>`A`</center>           |
+| `/{{userId}}` | `DELETE` | Remove a user   | <center>`A`</center>           |
+| `/{{userId}}` | `GET`    | Retrieve a user | <center>`V`, `U`, `A`</center> |
 
 ### Jobs - `/api/jobs`
 
-| Endpoint     | Method   | Description     | Role Access   |
-| ------------ | -------- | --------------- | ------------- |
-| N/A          | `GET`    | Retrieve jobs   | `V`, `U`, `A` |
-| N/A          | `POST`   | Create a job    | `A`           |
-| `/{{jobId}}` | `PUT`    | Update a job    | `A`           |
-| `/{{jobId}}` | `DELETE` | Remove a user   | `A`           |
-| `/{{jobId}}` | `GET`    | Retrieve a job  | `V`, `U`, `A` |
-| `/apply`     | `POST`   | Apply for a job | `U`           |
+| Endpoint     | Method   | Description    | Role Access                    |
+| ------------ | -------- | -------------- | ------------------------------ |
+| N/A          | `GET`    | Retrieve jobs  | <center>`V`, `U`, `A`</center> |
+| N/A          | `POST`   | Create a job   | <center>`A`</center>           |
+| `/{{jobId}}` | `PUT`    | Update a job   | <center>`A`</center>           |
+| `/{{jobId}}` | `DELETE` | Remove a user  | <center>`A`</center>           |
+| `/{{jobId}}` | `GET`    | Retrieve a job | <center>`V`, `U`, `A`</center> |
+
+### Job Applications - `/api/job-applications`
+
+| Endpoint        | Method | Description                    | Role Access                    |
+| --------------- | ------ | ------------------------------ | ------------------------------ |
+| N/A             | `GET`  | Retrieve job applications      | <center>`V`, `U`, `A`</center> |
+| `/applications` | `GET`  | Retrieve user job applications | <center>`U`</center>           |
+| `/apply`        | `POST` | Apply for a job                | <center>`U`</center>           |
+
+### Non-Functional Endpoints
+
+| Endpoint        | Method | Description                    | Role Access                    |
+| --------------- | ------ | ------------------------------ | ------------------------------ |
+| N/A             | `GET`  | Retrieve job applications      | <center>`V`, `U`, `A`</center> |
+| `/applications` | `GET`  | Retrieve user job applications | <center>`U`</center>           |
