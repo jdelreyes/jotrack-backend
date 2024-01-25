@@ -10,13 +10,11 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { AuthGuard } from 'src/auth/guard';
-import { RolesGuard } from 'src/auth/guard/roles.guard';
-import { Roles } from 'src/auth/decorator/roles.decorator';
+import { AuthGuard, JwtGuard, RolesGuard } from 'src/auth/guard';
 import { Role } from 'src/auth/enum';
 import { User } from '@prisma/client';
 import { ChangePasswordDto, UserRequestDto, UserResponseDto } from './dto';
-import { GetUser } from 'src/auth/decorator';
+import { GetUser, Roles } from 'src/auth/decorator';
 
 @Controller('/api/users')
 export class UserController {
@@ -56,18 +54,15 @@ export class UserController {
     return this.userService.retrieveUser(parseInt(params.userId, 10));
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(JwtGuard)
   // todo: fix this
-  // @Put('change-pwd')
+  // @Put('/change-password')
   @Put()
   @HttpCode(HttpStatus.NO_CONTENT)
   public changePassword(
-    @GetUser('sub') sub: string,
+    @GetUser('id') userId: number,
     @Body() changePasswordDto: ChangePasswordDto,
   ) {
-    return this.userService.changePassword(
-      parseInt(sub, 10),
-      changePasswordDto,
-    );
+    return this.userService.changePassword(userId, changePasswordDto);
   }
 }

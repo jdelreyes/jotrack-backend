@@ -6,6 +6,7 @@ import {
 import { PrismaService } from '../prisma/prisma.service';
 import { JobRequestDto, JobResponseDto } from './dto';
 import { Job } from '@prisma/client';
+import { JobStatus } from './enum';
 
 @Injectable()
 export class JobService {
@@ -15,6 +16,14 @@ export class JobService {
     return (await this.prismaService.job.findMany()).map((job) =>
       this.mapToJobResponseDto(job),
     );
+  }
+
+  public async retrieveJobsByDateTimePosted(): Promise<JobResponseDto[]> {
+    return (
+      await this.prismaService.job.findMany({
+        orderBy: { dateTimePosted: 'desc' },
+      })
+    ).map((job) => this.mapToJobResponseDto(job));
   }
 
   public async createJob(jobRequestDto: JobRequestDto) {
@@ -73,9 +82,23 @@ export class JobService {
     }
   }
 
+  public async apply(userId: number, jobId: number) {
+    try {
+      const userJobApplication =
+        await this.prismaService.userJobApplication.create({
+          data: { userId, jobId, status: JobStatus.PENDING },
+        });
+      return userJobApplication;
+    } catch (error) {
+      console.error(error);
+      throw new BadRequestException();
+    }
+  }
+
   private mapToJobResponseDto(job: Job): JobResponseDto {
     const jobResponseDto: JobResponseDto = new JobResponseDto();
 
+    jobResponseDto.id = job.id;
     jobResponseDto.city = job.city;
     jobResponseDto.companyName = job.companyName;
     jobResponseDto.country = job.country;
@@ -86,6 +109,7 @@ export class JobService {
     jobResponseDto.requirements = job.requirements;
     jobResponseDto.street = job.street;
     jobResponseDto.title = job.title;
+    jobResponseDto.dateTimePosted = job.dateTimePosted;
 
     return jobResponseDto;
   }

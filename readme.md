@@ -67,29 +67,34 @@
 
 ### Auth - `/api/auth`
 
+### Legend
+
+- `V` - Visitor
+- `U` - User
+- `A` - Admin
+
 | Endpoint  | Method | Description     | Role Access |
 | --------- | ------ | --------------- | ----------- |
-| `/signup` | `POST` | Register a user | Visitor     |
-| `/login`  | `POST` | Log in a user   | Visitor     |
+| `/signup` | `POST` | Register a user | `V`         |
+| `/login`  | `POST` | Log in a user   | `V`         |
 
 ### Users - `/api/users`
 
-| Endpoint       | Method   | Description           | Role Access |
-| -------------- | -------- | --------------------- | ----------- | --- |
-| N/A            | `GET`    | Retrieve users        | Visitor     |
-| N/A            | `POST`   | Create a user         | Admin       |
-| `/{{userId}}`  | `PUT`    | Update a user         | Admin       |
-| `/{{userId}}`  | `DELETE` | Remove a user         | Admin       |
-| `/{{userId}}`  | `GET`    | Retrieve a user       | Visitor     |
-| `/jobs-applied | `GET`    | Retrieve applied jobs | User        | :   |
+| Endpoint      | Method   | Description     | Role Access   |
+| ------------- | -------- | --------------- | ------------- |
+| N/A           | `GET`    | Retrieve users  | `V`, `U`, `A` |
+| N/A           | `PUT`    | Change password | `U`, `A`      |
+| `/{{userId}}` | `PUT`    | Update a user   | `U`, `A`      |
+| `/{{userId}}` | `DELETE` | Remove a user   | `A`           |
+| `/{{userId}}` | `GET`    | Retrieve a user | `V`, `U`, `A` |
 
 ### Jobs - `/api/jobs`
 
-| Endpoint     | Method   | Description     | Role Access |
-| ------------ | -------- | --------------- | ----------- |
-| N/A          | `GET`    | Retrieve jobs   | Visitor     |
-| N/A          | `POST`   | Create a job    | Admin       |
-| `/{{jobId}}` | `PUT`    | Update a job    | Admin       |
-| `/{{jobId}}` | `DELETE` | Remove a user   | Admin       |
-| `/{{jobId}}` | `GET`    | Retrieve a job  | Visitor     |
-| `/apply`     | `POST`   | Apply for a job | User        |
+| Endpoint     | Method   | Description     | Role Access   |
+| ------------ | -------- | --------------- | ------------- |
+| N/A          | `GET`    | Retrieve jobs   | `V`, `U`, `A` |
+| N/A          | `POST`   | Create a job    | `A`           |
+| `/{{jobId}}` | `PUT`    | Update a job    | `A`           |
+| `/{{jobId}}` | `DELETE` | Remove a user   | `A`           |
+| `/{{jobId}}` | `GET`    | Retrieve a job  | `V`, `U`, `A` |
+| `/apply`     | `POST`   | Apply for a job | `U`           |

@@ -5,6 +5,9 @@ import { JobModule } from './job/job.module';
 import { ConfigModule } from '@nestjs/config';
 import { PrismaService } from './prisma/prisma.service';
 import { PrismaModule } from './prisma/prisma.module';
+import { JobApplicationController } from './job-application/job-application.controller';
+import { JobApplicationService } from './job-application/job-application.service';
+import { JobApplicationModule } from './job-application/job-application.module';
 
 @Module({
   imports: [
@@ -13,7 +16,9 @@ import { PrismaModule } from './prisma/prisma.module';
     UserModule,
     JobModule,
     PrismaModule,
+    JobApplicationModule,
   ],
-  providers: [PrismaService],
+  providers: [PrismaService, JobApplicationService],
+  controllers: [JobApplicationController],
 })
 export class AppModule {}
