@@ -14,8 +14,8 @@ import {
 } from '@nestjs/common';
 import { JobService } from './job.service';
 import { JobRequestDto, JobResponseDto } from './dto';
-import { AuthGuard, JwtGuard, RolesGuard } from 'src/auth/guard';
-import { GetUser, Roles } from 'src/auth/decorator';
+import { AuthGuard, RolesGuard } from 'src/auth/guard';
+import { Roles } from 'src/auth/decorator';
 import { Role } from 'src/auth/enum';
 
 @Controller('/api/jobs')
@@ -64,16 +64,5 @@ export class JobController {
   @HttpCode(HttpStatus.OK)
   public retrieveUser(@Param('jobId', ParseIntPipe) jobId: number) {
     return this.jobService.retrieveJob(jobId);
-  }
-
-  @UseGuards(AuthGuard, RolesGuard, JwtGuard)
-  @Roles(Role.USER)
-  @Post('/apply/:jobId')
-  @HttpCode(HttpStatus.CREATED)
-  public apply(
-    @GetUser('id') userId: number,
-    @Param('jobId', ParseIntPipe) jobId: number,
-  ) {
-    return this.jobService.apply(userId, jobId);
   }
 }
