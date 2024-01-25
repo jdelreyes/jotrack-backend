@@ -24,7 +24,7 @@ model User {
   firstName String
   lastName  String
 
-  phoneNumber Float 
+  phoneNumber Float
 
   jobs    UserJobApplication[]
   address Address?
@@ -49,8 +49,8 @@ model Job {
   province   String
   country    String
 
-  dateTimeSubmitted DateTime @default(now())
-  dateTimeUpdated   DateTime @default(now())
+  dateTimePosted  DateTime @default(now())
+  dateTimeUpdated DateTime @updatedAt
 
   users UserJobApplication[]
 
@@ -58,18 +58,17 @@ model Job {
 }
 
 model UserJobApplication {
-  id Int @id @default(autoincrement())
-
   status          String   @default("pending")
   dateTimeApplied DateTime @default(now())
-  dateTimeUpdated DateTime @default(now())
+  dateTimeUpdated DateTime @updatedAt
 
-  userId Int
   user   User @relation(fields: [userId], references: [id])
+  userId Int
 
-  jobId Int
   job   Job @relation(fields: [jobId], references: [id])
+  jobId Int
 
+  @@id([userId, jobId])
   @@map("userJobApplications")
 }
 

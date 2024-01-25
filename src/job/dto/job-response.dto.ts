@@ -1,4 +1,5 @@
 export class JobResponseDto {
+  id: number;
   title: string;
   description: string;
   position: string;
@@ -11,4 +12,5 @@ export class JobResponseDto {
   city: string;
   province: string;
   country: string;
+  dateTimePosted: Date;
 }
