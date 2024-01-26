@@ -40,7 +40,15 @@
    npm run start:dev
    ```
 
-## Troubleshooting
+## Troubleshooting and Testing
+
+### Seeding
+
+1. Seed 10 jobs and 10 users into the database
+
+   ```shell
+   npm run db:dev:seed
+   ```
 
 ### Restarting
 
@@ -52,6 +60,10 @@
    ```
 
 3. Restart the application.
+
+   ```shell
+   npm run start:dev
+   ```
 
 ### Visualization
 
@@ -108,6 +120,6 @@
 
 ### Non-Functional Endpoints
 
-| Endpoint        | Method | Description                    | Role Access                    |
-| --------------- | ------ | ------------------------------ | ------------------------------ |
-| `/applications` | `GET`  | Retrieve user job applications | <center>`U`</center>           |
+| Endpoint        | Method | Description                    | Role Access          |
+| --------------- | ------ | ------------------------------ | -------------------- |
+| `/applications` | `GET`  | Retrieve user job applications | <center>`U`</center> |
