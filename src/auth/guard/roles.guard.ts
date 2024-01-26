@@ -31,7 +31,6 @@ export class RolesGuard implements CanActivate {
     const requestUserRole = request['user']?.role;
 
     const userRole = await this.verifyUserRole(request);
-    console.log(userRole, requestUserRole);
     if (!userRole && userRole !== requestUserRole)
       throw new UnauthorizedException();
     return requiredRoles.every((role) => requestUserRole?.includes(role));
