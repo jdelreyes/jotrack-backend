@@ -4,7 +4,7 @@
 
 @userId=
 @jobId=
-@access_token=
+@access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjYsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzA2MjI3MTI5LCJleHAiOjE3MDY4MzE5Mjl9.2n2de2_YRa4dm0oU3_86su4V3jQ-6ibokh8Cw6qQLzo
 
 ### signup user
 
@@ -107,3 +107,11 @@ Authorization: Bearer {{access_token}}
 
 POST http://{{hostname}}:{{port}}/api/job-applications/{{jobId}}
 Authorization: Bearer {{access_token}}
+
+### retrieve job applications
+
+GET http://{{hostname}}:{{port}}/api/job-applications
+
+### retrieve own job applications
+
+GET http://{{hostname}}:{{port}}/api/job-applications/applications

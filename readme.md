@@ -65,13 +65,13 @@
 
 ## API Endpoints
 
-### Auth - `/api/auth`
-
-### Legends
+#### Legends
 
 - `V` - Visitor
 - `U` - User
 - `A` - Admin
+
+### Auth - `/api/auth`
 
 | Endpoint  | Method | Description     | Role Access          |
 | --------- | ------ | --------------- | -------------------- |
@@ -110,5 +110,4 @@
 
 | Endpoint        | Method | Description                    | Role Access                    |
 | --------------- | ------ | ------------------------------ | ------------------------------ |
-| N/A             | `GET`  | Retrieve job applications      | <center>`V`, `U`, `A`</center> |
 | `/applications` | `GET`  | Retrieve user job applications | <center>`U`</center>           |

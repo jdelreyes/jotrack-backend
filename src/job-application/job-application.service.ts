@@ -23,4 +23,19 @@ export class JobApplicationService {
       throw new BadRequestException();
     }
   }
+
+  public async retrieveJobApplications() {
+    return await this.prismaService.userJobApplication.findMany({});
+  }
+
+  public async retrieveOwnJobApplications(userId: number) {
+    try {
+      return await this.prismaService.userJobApplication.findMany({
+        where: { userId: { equals: userId } },
+      });
+    } catch (error) {
+      console.error(error);
+      throw new BadRequestException();
+    }
+  }
 }
