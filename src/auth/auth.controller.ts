@@ -10,14 +10,14 @@ export class AuthController {
   @Post('/login')
   @HttpCode(HttpStatus.OK)
   public login(
-    @Body() authLogInDto: LogInRequestDto,
+    @Body() logInRequestDto: LogInRequestDto,
   ): Promise<{ access_token: string }> {
-    return this.authService.login(authLogInDto);
+    return this.authService.login(logInRequestDto);
   }
 
   @Post('/signup')
   @HttpCode(HttpStatus.CREATED)
-  public signup(@Body() authSignUpDto: SignUpRequestDto): Promise<User> {
-    return this.authService.signup(authSignUpDto);
+  public signup(@Body() signUpRequestDto: SignUpRequestDto): Promise<User> {
+    return this.authService.signup(signUpRequestDto);
   }
 }

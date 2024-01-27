@@ -45,7 +45,7 @@ const fakerJob = (): any => ({
   description: faker.definitions.lorem.words.join(' '),
   companyName: faker.company.name(),
   position: faker.person.jobTitle(),
-  requirements: 'requirements',
+  requirements: ['requirements', 'requirements'],
   ...fakerAddress(),
 });
 

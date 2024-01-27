@@ -3,7 +3,7 @@ export class JobResponseDto {
   title: string;
   description: string;
   position: string;
-  requirements: string;
+  requirements: string[];
 
   companyName: string;
 

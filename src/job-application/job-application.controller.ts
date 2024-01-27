@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Get,
   HttpCode,
@@ -14,6 +15,11 @@ import { AuthGuard, JwtGuard, RolesGuard } from 'src/auth/guard';
 import { JobApplicationService } from './job-application.service';
 import { Role } from 'src/auth/enum';
 import { UserJobApplication } from '@prisma/client';
+import {
+  JobApplicationResponseDto,
+  UpdateJobApplicationRequestDto,
+} from './dto';
+import { JobStatus } from './enum';
 
 @Controller('/api/job-applications')
 export class JobApplicationController {
@@ -21,7 +27,7 @@ export class JobApplicationController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  public retrieveJobApplications() {
+  public retrieveJobApplications(): Promise<JobApplicationResponseDto[]> {
     return this.jobApplicationService.retrieveJobApplications();
   }
 
@@ -46,27 +52,29 @@ export class JobApplicationController {
     return this.jobApplicationService.applyJob(userId, jobId);
   }
 
-  @UseGuards(AuthGuard, RolesGuard, JwtGuard)
-  @Put('/reject')
+  @UseGuards(AuthGuard, RolesGuard)
+  @Put('/accept')
   @HttpCode(HttpStatus.OK)
   @Roles(Role.ADMIN)
-  public rejectJob(
-    @GetUser('id') adminId: number,
-    @Param('jobId', ParseIntPipe) jobId: number,
-    @Param('userId', ParseIntPipe) userId: number,
-  ) {
-    return `reject ${adminId} ${jobId} ${userId}`;
+  public acceptJobApplication(
+    @Body() updateJobApplicationRequestDto: UpdateJobApplicationRequestDto,
+  ): Promise<JobApplicationResponseDto> {
+    return this.jobApplicationService.updateJobApplication(
+      updateJobApplicationRequestDto,
+      JobStatus.ACCEPTED,
+    );
   }
 
-  @UseGuards(AuthGuard, RolesGuard, JwtGuard)
+  @UseGuards(AuthGuard, RolesGuard)
   @Put('/reject')
   @HttpCode(HttpStatus.OK)
   @Roles(Role.ADMIN)
-  public acceptJob(
-    @GetUser('id') adminId: number,
-    @Param('jobId', ParseIntPipe) jobId: number,
-    @Param('userId', ParseIntPipe) userId: number,
-  ) {
-    return `reject ${adminId} ${jobId} ${userId}`;
+  public rejectJobApplication(
+    @Body() updateJobApplicationRequestDto: UpdateJobApplicationRequestDto,
+  ): Promise<JobApplicationResponseDto> {
+    return this.jobApplicationService.updateJobApplication(
+      updateJobApplicationRequestDto,
+      JobStatus.REJECTED,
+    );
   }
 }

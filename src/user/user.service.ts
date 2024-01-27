@@ -11,8 +11,8 @@ import {
   ChangePasswordRequestDto,
   UpdateUserRequestDto,
   UserResponseDto,
+  UserWithAddressDto,
 } from './dto';
-import { UserWithAddressDto } from './dto/user-with-address.dto';
 
 @Injectable()
 export class UserService {
@@ -28,7 +28,7 @@ export class UserService {
 
   public async updateProfile(
     userId: number,
-    userRequestDto: UpdateUserRequestDto,
+    updateUserRequestDto: UpdateUserRequestDto,
   ): Promise<UserResponseDto> {
     try {
       const userWithAddressDto: UserWithAddressDto =
@@ -37,9 +37,9 @@ export class UserService {
             id: userId,
           },
           data: {
-            ...this.mapToUserRequestDto(userRequestDto),
+            ...this.mapToUserRequestDto(updateUserRequestDto),
             address: {
-              update: { ...this.mapToAddressRequestDto(userRequestDto) },
+              update: { ...this.mapToAddressRequestDto(updateUserRequestDto) },
             },
           },
           include: { address: true },
@@ -75,10 +75,10 @@ export class UserService {
 
   public async changePassword(
     userId: number,
-    changePasswordDto: ChangePasswordRequestDto,
+    changePasswordRequestDto: ChangePasswordRequestDto,
   ): Promise<void> {
     try {
-      const hash: string = await argon.hash(changePasswordDto.password);
+      const hash: string = await argon.hash(changePasswordRequestDto.password);
 
       await this.prismaService.user.update({
         where: { id: userId },
