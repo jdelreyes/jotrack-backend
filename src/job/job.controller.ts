@@ -18,13 +18,18 @@ import {
   JobResponseDto,
   UpdateJobRequestDto,
 } from './dto';
-import { AuthGuard, RolesGuard } from 'src/auth/guard';
-import { Roles } from 'src/auth/decorator';
+import { AuthGuard, JwtGuard, RolesGuard } from 'src/auth/guard';
+import { GetUser, Roles } from 'src/auth/decorator';
 import { Role } from 'src/auth/enum';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { JobVisitedEvent } from './event';
 
 @Controller('/api/jobs')
 export class JobController {
-  constructor(private jobService: JobService) {}
+  constructor(
+    private jobService: JobService,
+    private eventEmitter2: EventEmitter2,
+  ) {}
 
   @Get()
   @HttpCode(HttpStatus.OK)
@@ -65,7 +70,19 @@ export class JobController {
     return this.jobService.removeJob(jobId);
   }
 
+  // todo
   @Get('/:jobId')
+  @UseGuards(JwtGuard)
+  @HttpCode(HttpStatus.OK)
+  public retrieveUserEvent(
+    @GetUser('id') userId: number,
+    @Param('jobId', ParseIntPipe) jobId: number,
+  ): Promise<JobResponseDto> {
+    this.eventEmitter2.emit('job.visited', new JobVisitedEvent(userId, jobId));
+    return this.jobService.retrieveJob(jobId);
+  }
+
+  @Get('visitor/:jobId')
   @HttpCode(HttpStatus.OK)
   public retrieveUser(
     @Param('jobId', ParseIntPipe) jobId: number,
