@@ -7,23 +7,25 @@ import {
 import { PrismaService } from 'src/prisma/prisma.service';
 import { JobStatus } from './enum';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
+import { UserJobApplication } from '@prisma/client';
+import { JobApplicationResponseDto } from './dto/job-application-response.dto';
 
 @Injectable()
 export class JobApplicationService {
   constructor(private prismaService: PrismaService) {}
 
-  public async applyJob(userId: number, jobId: number) {
+  public async applyJob(
+    userId: number,
+    jobId: number,
+  ): Promise<JobApplicationResponseDto> {
     try {
-      const userJobApplication =
-        await this.prismaService.userJobApplication.create({
-          data: {
-            userId,
-            jobId,
-            status: JobStatus.PENDING,
-          },
-        });
-
-      return userJobApplication;
+      return await this.prismaService.userJobApplication.create({
+        data: {
+          userId,
+          jobId,
+          status: JobStatus.PENDING,
+        },
+      });
     } catch (error) {
       console.error(error);
       if (error instanceof PrismaClientKnownRequestError) {
@@ -34,18 +36,42 @@ export class JobApplicationService {
     }
   }
 
-  public async retrieveJobApplications() {
-    return await this.prismaService.userJobApplication.findMany({});
+  public async retrieveJobApplications(): Promise<JobApplicationResponseDto[]> {
+    return this.prismaService.userJobApplication.findMany({});
   }
 
-  public async retrieveOwnJobApplications(userId: number) {
+  public async retrieveOwnJobApplications(
+    userId: number,
+  ): Promise<UserJobApplication[]> {
     try {
-      return await this.prismaService.userJobApplication.findMany({
-        where: { userId: { equals: userId } },
-      });
+      const userJobApplications: UserJobApplication[] =
+        await this.prismaService.userJobApplication.findMany({
+          where: { userId: { equals: userId } },
+        });
+
+      return userJobApplications.map((userJobApplication: UserJobApplication) =>
+        this.mapToJobApplicationResponseDto(userJobApplication),
+      );
     } catch (error) {
       console.error(error);
       throw new BadRequestException();
     }
+  }
+
+  private mapToJobApplicationResponseDto(
+    userJobApplication: UserJobApplication,
+  ): JobApplicationResponseDto {
+    const jobApplicationResponseDto: JobApplicationResponseDto =
+      new JobApplicationResponseDto();
+
+    jobApplicationResponseDto.status = userJobApplication.status;
+    jobApplicationResponseDto.dateTimeApplied =
+      userJobApplication.dateTimeApplied;
+    jobApplicationResponseDto.dateTimeUpdated =
+      userJobApplication.dateTimeUpdated;
+    jobApplicationResponseDto.jobId = userJobApplication.jobId;
+    jobApplicationResponseDto.userId = userJobApplication.jobId;
+
+    return jobApplicationResponseDto;
   }
 }

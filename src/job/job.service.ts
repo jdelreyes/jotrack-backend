@@ -1,7 +1,7 @@
 import {
   BadRequestException,
-  NotFoundException,
   Injectable,
+  NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { JobRequestDto, JobResponseDto } from './dto';
@@ -12,7 +12,7 @@ export class JobService {
   constructor(private prismaService: PrismaService) {}
 
   public async retrieveJobs(): Promise<JobResponseDto[]> {
-    return (await this.prismaService.job.findMany()).map((job) =>
+    return (await this.prismaService.job.findMany()).map((job: Job) =>
       this.mapToJobResponseDto(job),
     );
   }
@@ -22,7 +22,7 @@ export class JobService {
       await this.prismaService.job.findMany({
         orderBy: { dateTimePosted: 'desc' },
       })
-    ).map((job) => this.mapToJobResponseDto(job));
+    ).map((job: Job) => this.mapToJobResponseDto(job));
   }
 
   public async createJob(jobRequestDto: JobRequestDto) {
@@ -40,7 +40,10 @@ export class JobService {
     }
   }
 
-  public async updateJob(jobId: number, jobRequestDto: JobRequestDto) {
+  public async updateJob(
+    jobId: number,
+    jobRequestDto: JobRequestDto,
+  ): Promise<JobResponseDto> {
     try {
       const job = await this.prismaService.job.update({
         where: {
@@ -69,13 +72,13 @@ export class JobService {
     }
   }
 
-  public async retrieveJob(jobId: number): Promise<Job> {
+  public async retrieveJob(jobId: number): Promise<JobResponseDto> {
     try {
-      const job = await this.prismaService.job.findUnique({
+      const job: Job = await this.prismaService.job.findUnique({
         where: { id: jobId },
       });
 
-      return job;
+      return this.mapToJobResponseDto(job);
     } catch (error) {
       throw new NotFoundException('job does not exist');
     }

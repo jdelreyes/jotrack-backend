@@ -20,7 +20,7 @@ export class AuthService {
   public async login(
     authLogInDto: LogInDto,
   ): Promise<{ access_token: string }> {
-    const user = await this.prismaService.user.findUnique({
+    const user: User = await this.prismaService.user.findUnique({
       where: {
         email: authLogInDto.email,
       },
@@ -35,7 +35,7 @@ export class AuthService {
     if (!passwordMatches)
       throw new ForbiddenException('credentials are incorrect');
 
-    const jwtPayload = {
+    const jwtPayload: { sub: number; role: string } = {
       sub: user.id,
       role: user.role,
     };
@@ -50,10 +50,15 @@ export class AuthService {
 
       delete authSignUpDto.password;
 
-      const user = await this.prismaService.user.create({
+      const user: User = await this.prismaService.user.create({
         data: {
-          ...authSignUpDto,
+          ...this.mapToUserRequestDto(authSignUpDto),
           hash,
+          address: {
+            create: {
+              ...this.mapToAddressRequestDto(authSignUpDto),
+            },
+          },
         },
       });
 
@@ -62,9 +67,40 @@ export class AuthService {
       console.error(error);
       if (error instanceof PrismaClientKnownRequestError)
         if (error.code === 'P2002')
-          // code for field duplicate
           throw new ForbiddenException('credentials are taken');
       throw new BadRequestException();
     }
+  }
+
+  private mapToUserRequestDto(signUpDto: SignUpDto): {
+    email: string;
+    role: string;
+    firstName: string;
+    lastName: string;
+    phoneNumber: number;
+  } {
+    return {
+      email: signUpDto.email,
+      role: signUpDto.role,
+      firstName: signUpDto.firstName,
+      lastName: signUpDto.lastName,
+      phoneNumber: signUpDto.phoneNumber,
+    };
+  }
+
+  private mapToAddressRequestDto(signUpDto: SignUpDto): {
+    postalCode: string;
+    street: string;
+    city: string;
+    province: string;
+    country: string;
+  } {
+    return {
+      postalCode: signUpDto.postalCode,
+      street: signUpDto.street,
+      city: signUpDto.city,
+      province: signUpDto.province,
+      country: signUpDto.country,
+    };
   }
 }

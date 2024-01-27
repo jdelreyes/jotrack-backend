@@ -102,13 +102,13 @@
 
 ### Jobs - `/api/jobs`
 
-| Endpoint     | Method   | Description    | Role Access                    |
-| ------------ | -------- | -------------- | ------------------------------ |
-| N/A          | `GET`    | Retrieve jobs  | <center>`V`, `U`, `A`</center> |
-| N/A          | `POST`   | Create a job   | <center>`A`</center>           |
-| `/{{jobId}}` | `PUT`    | Update a job   | <center>`A`</center>           |
-| `/{{jobId}}` | `DELETE` | Remove a user  | <center>`A`</center>           |
-| `/{{jobId}}` | `GET`    | Retrieve a job | <center>`V`, `U`, `A`</center> |
+| Endpoint           | Method   | Description    | Role Access                    |
+| ------------------ | -------- | -------------- | ------------------------------ |
+| `?filter=dateTime` | `GET`    | Retrieve jobs  | <center>`V`, `U`, `A`</center> |
+| N/A                | `POST`   | Create a job   | <center>`A`</center>           |
+| `/{{jobId}}`       | `PUT`    | Update a job   | <center>`A`</center>           |
+| `/{{jobId}}`       | `DELETE` | Remove a user  | <center>`A`</center>           |
+| `/{{jobId}}`       | `GET`    | Retrieve a job | <center>`V`, `U`, `A`</center> |
 
 ### Job Applications - `/api/job-applications`
 
@@ -120,6 +120,5 @@
 
 ### Non-Functional Endpoints
 
-| Endpoint        | Method | Description                    | Role Access          |
-| --------------- | ------ | ------------------------------ | -------------------- |
-| `/applications` | `GET`  | Retrieve user job applications | <center>`U`</center> |
+| Endpoint | Method | Description | Role Access |
+| -------- | ------ | ----------- | ----------- |

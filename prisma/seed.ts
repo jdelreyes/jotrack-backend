@@ -1,10 +1,31 @@
-// prisma/seed.ts
 import { PrismaClient } from '@prisma/client';
 import { faker } from '@faker-js/faker';
 import * as dotenv from 'dotenv';
 import * as argon from 'argon2';
 
-const prismaClient = new PrismaClient();
+const prismaClient: PrismaClient = new PrismaClient();
+
+const fakerAddress = (): any => ({
+  postalCode: 'A1A 1A1',
+  street: faker.location.street(),
+  city: 'Toronto',
+  province: 'ON',
+  country: 'CA',
+});
+
+const fakerAdmin = async (): Promise<any> => ({
+  firstName: faker.person.firstName(),
+  lastName: faker.person.lastName(),
+  email: 'admin@domain.ca',
+  role: 'admin',
+  phoneNumber: faker.number.int({ min: 1000000000, max: 9999999999 }),
+  hash: await argon.hash('password'),
+  address: {
+    create: {
+      ...fakerAddress(),
+    },
+  },
+});
 
 const fakerUser = async (): Promise<any> => ({
   firstName: faker.person.firstName(),
@@ -12,6 +33,11 @@ const fakerUser = async (): Promise<any> => ({
   email: faker.internet.email(),
   phoneNumber: faker.number.int({ min: 1000000000, max: 9999999999 }),
   hash: await argon.hash(faker.internet.password()),
+  address: {
+    create: {
+      ...fakerAddress(),
+    },
+  },
 });
 
 const fakerJob = (): any => ({
@@ -22,22 +48,26 @@ const fakerJob = (): any => ({
   requirements: 'requirements',
   postalCode: 'A1A 1A1',
   street: faker.location.street(),
-  city: faker.location.city(),
+  city: 'Toronto',
   province: 'ON',
   country: 'CA',
 });
 
 async function main() {
-  const fakerRounds = 10;
+  const fakerRounds: number = 10;
   dotenv.config();
-  for (let i = 0; i < fakerRounds; i++) {
+
+  await prismaClient.user.create({ data: await fakerAdmin() });
+  for (let i: number = 0; i < fakerRounds; i++) {
     await prismaClient.user.create({ data: await fakerUser() });
-    await prismaClient.job.create({ data: fakerJob() });
+    await prismaClient.job.create({
+      data: fakerJob(),
+    });
   }
 }
 
 main()
   .catch((e) => console.error(e))
-  .finally(async () => {
+  .finally(async (): Promise<void> => {
     await prismaClient.$disconnect();
   });

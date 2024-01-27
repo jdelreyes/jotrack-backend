@@ -3,6 +3,7 @@ import {
   IsEnum,
   IsNotEmpty,
   IsNumber,
+  IsPostalCode,
   IsString,
   MinLength,
 } from 'class-validator';
@@ -32,4 +33,21 @@ export class SignUpDto {
   @IsNumber()
   @IsNotEmpty()
   phoneNumber: number;
+
+  @IsString()
+  @IsNotEmpty()
+  @IsPostalCode('CA')
+  postalCode: string;
+  @IsString()
+  @IsNotEmpty()
+  street: string;
+  @IsString()
+  @IsNotEmpty()
+  city: string;
+  @IsString()
+  @IsNotEmpty()
+  province: string;
+  @IsString()
+  @IsNotEmpty()
+  country: string;
 }
