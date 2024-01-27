@@ -4,7 +4,7 @@
 
 @userId=
 @jobId=
-@access_token=
+@access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEyLCJyb2xlIjoidXNlciIsImlhdCI6MTcwNjMzNTY2MywiZXhwIjoxNzA2OTQwNDYzfQ.tqY0GlGZlB7pR3d3SKHeixcJ1Rx5hNS7o2zlnWDIT1E
 
 ### signup user
 
@@ -23,7 +23,7 @@ Content-Type: application/json
   "city": "Toronto",
   "province": "ON",
   "country": "CA"
-  }
+}
 
 ### login user
 
@@ -39,19 +39,32 @@ Content-Type: application/json
 
 GET http://{{hostname}}:{{port}}/api/users HTTP/1.1
 
-### updates user
+### update profile
 
-PUT http://{{hostname}}:{{port}}/api/users/{{userId}} HTTP/1.1
+PUT http://{{hostname}}:{{port}}/api/users/update-profile HTTP/1.1
 Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+{
+  "email": "email@domain.ca",
+  "firstName": "firstName",
+  "lastName": "lastName",
+  "phoneNumber": 1234567890,
+  "postalCode": "A1A 1A1",
+  "street": "some street",
+  "city": "Toronto",
+  "province": "ON",
+  "country": "CA"
+}
 
 ### removes user
 
 DELETE http://{{hostname}}:{{port}}/api/users/{{userId}} HTTP/1.1
 Authorization: Bearer {{access_token}}
 
-### chnage password
+### change password
 
-PUT http://{{hostname}}:{{port}}/api/users HTTP/1.1
+PUT http://{{hostname}}:{{port}}/api/users/change-password HTTP/1.1
 Authorization: Bearer {{access_token}}
 Content-Type: application/json
 

@@ -4,7 +4,7 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { LogInDto, SignUpDto } from './dto';
+import { LogInRequestDto, SignUpRequestDto } from './dto';
 import * as argon from 'argon2';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { JwtService } from '@nestjs/jwt';
@@ -18,7 +18,7 @@ export class AuthService {
   ) {}
 
   public async login(
-    authLogInDto: LogInDto,
+    authLogInDto: LogInRequestDto,
   ): Promise<{ access_token: string }> {
     const user: User = await this.prismaService.user.findUnique({
       where: {
@@ -27,7 +27,7 @@ export class AuthService {
     });
     if (!user) throw new ForbiddenException('credentials are incorrect');
 
-    const passwordMatches = await argon.verify(
+    const passwordMatches: boolean = await argon.verify(
       user.hash,
       authLogInDto.password,
     );
@@ -44,7 +44,7 @@ export class AuthService {
     return { access_token: token };
   }
 
-  public async signup(authSignUpDto: SignUpDto): Promise<User> {
+  public async signup(authSignUpDto: SignUpRequestDto): Promise<User> {
     try {
       const hash: string = await argon.hash(authSignUpDto.password);
 
@@ -72,7 +72,7 @@ export class AuthService {
     }
   }
 
-  private mapToUserRequestDto(signUpDto: SignUpDto): {
+  private mapToUserRequestDto(signUpDto: SignUpRequestDto): {
     email: string;
     role: string;
     firstName: string;
@@ -88,7 +88,7 @@ export class AuthService {
     };
   }
 
-  private mapToAddressRequestDto(signUpDto: SignUpDto): {
+  private mapToAddressRequestDto(signUpDto: SignUpRequestDto): {
     postalCode: string;
     street: string;
     city: string;

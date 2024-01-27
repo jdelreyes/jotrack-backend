@@ -7,4 +7,10 @@ export class UserResponseDto {
   lastName: string;
 
   phoneNumber: number;
+
+  postalCode: string;
+  street: string;
+  city: string;
+  province: string;
+  country: string;
 }

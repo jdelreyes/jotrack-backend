@@ -7,31 +7,45 @@ import { User } from '@prisma/client';
 import * as argon from 'argon2';
 
 import { PrismaService } from '../prisma/prisma.service';
-import { ChangePasswordDto, UserRequestDto, UserResponseDto } from './dto';
+import {
+  ChangePasswordRequestDto,
+  UpdateUserRequestDto,
+  UserResponseDto,
+} from './dto';
+import { UserWithAddressDto } from './dto/user-with-address.dto';
 
 @Injectable()
 export class UserService {
   constructor(private prismaService: PrismaService) {}
 
   public async retrieveUsers(): Promise<UserResponseDto[]> {
-    return (await this.prismaService.user.findMany()).map((user: User) =>
-      this.mapToUserResponseDto(user),
+    return (
+      await this.prismaService.user.findMany({ include: { address: true } })
+    ).map((userWithAddressDto: UserWithAddressDto) =>
+      this.mapToUserResponseDto(userWithAddressDto),
     );
   }
 
-  public async updateUser(
+  public async updateProfile(
     userId: number,
-    userRequestDto: UserRequestDto,
+    userRequestDto: UpdateUserRequestDto,
   ): Promise<UserResponseDto> {
     try {
-      const user: User = await this.prismaService.user.update({
-        where: {
-          id: userId,
-        },
-        data: { ...userRequestDto },
-      });
+      const userWithAddressDto: UserWithAddressDto =
+        await this.prismaService.user.update({
+          where: {
+            id: userId,
+          },
+          data: {
+            ...this.mapToUserRequestDto(userRequestDto),
+            address: {
+              update: { ...this.mapToAddressRequestDto(userRequestDto) },
+            },
+          },
+          include: { address: true },
+        });
 
-      return this.mapToUserResponseDto(user);
+      return this.mapToUserResponseDto(userWithAddressDto);
     } catch (error) {
       throw new BadRequestException();
     }
@@ -61,7 +75,7 @@ export class UserService {
 
   public async changePassword(
     userId: number,
-    changePasswordDto: ChangePasswordDto,
+    changePasswordDto: ChangePasswordRequestDto,
   ): Promise<void> {
     try {
       const hash: string = await argon.hash(changePasswordDto.password);
@@ -75,15 +89,53 @@ export class UserService {
     }
   }
 
-  private mapToUserResponseDto(user: User): UserResponseDto {
+  private mapToUserResponseDto(
+    userWithAddressDto: UserWithAddressDto,
+  ): UserResponseDto {
     const userResponseDto: UserResponseDto = new UserResponseDto();
 
-    userResponseDto.id = user.id;
-    userResponseDto.email = user.email;
-    userResponseDto.firstName = user.firstName;
-    userResponseDto.lastName = user.lastName;
-    userResponseDto.phoneNumber = user.phoneNumber;
+    userResponseDto.id = userWithAddressDto.id;
+    userResponseDto.email = userWithAddressDto.email;
+    userResponseDto.firstName = userWithAddressDto.firstName;
+    userResponseDto.lastName = userWithAddressDto.lastName;
+    userResponseDto.phoneNumber = userWithAddressDto.phoneNumber;
+
+    userResponseDto.street = userWithAddressDto.address.street;
+    userResponseDto.postalCode = userWithAddressDto.address.postalCode;
+    userResponseDto.city = userWithAddressDto.address.city;
+    userResponseDto.province = userWithAddressDto.address.province;
+    userResponseDto.country = userWithAddressDto.address.country;
 
     return userResponseDto;
+  }
+
+  private mapToUserRequestDto(userRequestDto: UpdateUserRequestDto): {
+    email: string;
+    firstName: string;
+    lastName: string;
+    phoneNumber: number;
+  } {
+    return {
+      email: userRequestDto.email,
+      firstName: userRequestDto.firstName,
+      lastName: userRequestDto.lastName,
+      phoneNumber: userRequestDto.phoneNumber,
+    };
+  }
+
+  private mapToAddressRequestDto(userRequestDto: UpdateUserRequestDto): {
+    postalCode: string;
+    street: string;
+    city: string;
+    province: string;
+    country: string;
+  } {
+    return {
+      postalCode: userRequestDto.postalCode,
+      street: userRequestDto.street,
+      city: userRequestDto.city,
+      province: userRequestDto.province,
+      country: userRequestDto.country,
+    };
   }
 }
