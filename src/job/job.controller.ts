@@ -13,7 +13,11 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { JobService } from './job.service';
-import { CreateJobRequestDto, JobResponseDto, UpdateJobRequestDto } from './dto';
+import {
+  CreateJobRequestDto,
+  JobResponseDto,
+  UpdateJobRequestDto,
+} from './dto';
 import { AuthGuard, RolesGuard } from 'src/auth/guard';
 import { Roles } from 'src/auth/decorator';
 import { Role } from 'src/auth/enum';

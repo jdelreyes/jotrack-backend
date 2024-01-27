@@ -36,9 +36,9 @@ export class UserController {
   @HttpCode(HttpStatus.OK)
   public updateProfile(
     @GetUser('id') userId: number,
-    @Body() userRequestDto: UpdateUserRequestDto,
+    @Body() updateUserRequestDto: UpdateUserRequestDto,
   ): Promise<UserResponseDto> {
-    return this.userService.updateProfile(userId, userRequestDto);
+    return this.userService.updateProfile(userId, updateUserRequestDto);
   }
 
   @UseGuards(AuthGuard, RolesGuard)
@@ -64,8 +64,8 @@ export class UserController {
   @HttpCode(HttpStatus.NO_CONTENT)
   public changePassword(
     @GetUser('id') userId: number,
-    @Body() changePasswordDto: ChangePasswordRequestDto,
+    @Body() changePasswordRequestDto: ChangePasswordRequestDto,
   ): Promise<void> {
-    return this.userService.changePassword(userId, changePasswordDto);
+    return this.userService.changePassword(userId, changePasswordRequestDto);
   }
 }

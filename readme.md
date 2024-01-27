@@ -40,7 +40,7 @@
    npm run start:dev
    ```
 
-## Troubleshooting and Testing
+## Troubleshooting
 
 ### Seeding
 
@@ -53,13 +53,17 @@
 ### Restarting
 
 1. Stop the application.
-2. Restart database and re-apply migration.
+2. Rebuild the application.
+   ```shell
+   npm run build
+   ```
+3. Restart database and re-apply migration.
 
    ```shell
    npm run db:dev:restart
    ```
 
-3. Restart the application.
+4. Restart the application.
 
    ```shell
    npm run start:dev

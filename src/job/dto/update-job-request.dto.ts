@@ -1,4 +1,4 @@
-import { IsOptional, IsPostalCode, IsString } from 'class-validator';
+import { IsArray, IsOptional, IsPostalCode, IsString } from 'class-validator';
 
 export class UpdateJobRequestDto {
   @IsString()
@@ -10,9 +10,9 @@ export class UpdateJobRequestDto {
   @IsString()
   @IsOptional()
   position: string;
-  @IsString()
+  @IsArray()
   @IsOptional()
-  requirements: string;
+  requirements: string[];
 
   @IsString()
   @IsOptional()

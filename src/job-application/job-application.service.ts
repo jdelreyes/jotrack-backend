@@ -8,7 +8,10 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { JobStatus } from './enum';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { UserJobApplication } from '@prisma/client';
-import { JobApplicationResponseDto } from './dto/job-application-response.dto';
+import {
+  JobApplicationResponseDto,
+  UpdateJobApplicationRequestDto,
+} from './dto';
 
 @Injectable()
 export class JobApplicationService {
@@ -54,6 +57,36 @@ export class JobApplicationService {
       );
     } catch (error) {
       console.error(error);
+      throw new BadRequestException();
+    }
+  }
+
+  public async updateJobApplication(
+    updateJobApplicationRequestDto: UpdateJobApplicationRequestDto,
+    jobStatus: string,
+  ): Promise<JobApplicationResponseDto> {
+    try {
+      const userJobApplication: UserJobApplication =
+        await this.prismaService.userJobApplication.update({
+          where: {
+            userId_jobId: {
+              userId: updateJobApplicationRequestDto.userId,
+              jobId: updateJobApplicationRequestDto.jobId,
+            },
+          },
+          data: {
+            status: jobStatus,
+          },
+        });
+
+      return this.mapToJobApplicationResponseDto(userJobApplication);
+    } catch (error) {
+      console.error(error);
+      if (error instanceof PrismaClientKnownRequestError) {
+        if (error.code === 'P2025') {
+          throw new NotFoundException();
+        }
+      }
       throw new BadRequestException();
     }
   }

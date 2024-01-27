@@ -18,18 +18,18 @@ export class AuthService {
   ) {}
 
   public async login(
-    authLogInDto: LogInRequestDto,
+    logInRequestDto: LogInRequestDto,
   ): Promise<{ access_token: string }> {
     const user: User = await this.prismaService.user.findUnique({
       where: {
-        email: authLogInDto.email,
+        email: logInRequestDto.email,
       },
     });
     if (!user) throw new ForbiddenException('credentials are incorrect');
 
     const passwordMatches: boolean = await argon.verify(
       user.hash,
-      authLogInDto.password,
+      logInRequestDto.password,
     );
 
     if (!passwordMatches)
@@ -44,19 +44,19 @@ export class AuthService {
     return { access_token: token };
   }
 
-  public async signup(authSignUpDto: SignUpRequestDto): Promise<User> {
+  public async signup(signUpRequestDto: SignUpRequestDto): Promise<User> {
     try {
-      const hash: string = await argon.hash(authSignUpDto.password);
+      const hash: string = await argon.hash(signUpRequestDto.password);
 
-      delete authSignUpDto.password;
+      delete signUpRequestDto.password;
 
       const user: User = await this.prismaService.user.create({
         data: {
-          ...this.mapToUserRequestDto(authSignUpDto),
+          ...this.mapToUserRequestDto(signUpRequestDto),
           hash,
           address: {
             create: {
-              ...this.mapToAddressRequestDto(authSignUpDto),
+              ...this.mapToAddressRequestDto(signUpRequestDto),
             },
           },
         },
@@ -72,7 +72,7 @@ export class AuthService {
     }
   }
 
-  private mapToUserRequestDto(signUpDto: SignUpRequestDto): {
+  private mapToUserRequestDto(signUpRequestDto: SignUpRequestDto): {
     email: string;
     role: string;
     firstName: string;
@@ -80,15 +80,15 @@ export class AuthService {
     phoneNumber: number;
   } {
     return {
-      email: signUpDto.email,
-      role: signUpDto.role,
-      firstName: signUpDto.firstName,
-      lastName: signUpDto.lastName,
-      phoneNumber: signUpDto.phoneNumber,
+      email: signUpRequestDto.email,
+      role: signUpRequestDto.role,
+      firstName: signUpRequestDto.firstName,
+      lastName: signUpRequestDto.lastName,
+      phoneNumber: signUpRequestDto.phoneNumber,
     };
   }
 
-  private mapToAddressRequestDto(signUpDto: SignUpRequestDto): {
+  private mapToAddressRequestDto(signUpRequestDto: SignUpRequestDto): {
     postalCode: string;
     street: string;
     city: string;
@@ -96,11 +96,11 @@ export class AuthService {
     country: string;
   } {
     return {
-      postalCode: signUpDto.postalCode,
-      street: signUpDto.street,
-      city: signUpDto.city,
-      province: signUpDto.province,
-      country: signUpDto.country,
+      postalCode: signUpRequestDto.postalCode,
+      street: signUpRequestDto.street,
+      city: signUpRequestDto.city,
+      province: signUpRequestDto.province,
+      country: signUpRequestDto.country,
     };
   }
 }

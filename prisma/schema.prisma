@@ -29,6 +29,9 @@ model User {
   jobs    UserJobApplication[]
   address Address?
 
+  resume   Resume? @relation(fields: [resumeId], references: [id])
+  resumeId Int?
+
   @@map("users")
 }
 
@@ -39,7 +42,7 @@ model Job {
 
   description  String
   position     String
-  requirements String
+  requirements String[]
 
   companyName String
 
@@ -90,5 +93,15 @@ model Address {
 model Resume {
   id Int @id @default(autoincrement())
 
-  // todo
+  objective             String
+  experience            String[]
+  education             String[]
+  skills                String[]
+  additionalInformation String[]
+
+  // userId Int  @unique
+  // user   User @relation(fields: [userId], references: [id])
+  users User[]
+
+  @@map("resumes")
 }
