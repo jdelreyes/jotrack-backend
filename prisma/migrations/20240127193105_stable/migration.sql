@@ -1,6 +1,7 @@
 -- CreateTable
 CREATE TABLE "users" (
     "id" SERIAL NOT NULL,
+    "userName" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "hash" TEXT NOT NULL,
     "dateTimeCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -58,7 +59,7 @@ CREATE TABLE "addresses" (
 );
 
 -- CreateTable
-CREATE TABLE "Resume" (
+CREATE TABLE "resumes" (
     "id" SERIAL NOT NULL,
     "objective" TEXT NOT NULL,
     "experience" TEXT[],
@@ -66,7 +67,7 @@ CREATE TABLE "Resume" (
     "skills" TEXT[],
     "additionalInformation" TEXT[],
 
-    CONSTRAINT "Resume_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "resumes_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -76,7 +77,7 @@ CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 CREATE UNIQUE INDEX "addresses_userId_key" ON "addresses"("userId");
 
 -- AddForeignKey
-ALTER TABLE "users" ADD CONSTRAINT "users_resumeId_fkey" FOREIGN KEY ("resumeId") REFERENCES "Resume"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "users" ADD CONSTRAINT "users_resumeId_fkey" FOREIGN KEY ("resumeId") REFERENCES "resumes"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "userJobApplications" ADD CONSTRAINT "userJobApplications_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

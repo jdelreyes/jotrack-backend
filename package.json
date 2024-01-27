@@ -10,6 +10,7 @@
     "db:dev:restart": "npm run db:dev:rm && npm run db:dev:up && sleep 2 && npm run prisma:dev:deploy",
     "db:dev:rm": "docker compose rm postgresql-jotrack -s -f -v",
     "db:dev:seed": "ts-node prisma/seed.ts",
+    "db:dev:setup": "npm run db:dev:restart && npm run db:dev:seed && npx prisma studio",
     "db:dev:up": "docker compose up postgresql-jotrack -d",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",

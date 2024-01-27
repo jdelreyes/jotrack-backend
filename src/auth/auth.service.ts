@@ -25,15 +25,14 @@ export class AuthService {
         email: logInRequestDto.email,
       },
     });
-    if (!user) throw new ForbiddenException('credentials are incorrect');
+    if (!user) throw new ForbiddenException();
 
     const passwordMatches: boolean = await argon.verify(
       user.hash,
       logInRequestDto.password,
     );
 
-    if (!passwordMatches)
-      throw new ForbiddenException('credentials are incorrect');
+    if (!passwordMatches) throw new ForbiddenException();
 
     const jwtPayload: { sub: number; role: string } = {
       sub: user.id,
@@ -47,6 +46,7 @@ export class AuthService {
   public async signup(signUpRequestDto: SignUpRequestDto): Promise<User> {
     try {
       const hash: string = await argon.hash(signUpRequestDto.password);
+      const userName: string = signUpRequestDto.email.split('@')[0];
 
       delete signUpRequestDto.password;
 
@@ -54,6 +54,7 @@ export class AuthService {
         data: {
           ...this.mapToUserRequestDto(signUpRequestDto),
           hash,
+          userName,
           address: {
             create: {
               ...this.mapToAddressRequestDto(signUpRequestDto),
