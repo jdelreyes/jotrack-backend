@@ -4,7 +4,11 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { JobRequestDto, JobResponseDto } from './dto';
+import {
+  CreateJobRequestDto,
+  JobResponseDto,
+  UpdateJobRequestDto,
+} from './dto';
 import { Job } from '@prisma/client';
 
 @Injectable()
@@ -26,12 +30,12 @@ export class JobService {
   }
 
   public async createJob(
-    jobRequestDto: JobRequestDto,
+    createJobRequestDto: CreateJobRequestDto,
   ): Promise<JobResponseDto> {
     try {
       const job: Job = await this.prismaService.job.create({
         data: {
-          ...jobRequestDto,
+          ...createJobRequestDto,
         },
       });
 
@@ -44,7 +48,7 @@ export class JobService {
 
   public async updateJob(
     jobId: number,
-    jobRequestDto: JobRequestDto,
+    updateJobRequestDto: UpdateJobRequestDto,
   ): Promise<JobResponseDto> {
     try {
       const job: Job = await this.prismaService.job.update({
@@ -52,7 +56,7 @@ export class JobService {
           id: jobId,
         },
         data: {
-          ...jobRequestDto,
+          ...updateJobRequestDto,
         },
       });
 

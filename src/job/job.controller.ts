@@ -13,7 +13,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { JobService } from './job.service';
-import { JobRequestDto, JobResponseDto } from './dto';
+import { CreateJobRequestDto, JobResponseDto, UpdateJobRequestDto } from './dto';
 import { AuthGuard, RolesGuard } from 'src/auth/guard';
 import { Roles } from 'src/auth/decorator';
 import { Role } from 'src/auth/enum';
@@ -37,9 +37,9 @@ export class JobController {
   @Roles(Role.ADMIN)
   @HttpCode(HttpStatus.CREATED)
   public createJob(
-    @Body() jobResponseDto: JobRequestDto,
+    @Body() createJobRequestDto: CreateJobRequestDto,
   ): Promise<JobResponseDto> {
-    return this.jobService.createJob(jobResponseDto);
+    return this.jobService.createJob(createJobRequestDto);
   }
 
   @Put('/:jobId')
@@ -48,9 +48,9 @@ export class JobController {
   @HttpCode(HttpStatus.OK)
   public updateJob(
     @Param('jobId', ParseIntPipe) jobId: number,
-    @Body() jobRequestDto: JobRequestDto,
+    @Body() updateJobRequestDto: UpdateJobRequestDto,
   ): Promise<JobResponseDto> {
-    return this.jobService.updateJob(jobId, jobRequestDto);
+    return this.jobService.updateJob(jobId, updateJobRequestDto);
   }
 
   @Delete('/:jobId')

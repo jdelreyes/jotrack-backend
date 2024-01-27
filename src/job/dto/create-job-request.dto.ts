@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsPostalCode, IsString } from 'class-validator';
 
-export class JobRequestDto {
+export class CreateJobRequestDto {
   @IsString()
   @IsNotEmpty()
   title: string;
