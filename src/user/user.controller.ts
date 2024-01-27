@@ -6,6 +6,7 @@ import {
   HttpCode,
   HttpStatus,
   Param,
+  ParseIntPipe,
   Put,
   UseGuards,
 } from '@nestjs/common';
@@ -13,7 +14,11 @@ import { UserService } from './user.service';
 import { AuthGuard, JwtGuard, RolesGuard } from 'src/auth/guard';
 import { Role } from 'src/auth/enum';
 import { User } from '@prisma/client';
-import { ChangePasswordDto, UserRequestDto, UserResponseDto } from './dto';
+import {
+  ChangePasswordRequestDto,
+  UpdateUserRequestDto,
+  UserResponseDto,
+} from './dto';
 import { GetUser, Roles } from 'src/auth/decorator';
 
 @Controller('/api/users')
@@ -26,42 +31,42 @@ export class UserController {
     return this.userService.retrieveUsers();
   }
 
-  @UseGuards(AuthGuard, RolesGuard)
-  @Roles(Role.ADMIN, Role.USER)
-  @Put('/:userId')
+  @UseGuards(AuthGuard, JwtGuard)
+  @Put('/update-profile')
   @HttpCode(HttpStatus.OK)
-  public updateUser(
-    @Param() params: { userId: string },
-    @Body() userRequestDto: UserRequestDto,
+  public updateProfile(
+    @GetUser('id') userId: number,
+    @Body() userRequestDto: UpdateUserRequestDto,
   ): Promise<UserResponseDto> {
-    return this.userService.updateUser(
-      parseInt(params.userId, 10),
-      userRequestDto,
-    );
+    return this.userService.updateProfile(userId, userRequestDto);
   }
 
   @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.ADMIN)
   @Delete('/:userId')
   @HttpCode(HttpStatus.NO_CONTENT)
-  public removeUser(@Param() params: { userId: string }): Promise<void> {
-    return this.userService.removeUser(parseInt(params.userId, 10));
+  public removeUser(
+    @Param('userId', ParseIntPipe) userId: number,
+  ): Promise<void> {
+    return this.userService.removeUser(userId);
   }
 
   @Get('/:userId')
   @HttpCode(HttpStatus.OK)
-  public retrieveUser(@Param() params: { userId: string }): Promise<User> {
-    return this.userService.retrieveUser(parseInt(params.userId, 10));
+  public retrieveUser(
+    @Param('userId', ParseIntPipe) userId: number,
+  ): Promise<User> {
+    return this.userService.retrieveUser(userId);
   }
 
-  @UseGuards(JwtGuard)
+  @UseGuards(AuthGuard, JwtGuard)
   // todo: fix this
-  // @Put('/change-pwd')
-  @Put()
+  @Put('/change-password')
+  // @Put()
   @HttpCode(HttpStatus.NO_CONTENT)
   public changePassword(
     @GetUser('id') userId: number,
-    @Body() changePasswordDto: ChangePasswordDto,
+    @Body() changePasswordDto: ChangePasswordRequestDto,
   ): Promise<void> {
     return this.userService.changePassword(userId, changePasswordDto);
   }

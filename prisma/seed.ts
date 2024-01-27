@@ -46,14 +46,10 @@ const fakerJob = (): any => ({
   companyName: faker.company.name(),
   position: faker.person.jobTitle(),
   requirements: 'requirements',
-  postalCode: 'A1A 1A1',
-  street: faker.location.street(),
-  city: 'Toronto',
-  province: 'ON',
-  country: 'CA',
+  ...fakerAddress(),
 });
 
-async function main() {
+async function main(): Promise<void> {
   const fakerRounds: number = 10;
   dotenv.config();
 

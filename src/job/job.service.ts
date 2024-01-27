@@ -25,9 +25,11 @@ export class JobService {
     ).map((job: Job) => this.mapToJobResponseDto(job));
   }
 
-  public async createJob(jobRequestDto: JobRequestDto) {
+  public async createJob(
+    jobRequestDto: JobRequestDto,
+  ): Promise<JobResponseDto> {
     try {
-      const job = await this.prismaService.job.create({
+      const job: Job = await this.prismaService.job.create({
         data: {
           ...jobRequestDto,
         },
@@ -45,7 +47,7 @@ export class JobService {
     jobRequestDto: JobRequestDto,
   ): Promise<JobResponseDto> {
     try {
-      const job = await this.prismaService.job.update({
+      const job: Job = await this.prismaService.job.update({
         where: {
           id: jobId,
         },
@@ -60,7 +62,7 @@ export class JobService {
     }
   }
 
-  public async removeJob(jobId: number) {
+  public async removeJob(jobId: number): Promise<void> {
     try {
       await this.prismaService.job.delete({
         where: {

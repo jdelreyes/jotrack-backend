@@ -49,7 +49,7 @@ export class JobController {
   public updateJob(
     @Param('jobId', ParseIntPipe) jobId: number,
     @Body() jobRequestDto: JobRequestDto,
-  ) {
+  ): Promise<JobResponseDto> {
     return this.jobService.updateJob(jobId, jobRequestDto);
   }
 
