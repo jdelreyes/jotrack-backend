@@ -3,7 +3,6 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { User } from '@prisma/client';
 import * as argon from 'argon2';
 
 import { PrismaService } from '../prisma/prisma.service';
@@ -63,13 +62,37 @@ export class UserService {
     }
   }
 
-  public async retrieveUser(userId: number): Promise<User> {
+  public async retrieveUser(userId: number): Promise<UserResponseDto> {
     try {
-      return await this.prismaService.user.findUnique({
-        where: { id: userId },
-      });
+      const userWithAddressDto: UserWithAddressDto =
+        await this.prismaService.user.findUnique({
+          where: { id: userId },
+          include: { address: true },
+        });
+
+      return this.mapToUserResponseDto(userWithAddressDto);
     } catch (error) {
       throw new NotFoundException();
+    }
+  }
+
+  // todo: user in controller
+  public async retrieveUserByUserName(
+    userName: string,
+  ): Promise<UserResponseDto[]> {
+    try {
+      const userWithAddressDtos: UserWithAddressDto[] =
+        await this.prismaService.user.findMany({
+          where: { userName: { startsWith: userName } },
+          include: { address: true },
+        });
+
+      return userWithAddressDtos.map((userWithAddressDto: UserWithAddressDto) =>
+        this.mapToUserResponseDto(userWithAddressDto),
+      );
+    } catch (error) {
+      console.error();
+      throw new BadRequestException();
     }
   }
 
@@ -95,6 +118,7 @@ export class UserService {
     const userResponseDto: UserResponseDto = new UserResponseDto();
 
     userResponseDto.id = userWithAddressDto.id;
+    userResponseDto.userName = userWithAddressDto.userName;
     userResponseDto.email = userWithAddressDto.email;
     userResponseDto.firstName = userWithAddressDto.firstName;
     userResponseDto.lastName = userWithAddressDto.lastName;

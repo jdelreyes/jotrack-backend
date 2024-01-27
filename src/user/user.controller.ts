@@ -13,7 +13,6 @@ import {
 import { UserService } from './user.service';
 import { AuthGuard, JwtGuard, RolesGuard } from 'src/auth/guard';
 import { Role } from 'src/auth/enum';
-import { User } from '@prisma/client';
 import {
   ChangePasswordRequestDto,
   UpdateUserRequestDto,
@@ -55,7 +54,7 @@ export class UserController {
   @HttpCode(HttpStatus.OK)
   public retrieveUser(
     @Param('userId', ParseIntPipe) userId: number,
-  ): Promise<User> {
+  ): Promise<UserResponseDto> {
     return this.userService.retrieveUser(userId);
   }
 
