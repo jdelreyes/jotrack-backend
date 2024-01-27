@@ -106,13 +106,14 @@
 
 ### Jobs - `/api/jobs`
 
-| Endpoint           | Method   | Description    | Role Access   |
-|--------------------|----------|----------------|---------------|
-| `?filter=dateTime` | `GET`    | Retrieve jobs  | `V`, `U`, `A` |
-| N/A                | `POST`   | Create a job   | `A`           |
-| `/{{jobId}}`       | `PUT`    | Update a job   | `A`           |
-| `/{{jobId}}`       | `DELETE` | Remove a job   | `A`           |
-| `/{{jobId}}`       | `GET`    | Retrieve a job | `V`, `U`, `A` |
+| Endpoint            | Method   | Description                      | Role Access   |
+|---------------------|----------|----------------------------------|---------------|
+| `?filter=dateTime`  | `GET`    | Retrieve jobs                    | `V`, `U`, `A` |
+| N/A                 | `POST`   | Create a job                     | `A`           |
+| `/{{jobId}}`        | `PUT`    | Update a job                     | `A`           |
+| `/{{jobId}}`        | `DELETE` | Remove a job                     | `A`           |
+| `visitor/{{jobId}}` | `GET`    | Retrieve a job                   | `V`, `U`, `A` |
+| `/{{jobId}}`        | `GET`    | Retrieve a job and emit an event | `U`, `A`      |
 
 ### Job Applications - `/api/job-applications`
 

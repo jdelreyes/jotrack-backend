@@ -77,4 +77,17 @@ export class JobApplicationController {
       JobStatus.REJECTED,
     );
   }
+
+  @UseGuards(AuthGuard, RolesGuard)
+  @Put('/pending')
+  @HttpCode(HttpStatus.OK)
+  @Roles(Role.ADMIN)
+  public pendingJobApplication(
+    @Body() updateJobApplicationRequestDto: UpdateJobApplicationRequestDto,
+  ): Promise<JobApplicationResponseDto> {
+    return this.jobApplicationService.updateJobApplication(
+      updateJobApplicationRequestDto,
+      JobStatus.PENDING,
+    );
+  }
 }

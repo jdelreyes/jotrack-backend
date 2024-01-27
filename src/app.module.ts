@@ -6,15 +6,27 @@ import { ConfigModule } from '@nestjs/config';
 import { PrismaService } from './prisma/prisma.service';
 import { PrismaModule } from './prisma/prisma.module';
 import { JobApplicationModule } from './job-application/job-application.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
+import { UserActivityModule } from './user-activity/user-activity.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
+    EventEmitterModule.forRoot({
+      wildcard: false,
+      delimiter: '.',
+      newListener: false,
+      removeListener: false,
+      maxListeners: 10,
+      verboseMemoryLeak: false,
+      ignoreErrors: false,
+    }),
     AuthModule,
     UserModule,
     JobModule,
     PrismaModule,
     JobApplicationModule,
+    UserActivityModule,
   ],
   providers: [PrismaService],
   controllers: [],
