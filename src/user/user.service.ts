@@ -14,7 +14,7 @@ export class UserService {
   constructor(private prismaService: PrismaService) {}
 
   public async retrieveUsers(): Promise<UserResponseDto[]> {
-    return (await this.prismaService.user.findMany()).map((user) =>
+    return (await this.prismaService.user.findMany()).map((user: User) =>
       this.mapToUserResponseDto(user),
     );
   }
@@ -24,7 +24,7 @@ export class UserService {
     userRequestDto: UserRequestDto,
   ): Promise<UserResponseDto> {
     try {
-      const user = await this.prismaService.user.update({
+      const user: User = await this.prismaService.user.update({
         where: {
           id: userId,
         },
@@ -45,26 +45,24 @@ export class UserService {
         },
       });
     } catch (error) {
-      throw new NotFoundException('user does not exist');
+      throw new NotFoundException();
     }
   }
 
   public async retrieveUser(userId: number): Promise<User> {
     try {
-      const user = await this.prismaService.user.findUnique({
+      return await this.prismaService.user.findUnique({
         where: { id: userId },
       });
-
-      return user;
     } catch (error) {
-      throw new NotFoundException('user does not exist');
+      throw new NotFoundException();
     }
   }
 
   public async changePassword(
     userId: number,
     changePasswordDto: ChangePasswordDto,
-  ) {
+  ): Promise<void> {
     try {
       const hash: string = await argon.hash(changePasswordDto.password);
 
@@ -77,7 +75,7 @@ export class UserService {
     }
   }
 
-  private mapToUserResponseDto(user: User) {
+  private mapToUserResponseDto(user: User): UserResponseDto {
     const userResponseDto: UserResponseDto = new UserResponseDto();
 
     userResponseDto.id = user.id;

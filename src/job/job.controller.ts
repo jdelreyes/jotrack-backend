@@ -1,16 +1,16 @@
 import {
+  Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
-  Post,
-  Body,
-  Put,
-  Delete,
-  Param,
-  UseGuards,
   HttpStatus,
+  Param,
   ParseIntPipe,
+  Post,
+  Put,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { JobService } from './job.service';
 import { JobRequestDto, JobResponseDto } from './dto';
@@ -24,10 +24,11 @@ export class JobController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  public retrieveJobs(@Query('filter') filter: string) {
-    if (filter === 'dateTime') {
+  public retrieveJobs(
+    @Query('filter') filter: string,
+  ): Promise<JobResponseDto[]> {
+    if (filter === 'dateTime')
       return this.jobService.retrieveJobsByDateTimePosted();
-    }
     return this.jobService.retrieveJobs();
   }
 
@@ -56,13 +57,15 @@ export class JobController {
   @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.ADMIN)
   @HttpCode(HttpStatus.NO_CONTENT)
-  public deleteJob(@Param('jobId', ParseIntPipe) jobId: number) {
+  public deleteJob(@Param('jobId', ParseIntPipe) jobId: number): Promise<void> {
     return this.jobService.removeJob(jobId);
   }
 
   @Get('/:jobId')
   @HttpCode(HttpStatus.OK)
-  public retrieveUser(@Param('jobId', ParseIntPipe) jobId: number) {
+  public retrieveUser(
+    @Param('jobId', ParseIntPipe) jobId: number,
+  ): Promise<JobResponseDto> {
     return this.jobService.retrieveJob(jobId);
   }
 }

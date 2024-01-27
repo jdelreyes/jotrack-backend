@@ -56,13 +56,13 @@ export class UserController {
 
   @UseGuards(JwtGuard)
   // todo: fix this
-  // @Put('/change-password')
+  // @Put('/change-pwd')
   @Put()
   @HttpCode(HttpStatus.NO_CONTENT)
   public changePassword(
     @GetUser('id') userId: number,
     @Body() changePasswordDto: ChangePasswordDto,
-  ) {
+  ): Promise<void> {
     return this.userService.changePassword(userId, changePasswordDto);
   }
 }

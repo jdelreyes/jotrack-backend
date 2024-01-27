@@ -6,6 +6,7 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Put,
   UseGuards,
 } from '@nestjs/common';
 import { GetUser, Roles } from 'src/auth/decorator';
@@ -40,5 +41,29 @@ export class JobApplicationController {
     @Param('jobId', ParseIntPipe) jobId: number,
   ) {
     return this.jobApplicationService.applyJob(userId, jobId);
+  }
+
+  @UseGuards(AuthGuard, RolesGuard, JwtGuard)
+  @Put('/reject')
+  @HttpCode(HttpStatus.OK)
+  @Roles(Role.ADMIN)
+  public rejectJob(
+    @GetUser('id') adminId: number,
+    @Param('jobId', ParseIntPipe) jobId: number,
+    @Param('userId', ParseIntPipe) userId: number,
+  ) {
+    return `reject ${adminId} ${jobId} ${userId}`;
+  }
+
+  @UseGuards(AuthGuard, RolesGuard, JwtGuard)
+  @Put('/reject')
+  @HttpCode(HttpStatus.OK)
+  @Roles(Role.ADMIN)
+  public acceptJob(
+    @GetUser('id') adminId: number,
+    @Param('jobId', ParseIntPipe) jobId: number,
+    @Param('userId', ParseIntPipe) userId: number,
+  ) {
+    return `reject ${adminId} ${jobId} ${userId}`;
   }
 }

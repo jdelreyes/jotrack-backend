@@ -1,13 +1,14 @@
 import {
-  Injectable,
   CanActivate,
   ExecutionContext,
+  Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Role } from '../enum';
-import { ROLES_KEY } from '../decorator/roles.decorator';
+import { ROLES_KEY } from '../decorator';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
@@ -30,20 +31,21 @@ export class RolesGuard implements CanActivate {
     const request = executionContext.switchToHttp().getRequest();
     const requestUserRole = request['user']?.role;
 
-    const userRole = await this.verifyUserRole(request);
+    const userRole: string = await this.verifyUserRole(request);
     if (!userRole && userRole !== requestUserRole)
       throw new UnauthorizedException();
-    return requiredRoles.every((role) => requestUserRole?.includes(role));
+    return requiredRoles.every((role: Role) => requestUserRole?.includes(role));
   }
 
   private async verifyUserRole(request: any): Promise<string> {
     try {
-      const user = await this.prismaService.user.findUnique({
+      const user: User = await this.prismaService.user.findUnique({
         where: { id: request['user'].sub },
       });
 
       return user.role;
     } catch (error) {
+      console.error(error);
       throw new UnauthorizedException();
     }
   }
