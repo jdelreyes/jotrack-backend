@@ -60,9 +60,7 @@ export class UserController {
   }
 
   @UseGuards(AuthGuard, JwtGuard)
-  // todo: fix this
   @Put('/change-password')
-  // @Put()
   @HttpCode(HttpStatus.NO_CONTENT)
   public changePassword(
     @GetUser('id') userId: number,
