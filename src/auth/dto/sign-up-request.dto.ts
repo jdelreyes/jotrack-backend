@@ -3,6 +3,7 @@ import {
   IsEnum,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsPostalCode,
   IsString,
   MinLength,
@@ -20,6 +21,7 @@ export class SignUpRequestDto {
   password: string;
 
   @IsString()
+  @IsOptional()
   @IsEnum(Role)
   role?: string;
 
