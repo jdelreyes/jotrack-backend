@@ -22,7 +22,7 @@ import { AuthGuard, JwtGuard, RolesGuard } from 'src/auth/guard';
 import { GetUser, Roles } from 'src/auth/decorator';
 import { Role } from 'src/auth/enum';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { JobVisitedEvent } from './event';
+import { JobSearchedEvent, JobVisitedEvent } from './event';
 
 @Controller('/api/jobs')
 export class JobController {
@@ -35,10 +35,29 @@ export class JobController {
   @HttpCode(HttpStatus.OK)
   public retrieveJobs(
     @Query('filter') filter: string,
+    @Query('title') title: string,
   ): Promise<JobResponseDto[]> {
     if (filter === 'dateTime')
       return this.jobService.retrieveJobsByDateTimePosted();
+    if (title) {
+      return this.jobService.retrieveJobsByJobTitle(title);
+    }
     return this.jobService.retrieveJobs();
+  }
+
+  @Get('/event')
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(AuthGuard, RolesGuard, JwtGuard)
+  @Roles(Role.USER)
+  public retrieveJobsByJobTitle(
+    @GetUser('id') userId: number,
+    @Query('title') title: string,
+  ): Promise<JobResponseDto[]> {
+    this.eventEmitter2.emit(
+      'job.searched',
+      new JobSearchedEvent(userId, title),
+    );
+    return this.jobService.retrieveJobsByJobTitle(title);
   }
 
   @Post()
@@ -70,9 +89,9 @@ export class JobController {
     return this.jobService.removeJob(jobId);
   }
 
-  // todo
-  @Get('/:jobId')
-  @UseGuards(JwtGuard)
+  @Get('event/:jobId')
+  @UseGuards(AuthGuard, RolesGuard, JwtGuard)
+  @Roles(Role.USER)
   @HttpCode(HttpStatus.OK)
   public retrieveUserEvent(
     @GetUser('id') userId: number,
@@ -82,7 +101,7 @@ export class JobController {
     return this.jobService.retrieveJob(jobId);
   }
 
-  @Get('visitor/:jobId')
+  @Get('/:jobId')
   @HttpCode(HttpStatus.OK)
   public retrieveUser(
     @Param('jobId', ParseIntPipe) jobId: number,

@@ -29,6 +29,18 @@ export class JobService {
     ).map((job: Job) => this.mapToJobResponseDto(job));
   }
 
+  public async retrieveJobsByJobTitle(
+    title: string,
+  ): Promise<JobResponseDto[]> {
+    const jobs: Job[] = await this.prismaService.job.findMany({
+      where: {
+        title: { startsWith: title, mode: 'insensitive' },
+      },
+    });
+
+    return jobs.map((job: Job) => this.mapToJobResponseDto(job));
+  }
+
   public async createJob(
     createJobRequestDto: CreateJobRequestDto,
   ): Promise<JobResponseDto> {
