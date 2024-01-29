@@ -76,7 +76,7 @@ export class UserService {
     }
   }
 
-  // todo: user in controller
+  // todo: use in controller
   public async retrieveUserByUserName(
     userName: string,
   ): Promise<UserResponseDto[]> {

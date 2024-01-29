@@ -8,11 +8,17 @@ import { UserActivity } from '@prisma/client';
 export class UserActivityService {
   constructor(private prismaService: PrismaService) {}
 
+  public async retrieveUserActivities(userId: number): Promise<UserActivity[]> {
+    return await this.prismaService.userActivity.findMany({
+      where: { userId: userId },
+    });
+  }
+
   @OnEvent('job.visited', { async: true })
   private async handleJobVisitedEvent(
     jobVisitedEvent: JobVisitedEvent,
   ): Promise<UserActivity> {
-    const jobsVisited: { jobsVisited: number[] } =
+    const userActivityJobsVisited: { jobsVisited: number[] } =
       await this.prismaService.userActivity.upsert({
         where: { userId: jobVisitedEvent.userId },
         create: { userId: jobVisitedEvent.userId },
@@ -25,7 +31,10 @@ export class UserActivityService {
         where: { userId: jobVisitedEvent.userId },
         data: {
           jobsVisited: {
-            set: [...(jobsVisited?.jobsVisited ?? []), jobVisitedEvent.jobId],
+            set: [
+              ...(userActivityJobsVisited?.jobsVisited ?? []),
+              jobVisitedEvent.jobId,
+            ],
           },
         },
       });
