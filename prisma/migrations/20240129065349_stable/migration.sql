@@ -60,7 +60,6 @@ CREATE TABLE "addresses" (
 -- CreateTable
 CREATE TABLE "userActivities" (
     "userId" INTEGER NOT NULL,
-    "jobApplications" INTEGER[],
     "searchHistory" TEXT[],
     "jobsVisited" INTEGER[],
     "dateTimeEmitted" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,

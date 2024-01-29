@@ -106,14 +106,15 @@
 
 ### Jobs - `/api/jobs`
 
-| Endpoint            | Method   | Description                      | Role Access   |
-|---------------------|----------|----------------------------------|---------------|
-| `?filter=dateTime`  | `GET`    | Retrieve jobs                    | `V`, `U`, `A` |
-| N/A                 | `POST`   | Create a job                     | `A`           |
-| `/{{jobId}}`        | `PUT`    | Update a job                     | `A`           |
-| `/{{jobId}}`        | `DELETE` | Remove a job                     | `A`           |
-| `visitor/{{jobId}}` | `GET`    | Retrieve a job                   | `V`, `U`, `A` |
-| `/{{jobId}}`        | `GET`    | Retrieve a job and emit an event | `U`, `A`      |
+| Endpoint                           | Method   | Description                      | Role Access   |
+|------------------------------------|----------|----------------------------------|---------------|
+| `?filter=dateTime&title={{title}}` | `GET`    | Retrieve jobs                    | `V`, `U`, `A` |
+| `/event/?title={{title}}`          | `GET`    | Retrieve jobs and emit an event  | `V`, `U`, `A` |
+| N/A                                | `POST`   | Create a job                     | `A`           |
+| `/{{jobId}}`                       | `PUT`    | Update a job                     | `A`           |
+| `/{{jobId}}`                       | `DELETE` | Remove a job                     | `A`           |
+| `/{{jobId}}`                       | `GET`    | Retrieve a job                   | `V`, `U`, `A` |
+| `/event/{{jobId}}`                 | `GET`    | Retrieve a job and emit an event | `U`           |
 
 ### Job Applications - `/api/job-applications`
 
@@ -122,8 +123,14 @@
 | N/A             | `GET`  | Retrieve job applications     | `V`, `U`, `A` |
 | `/applications` | `GET`  | Retrieve own job applications | `U`           |
 | `/apply`        | `POST` | Apply for a job               | `U`           |
-| `/accept`       | `POST` | Accept user job application   | `A`           |
-| `/reject`       | `POST` | Reject user job application   | `A`           |
+| `/accept`       | `PUT`  | Accept user job application   | `A`           |
+| `/reject`       | `PUT`  | Reject user job application   | `A`           |
+
+### User Activities - `api/user-activies`
+
+| Endpoint   | Method | Description              | Role Access |
+|------------|--------|--------------------------|-------------|
+| `/:userId` | `GET`  | Retrieve User Activities | `A`         |
 
 ### Non-Functional Endpoints
 
