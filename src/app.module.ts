@@ -8,6 +8,7 @@ import { PrismaModule } from './prisma/prisma.module';
 import { JobApplicationModule } from './job-application/job-application.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { UserActivityModule } from './user-activity/user-activity.module';
+import { ResumeModule } from './resume/resume.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { UserActivityModule } from './user-activity/user-activity.module';
     PrismaModule,
     JobApplicationModule,
     UserActivityModule,
+    ResumeModule,
   ],
   providers: [PrismaService],
   controllers: [],
