@@ -4,7 +4,6 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import * as argon from 'argon2';
-
 import { PrismaService } from '../prisma/prisma.service';
 import {
   ChangePasswordRequestDto,
