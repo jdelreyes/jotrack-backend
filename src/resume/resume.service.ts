@@ -12,7 +12,7 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 export class ResumeService {
   public constructor(private readonly prismaService: PrismaService) {}
 
-  public async uploadFile(
+  public async uploadResume(
     userId: number,
     resume: Express.Multer.File,
   ): Promise<Resume> {
@@ -48,5 +48,11 @@ export class ResumeService {
       }
       throw new BadRequestException();
     }
+  }
+
+  public async retrieveOwnResume(userId: number): Promise<Resume> {
+    return await this.prismaService.resume.findUnique({
+      where: { userId: userId },
+    });
   }
 }

@@ -1,5 +1,6 @@
 import {
   Controller,
+  Get,
   HttpCode,
   HttpStatus,
   ParseFilePipeBuilder,
@@ -18,12 +19,20 @@ import { Role } from '../auth/enum';
 export class ResumeController {
   constructor(private readonly resumeService: ResumeService) {}
 
+  @Get()
+  @UseGuards(AuthGuard, RolesGuard, JwtGuard)
+  @Roles(Role.USER)
+  @HttpCode(HttpStatus.OK)
+  public retrieveResume(@GetUser('id') userId: number) {
+    return this.resumeService.retrieveOwnResume(userId);
+  }
+
   @Post()
   @UseGuards(AuthGuard, RolesGuard, JwtGuard)
   @Roles(Role.USER)
   @HttpCode(HttpStatus.CREATED)
   @UseInterceptors(FileInterceptor('resume'))
-  public uploadFile(
+  public uploadResume(
     @GetUser('id') userId: number,
     @UploadedFile(
       new ParseFilePipeBuilder()
@@ -39,6 +48,6 @@ export class ResumeController {
     )
     resume: Express.Multer.File,
   ) {
-    return this.resumeService.uploadFile(userId, resume);
+    return this.resumeService.uploadResume(userId, resume);
   }
 }
