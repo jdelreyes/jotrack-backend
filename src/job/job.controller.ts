@@ -23,6 +23,7 @@ import { GetUser, Roles } from 'src/auth/decorator';
 import { Role } from 'src/auth/enum';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { JobSearchedEvent, JobVisitedEvent } from './event';
+import { ApiResponse } from '@nestjs/swagger';
 
 @Controller('/api/jobs')
 export class JobController {
@@ -31,6 +32,7 @@ export class JobController {
     private eventEmitter2: EventEmitter2,
   ) {}
 
+  @ApiResponse({ description: 'retrieves jobs' })
   @Get()
   @HttpCode(HttpStatus.OK)
   public retrieveJobs(
@@ -45,6 +47,7 @@ export class JobController {
     return this.jobService.retrieveJobs();
   }
 
+  @ApiResponse({ description: 'retrieve jobs by title and emits an event' })
   @Get('/event')
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthGuard, RolesGuard, JwtGuard)
@@ -60,6 +63,7 @@ export class JobController {
     return this.jobService.retrieveJobsByJobTitle(title);
   }
 
+  @ApiResponse({ description: 'creates a job' })
   @Post()
   @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.ADMIN)
@@ -70,6 +74,7 @@ export class JobController {
     return this.jobService.createJob(createJobRequestDto);
   }
 
+  @ApiResponse({ description: 'updates a job' })
   @Put('/:jobId')
   @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.ADMIN)
@@ -81,6 +86,7 @@ export class JobController {
     return this.jobService.updateJob(jobId, updateJobRequestDto);
   }
 
+  @ApiResponse({ description: 'deletes a job' })
   @Delete('/:jobId')
   @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.ADMIN)
@@ -89,11 +95,12 @@ export class JobController {
     return this.jobService.removeJob(jobId);
   }
 
+  @ApiResponse({ description: 'retrieves a job and emits an event' })
   @Get('event/:jobId')
   @UseGuards(AuthGuard, RolesGuard, JwtGuard)
   @Roles(Role.USER)
   @HttpCode(HttpStatus.OK)
-  public retrieveUserEvent(
+  public retrieveJobEvent(
     @GetUser('id') userId: number,
     @Param('jobId', ParseIntPipe) jobId: number,
   ): Promise<JobResponseDto> {
@@ -101,9 +108,10 @@ export class JobController {
     return this.jobService.retrieveJob(jobId);
   }
 
+  @ApiResponse({ description: 'retrieves a job' })
   @Get('/:jobId')
   @HttpCode(HttpStatus.OK)
-  public retrieveUser(
+  public retrieveJob(
     @Param('jobId', ParseIntPipe) jobId: number,
   ): Promise<JobResponseDto> {
     return this.jobService.retrieveJob(jobId);

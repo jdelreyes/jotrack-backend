@@ -24,7 +24,7 @@ export class UserService {
     );
   }
 
-  public async updateProfile(
+  public async updateOwnCredentials(
     userId: number,
     updateUserRequestDto: UpdateUserRequestDto,
   ): Promise<UserResponseDto> {
@@ -95,7 +95,7 @@ export class UserService {
     }
   }
 
-  public async changePassword(
+  public async changeOwnPassword(
     userId: number,
     changePasswordRequestDto: ChangePasswordRequestDto,
   ): Promise<void> {
