@@ -25,7 +25,7 @@ export class ResumeController {
   @UseGuards(AuthGuard, RolesGuard, JwtGuard)
   @Roles(Role.USER)
   @HttpCode(HttpStatus.OK)
-  public retrieveResume(@GetUser('id') userId: number) {
+  public retrieveOwnResume(@GetUser('id') userId: number) {
     return this.resumeService.retrieveOwnResume(userId);
   }
 
