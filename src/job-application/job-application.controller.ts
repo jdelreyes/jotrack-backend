@@ -20,17 +20,20 @@ import {
   UpdateJobApplicationRequestDto,
 } from './dto';
 import { JobStatus } from './enum';
+import { ApiResponse } from '@nestjs/swagger';
 
 @Controller('/api/job-applications')
 export class JobApplicationController {
   constructor(private jobApplicationService: JobApplicationService) {}
 
+  @ApiResponse({ description: 'retrieves job applications' })
   @Get()
   @HttpCode(HttpStatus.OK)
   public retrieveJobApplications(): Promise<JobApplicationResponseDto[]> {
     return this.jobApplicationService.retrieveJobApplications();
   }
 
+  @ApiResponse({ description: 'retrieves own job applications' })
   @UseGuards(AuthGuard, RolesGuard, JwtGuard)
   @Get('/applications')
   @HttpCode(HttpStatus.OK)
@@ -41,6 +44,7 @@ export class JobApplicationController {
     return this.jobApplicationService.retrieveOwnJobApplications(userId);
   }
 
+  @ApiResponse({ description: 'applies to a job' })
   @UseGuards(AuthGuard, RolesGuard, JwtGuard)
   @Post('/:jobId')
   @HttpCode(HttpStatus.CREATED)
@@ -52,6 +56,7 @@ export class JobApplicationController {
     return this.jobApplicationService.applyJob(userId, jobId);
   }
 
+  @ApiResponse({ description: 'accepts a job application' })
   @UseGuards(AuthGuard, RolesGuard)
   @Put('/accept')
   @HttpCode(HttpStatus.OK)
@@ -65,6 +70,7 @@ export class JobApplicationController {
     );
   }
 
+  @ApiResponse({ description: 'rejects a job application' })
   @UseGuards(AuthGuard, RolesGuard)
   @Put('/reject')
   @HttpCode(HttpStatus.OK)
