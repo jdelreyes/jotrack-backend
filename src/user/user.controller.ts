@@ -33,11 +33,11 @@ export class UserController {
   @UseGuards(AuthGuard, JwtGuard)
   @Put('/update-profile')
   @HttpCode(HttpStatus.OK)
-  public updateProfile(
+  public updateOwnCredentials(
     @GetUser('id') userId: number,
     @Body() updateUserRequestDto: UpdateUserRequestDto,
   ): Promise<UserResponseDto> {
-    return this.userService.updateProfile(userId, updateUserRequestDto);
+    return this.userService.updateOwnCredentials(userId, updateUserRequestDto);
   }
 
   @UseGuards(AuthGuard, RolesGuard)
@@ -61,10 +61,10 @@ export class UserController {
   @UseGuards(AuthGuard, JwtGuard)
   @Put('/change-password')
   @HttpCode(HttpStatus.NO_CONTENT)
-  public changePassword(
+  public changeOwnPassword(
     @GetUser('id') userId: number,
     @Body() changePasswordRequestDto: ChangePasswordRequestDto,
   ): Promise<void> {
-    return this.userService.changePassword(userId, changePasswordRequestDto);
+    return this.userService.changeOwnPassword(userId, changePasswordRequestDto);
   }
 }

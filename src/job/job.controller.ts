@@ -93,7 +93,7 @@ export class JobController {
   @UseGuards(AuthGuard, RolesGuard, JwtGuard)
   @Roles(Role.USER)
   @HttpCode(HttpStatus.OK)
-  public retrieveUserEvent(
+  public retrieveJobEvent(
     @GetUser('id') userId: number,
     @Param('jobId', ParseIntPipe) jobId: number,
   ): Promise<JobResponseDto> {
@@ -103,7 +103,7 @@ export class JobController {
 
   @Get('/:jobId')
   @HttpCode(HttpStatus.OK)
-  public retrieveUser(
+  public retrieveJob(
     @Param('jobId', ParseIntPipe) jobId: number,
   ): Promise<JobResponseDto> {
     return this.jobService.retrieveJob(jobId);
