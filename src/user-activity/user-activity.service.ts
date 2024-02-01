@@ -26,7 +26,7 @@ export class UserActivityService {
         select: { jobsVisited: true },
       });
 
-    this.prismaService.userActivity.update({
+    await this.prismaService.userActivity.update({
       where: { userId: jobVisitedEvent.userId },
       data: {
         jobsVisited: {
@@ -48,7 +48,7 @@ export class UserActivityService {
         select: { searchHistory: true },
       });
 
-    this.prismaService.userActivity.update({
+    await this.prismaService.userActivity.update({
       where: { userId: jobSearchedEvent.userId },
       data: {
         searchHistory: {

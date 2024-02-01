@@ -42,14 +42,6 @@
 
 ## Troubleshooting
 
-### Seeding
-
-1. Seed 10 jobs and 10 users into the database
-
-   ```shell
-   npm run db:dev:seed
-   ```
-
 ### Restarting
 
 1. Stop the application.
@@ -78,6 +70,15 @@
    ```
 
 2. Navigate to <http://localhost:5555/>.
+3. Navigate to <http://localhost:8000/api/>.
+
+### Seeding
+
+1. Seed 10 jobs and 10 users into the database
+
+   ```shell
+   npm run db:dev:seed
+   ```
 
 ## API Endpoints
 
@@ -90,14 +91,14 @@
 ### Auth - `/api/auth`
 
 | Endpoint  | Method | Description     | Role Access |
-|-----------|--------|-----------------|-------------|
+| --------- | ------ | --------------- | ----------- |
 | `/signup` | `POST` | Register a user | `V`         |
 | `/login`  | `POST` | Log in a user   | `V`         |
 
 ### Users - `/api/users`
 
 | Endpoint           | Method   | Description                | Role Access   |
-|--------------------|----------|----------------------------|---------------|
+| ------------------ | -------- | -------------------------- | ------------- |
 | N/A                | `GET`    | Retrieve users             | `V`, `U`, `A` |
 | `/change-password` | `PUT`    | Change password            | `U`, `A`      |
 | `/update-profile`  | `PUT`    | Update profile information | `U`, `A`      |
@@ -107,7 +108,7 @@
 ### Jobs - `/api/jobs`
 
 | Endpoint                           | Method   | Description                      | Role Access   |
-|------------------------------------|----------|----------------------------------|---------------|
+| ---------------------------------- | -------- | -------------------------------- | ------------- |
 | `?filter=dateTime&title={{title}}` | `GET`    | Retrieve jobs                    | `V`, `U`, `A` |
 | `/event/?title={{title}}`          | `GET`    | Retrieve jobs and emit an event  | `U`           |
 | N/A                                | `POST`   | Create a job                     | `A`           |
@@ -119,7 +120,7 @@
 ### Job Applications - `/api/job-applications`
 
 | Endpoint        | Method | Description                   | Role Access   |
-|-----------------|--------|-------------------------------|---------------|
+| --------------- | ------ | ----------------------------- | ------------- |
 | N/A             | `GET`  | Retrieve job applications     | `V`, `U`, `A` |
 | `/applications` | `GET`  | Retrieve own job applications | `U`           |
 | `/apply`        | `POST` | Apply for a job               | `U`           |
@@ -129,10 +130,10 @@
 ### User Activities - `api/user-activies`
 
 | Endpoint      | Method | Description              | Role Access |
-|---------------|--------|--------------------------|-------------|
+| ------------- | ------ | ------------------------ | ----------- |
 | `/{{userId}}` | `GET`  | Retrieve User Activities | `A`         |
 
 ### Non-Functional Endpoints
 
 | Endpoint | Method | Description | Role Access |
-|----------|--------|-------------|-------------|
+| -------- | ------ | ----------- | ----------- |
