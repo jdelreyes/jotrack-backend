@@ -14,7 +14,7 @@ import {
 
 @Injectable()
 export class UserService {
-  constructor(private prismaService: PrismaService) {}
+  constructor(private readonly prismaService: PrismaService) {}
 
   public async retrieveUsers(): Promise<UserResponseDto[]> {
     return (

@@ -13,8 +13,8 @@ import { User } from '@prisma/client';
 @Injectable()
 export class AuthService {
   constructor(
-    private prismaService: PrismaService,
-    private jwtService: JwtService,
+    private readonly prismaService: PrismaService,
+    private readonly jwtService: JwtService,
   ) {}
 
   public async login(

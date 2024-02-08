@@ -14,23 +14,30 @@ export class ResumeService {
 
   public async uploadResume(
     userId: number,
-    resume: Express.Multer.File,
+    resumeFile: Express.Multer.File,
   ): Promise<Resume> {
     try {
-      const bufferResult: parsePdf.Result = await parsePdf(resume.buffer);
+      const bufferResult: parsePdf.Result = await parsePdf(resumeFile.buffer);
       const resumeContent: string = bufferResult.text;
       const resumeSections: string[] = resumeContent.split(/[A-Z][a-z]*:/);
 
-      const objective = resumeSections[1];
+      const objective = resumeSections[1].replaceAll('\n', '').trim();
       const experience = resumeSections[2]
         .split('•')
-        .filter((resumeSection) => resumeSection.trim());
+        .filter((resumeSection) => resumeSection.trim())
+        .map((bulletPoint) => bulletPoint.replaceAll('\n', '').trim());
       const education = resumeSections[3]
         .split('•')
-        .filter((resumeSection) => resumeSection.trim());
+        .filter((resumeSection) => resumeSection.trim())
+        .map((bulletPoint) => bulletPoint.replaceAll('\n', '').trim());
       const skills = resumeSections[4]
         .split('•')
-        .filter((resumeSection) => resumeSection.trim());
+        .filter((resumeSection) => resumeSection.trim())
+        .map((bulletPoint) => bulletPoint.replaceAll('\n', '').trim());
+      const additionalInformation = resumeSections[5]
+        .split('•')
+        .filter((resumeSection) => resumeSection.trim())
+        .map((bulletPoint) => bulletPoint.replaceAll('\n', '').trim());
 
       return await this.prismaService.resume.create({
         data: {
@@ -38,6 +45,7 @@ export class ResumeService {
           experience,
           education,
           skills,
+          additionalInformation,
           userId,
         },
       });

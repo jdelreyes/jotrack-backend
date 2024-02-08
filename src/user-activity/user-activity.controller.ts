@@ -10,11 +10,15 @@ import { UserActivity } from '@prisma/client';
 import { AuthGuard, RolesGuard } from '../auth/guard';
 import { Role } from '../auth/enum';
 import { Roles } from '../auth/decorator';
+import { ApiResponse } from '@nestjs/swagger';
 
 @Controller('/api/user-activities')
 export class UserActivityController {
-  public constructor(private userActivityService: UserActivityService) {}
+  public constructor(
+    private readonly userActivityService: UserActivityService,
+  ) {}
 
+  @ApiResponse({ description: 'retrieves user activities' })
   @Get('/:userId')
   @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.ADMIN)

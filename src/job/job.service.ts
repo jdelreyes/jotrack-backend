@@ -13,7 +13,7 @@ import { Job } from '@prisma/client';
 
 @Injectable()
 export class JobService {
-  constructor(private prismaService: PrismaService) {}
+  constructor(private readonly prismaService: PrismaService) {}
 
   public async retrieveJobs(): Promise<JobResponseDto[]> {
     return (await this.prismaService.job.findMany()).map((job: Job) =>

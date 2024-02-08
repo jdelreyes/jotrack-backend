@@ -6,7 +6,7 @@ import { UserActivity } from '@prisma/client';
 
 @Injectable()
 export class UserActivityService {
-  constructor(private prismaService: PrismaService) {}
+  constructor(private readonly prismaService: PrismaService) {}
 
   public async retrieveUserActivities(userId: number): Promise<UserActivity[]> {
     return this.prismaService.userActivity.findMany({

@@ -23,7 +23,7 @@ import { ApiResponse } from '@nestjs/swagger';
 
 @Controller('/api/users')
 export class UserController {
-  constructor(private userService: UserService) {}
+  constructor(private readonly userService: UserService) {}
 
   @ApiResponse({ description: 'retrieves users' })
   @Get()

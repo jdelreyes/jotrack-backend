@@ -24,7 +24,7 @@ import { ApiResponse } from '@nestjs/swagger';
 
 @Controller('/api/job-applications')
 export class JobApplicationController {
-  constructor(private jobApplicationService: JobApplicationService) {}
+  constructor(private readonly jobApplicationService: JobApplicationService) {}
 
   @ApiResponse({ description: 'retrieves job applications' })
   @Get()
