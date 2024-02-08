@@ -28,8 +28,8 @@ import { ApiResponse } from '@nestjs/swagger';
 @Controller('/api/jobs')
 export class JobController {
   constructor(
-    private jobService: JobService,
-    private eventEmitter2: EventEmitter2,
+    private readonly jobService: JobService,
+    private readonly eventEmitter2: EventEmitter2,
   ) {}
 
   @ApiResponse({ description: 'retrieves jobs' })

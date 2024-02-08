@@ -20,7 +20,7 @@ import { ApiResponse } from '@nestjs/swagger';
 export class ResumeController {
   constructor(private readonly resumeService: ResumeService) {}
 
-  @ApiResponse({ description: 'retrieves a resume' })
+  @ApiResponse({ description: 'retrieves own resume' })
   @Get()
   @UseGuards(AuthGuard, RolesGuard, JwtGuard)
   @Roles(Role.USER)
@@ -49,8 +49,12 @@ export class ResumeController {
           errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
         }),
     )
-    resume: Express.Multer.File,
+    resumeFile: Express.Multer.File,
   ) {
-    return this.resumeService.uploadResume(userId, resume);
+    return this.resumeService.uploadResume(userId, resumeFile);
+  }
+
+  public generateResume(@GetUser('id') userId: number) {
+    console.log(userId);
   }
 }

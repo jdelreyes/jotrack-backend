@@ -15,7 +15,7 @@ import {
 
 @Injectable()
 export class JobApplicationService {
-  constructor(private prismaService: PrismaService) {}
+  constructor(private readonly prismaService: PrismaService) {}
 
   public async applyJob(
     userId: number,
