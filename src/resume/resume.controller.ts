@@ -5,6 +5,7 @@ import {
   HttpStatus,
   ParseFilePipeBuilder,
   Post,
+  Put,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -54,7 +55,28 @@ export class ResumeController {
     return this.resumeService.uploadResume(userId, resumeFile);
   }
 
-  public generateResume(@GetUser('id') userId: number) {
-    console.log(userId);
+  @ApiResponse({ description: 'uploads a resume file' })
+  @Put()
+  @UseGuards(AuthGuard, RolesGuard, JwtGuard)
+  @Roles(Role.USER)
+  @HttpCode(HttpStatus.CREATED)
+  @UseInterceptors(FileInterceptor('resume'))
+  public reUploadResume(
+    @GetUser('id') userId: number,
+    @UploadedFile(
+      new ParseFilePipeBuilder()
+        .addFileTypeValidator({
+          fileType: 'pdf',
+        })
+        .addMaxSizeValidator({
+          maxSize: 99999,
+        })
+        .build({
+          errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+        }),
+    )
+    resumeFile: Express.Multer.File,
+  ) {
+    return this.resumeService.reUploadResume(userId, resumeFile);
   }
 }
