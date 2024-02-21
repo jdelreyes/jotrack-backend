@@ -1,8 +1,12 @@
 # JoTrack Backend
 
+## Architecture
+
+![UML of the server](docs/assets/images/infrastructure.drawio.png)
+
 ## Database Design
 
-![UML of the database](docs/assets/images/database-design.drawio.png)
+![UML of the database](docs/assets/images/prismaliser.png)
 
 ## Installation
 
@@ -142,6 +146,7 @@
 | -------- | ------ | ------------------- | ----------- |
 | N/A      | GET    | Retrieve own resume | `U`         |
 | N/A      | POST   | Upload a resume     | `U`         |
+| N/A      | PUT    | ReUpload a resume   | `U`         |
 
 ### Non-Functional Endpoints
 

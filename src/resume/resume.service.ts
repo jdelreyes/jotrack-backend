@@ -7,8 +7,8 @@ import { PrismaService } from '../prisma/prisma.service';
 import * as parsePdf from 'pdf-parse';
 import { Resume } from '@prisma/client';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
-import { ResumeEntity } from './entity/resume.entity';
-import { ResumeBuilder } from './pattern/resume-builder.pattern';
+import { ResumeEntity } from './entity';
+import { ResumeBuilder } from './pattern';
 
 @Injectable()
 export class ResumeService {
@@ -74,20 +74,20 @@ export class ResumeService {
       const resumeContent: string = bufferResult.text;
       const resumeSections: string[] = resumeContent.split(/[A-Z][a-z]*:/);
 
-      const objective = resumeSections[1].replaceAll('\n', '').trim();
-      const experience = resumeSections[2]
+      const objective: string = resumeSections[1].replaceAll('\n', '').trim();
+      const experience: string[] = resumeSections[2]
         .split('•')
         .filter((resumeSection) => resumeSection.trim())
         .map((bulletPoint) => bulletPoint.replaceAll('\n', '').trim());
-      const education = resumeSections[3]
+      const education: string[] = resumeSections[3]
         .split('•')
         .filter((resumeSection) => resumeSection.trim())
         .map((bulletPoint) => bulletPoint.replaceAll('\n', '').trim());
-      const skills = resumeSections[4]
+      const skills: string[] = resumeSections[4]
         .split('•')
         .filter((resumeSection) => resumeSection.trim())
         .map((bulletPoint) => bulletPoint.replaceAll('\n', '').trim());
-      const additionalInformation = resumeSections[5]
+      const additionalInformation: string[] = resumeSections[5]
         .split('•')
         .filter((resumeSection) => resumeSection.trim())
         .map((bulletPoint) => bulletPoint.replaceAll('\n', '').trim());

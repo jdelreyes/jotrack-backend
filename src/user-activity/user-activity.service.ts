@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { OnEvent } from '@nestjs/event-emitter';
 import { JobSearchedEvent, JobVisitedEvent } from '../job/event';
@@ -8,10 +8,23 @@ import { UserActivity } from '@prisma/client';
 export class UserActivityService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  public async retrieveUserActivities(userId: number): Promise<UserActivity[]> {
-    return this.prismaService.userActivity.findMany({
-      where: { userId: userId },
-    });
+  public async retrieveUserActivities(): Promise<UserActivity[]> {
+    return this.prismaService.userActivity.findMany({});
+  }
+
+  public async retrieveUserActivitiesByUserId(
+    userId: number,
+  ): Promise<UserActivity[]> {
+    try {
+      return this.prismaService.userActivity.findMany({
+        where: {
+          userId: userId,
+        },
+      });
+    } catch (error) {
+      console.error(error);
+      throw new BadRequestException();
+    }
   }
 
   @OnEvent('job.visited', { async: true })

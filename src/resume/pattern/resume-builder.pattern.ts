@@ -23,17 +23,19 @@ export class ResumeBuilder {
     return this;
   }
 
-  public setSkills(skills: string[]) {
+  public setSkills(skills: string[]): ResumeBuilder {
     this.skills = skills;
     return this;
   }
 
-  public setAdditionalInformation(additionalInformation: string[]) {
+  public setAdditionalInformation(
+    additionalInformation: string[],
+  ): ResumeBuilder {
     this.additionalInformation = additionalInformation;
     return this;
   }
 
-  public setUserId(userId: number) {
+  public setUserId(userId: number): ResumeBuilder {
     this.userId = userId;
     return this;
   }

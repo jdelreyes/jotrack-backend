@@ -1,0 +1,130 @@
+<mxfile host="app.diagrams.net" modified="2024-02-09T18:44:10.439Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36" etag="n80Tu8R6zSMVdC_LcSbU" version="23.1.2" type="device">
+  <diagram name="Page-1" id="TT8JZ-c2MHZ9ajTFR8ZH">
+    <mxGraphModel dx="1002" dy="1876" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="p6PMYkcUD7EyWkOT7CTt-6" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="140" y="10" width="145" height="460" as="geometry" />
+        </mxCell>
+        <mxCell id="p6PMYkcUD7EyWkOT7CTt-7" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="500" y="10" width="150" height="460" as="geometry" />
+        </mxCell>
+        <mxCell id="p6PMYkcUD7EyWkOT7CTt-10" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.992;exitY=0.043;exitDx=0;exitDy=0;exitPerimeter=0;entryX=-0.019;entryY=0.106;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="p6PMYkcUD7EyWkOT7CTt-6" target="p6PMYkcUD7EyWkOT7CTt-7">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="320" y="310" as="sourcePoint" />
+            <mxPoint x="370" y="260" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p6PMYkcUD7EyWkOT7CTt-12" value="&lt;span style=&quot;background-color: rgb(204, 255, 255);&quot;&gt;`api/auth/register`&lt;/span&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontColor=#000000;labelBackgroundColor=#CCE5FF;" vertex="1" connectable="0" parent="p6PMYkcUD7EyWkOT7CTt-10">
+          <mxGeometry x="-0.0862" y="2" relative="1" as="geometry">
+            <mxPoint y="-20" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p6PMYkcUD7EyWkOT7CTt-13" value="" style="endArrow=classic;html=1;rounded=0;entryX=1.003;entryY=0.286;entryDx=0;entryDy=0;exitX=-0.013;exitY=0.149;exitDx=0;exitDy=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="p6PMYkcUD7EyWkOT7CTt-7" target="p6PMYkcUD7EyWkOT7CTt-6">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="320" y="310" as="sourcePoint" />
+            <mxPoint x="370" y="260" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p6PMYkcUD7EyWkOT7CTt-14" value="&lt;span style=&quot;background-color: rgb(204, 204, 255);&quot;&gt;`{&quot;email&quot;: &quot;...&quot;, &quot;role&quot;: &quot;...&quot;, ...}`&lt;/span&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="p6PMYkcUD7EyWkOT7CTt-13">
+          <mxGeometry x="0.3291" y="-2" relative="1" as="geometry">
+            <mxPoint x="21" y="-27" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p6PMYkcUD7EyWkOT7CTt-15" value="&lt;span style=&quot;background-color: rgb(204, 255, 255);&quot;&gt;`api/auth/login`&lt;/span&gt;" style="endArrow=classic;html=1;rounded=0;entryX=-0.013;entryY=0.39;entryDx=0;entryDy=0;entryPerimeter=0;exitX=1.005;exitY=0.341;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="p6PMYkcUD7EyWkOT7CTt-6" target="p6PMYkcUD7EyWkOT7CTt-7">
+          <mxGeometry x="-0.0512" y="19" width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="290" y="150" as="sourcePoint" />
+            <mxPoint x="340" y="290" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p6PMYkcUD7EyWkOT7CTt-17" value="" style="endArrow=classic;html=1;rounded=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=-0.003;exitY=0.426;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="p6PMYkcUD7EyWkOT7CTt-7" target="p6PMYkcUD7EyWkOT7CTt-6">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="290" y="380" as="sourcePoint" />
+            <mxPoint x="340" y="330" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p6PMYkcUD7EyWkOT7CTt-18" value="&lt;span style=&quot;background-color: rgb(204, 204, 255);&quot;&gt;`{&quot;access_token&quot;: &quot;akw.jdn.kdo&quot;}`&lt;/span&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="p6PMYkcUD7EyWkOT7CTt-17">
+          <mxGeometry x="0.199" y="-4" relative="1" as="geometry">
+            <mxPoint x="11" y="-22" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p6PMYkcUD7EyWkOT7CTt-19" value="" style="endArrow=classic;html=1;rounded=0;exitX=1.001;exitY=0.545;exitDx=0;exitDy=0;exitPerimeter=0;entryX=-0.019;entryY=0.61;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="p6PMYkcUD7EyWkOT7CTt-6" target="p6PMYkcUD7EyWkOT7CTt-7">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="330" y="390" as="sourcePoint" />
+            <mxPoint x="480" y="290" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p6PMYkcUD7EyWkOT7CTt-20" value="&lt;span style=&quot;background-color: rgb(204, 255, 255);&quot;&gt;Auth: Bearer {JWT}&lt;br&gt;`api/protected/user-route`&lt;/span&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="p6PMYkcUD7EyWkOT7CTt-19">
+          <mxGeometry x="-0.0096" y="-2" relative="1" as="geometry">
+            <mxPoint x="10" y="-27" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p6PMYkcUD7EyWkOT7CTt-21" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.995;entryY=0.729;entryDx=0;entryDy=0;exitX=-0.006;exitY=0.653;exitDx=0;exitDy=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="p6PMYkcUD7EyWkOT7CTt-7" target="p6PMYkcUD7EyWkOT7CTt-6">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="500" y="340" as="sourcePoint" />
+            <mxPoint x="285" y="393" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p6PMYkcUD7EyWkOT7CTt-22" value="&lt;span style=&quot;background-color: rgb(204, 204, 255);&quot;&gt;OK&lt;/span&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="p6PMYkcUD7EyWkOT7CTt-21">
+          <mxGeometry x="0.199" y="-4" relative="1" as="geometry">
+            <mxPoint x="19" y="-17" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p6PMYkcUD7EyWkOT7CTt-23" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.999;exitY=0.781;exitDx=0;exitDy=0;exitPerimeter=0;entryX=-0.001;entryY=0.815;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="p6PMYkcUD7EyWkOT7CTt-6">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="287.97" y="380" as="sourcePoint" />
+            <mxPoint x="500" y="401.6200000000001" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p6PMYkcUD7EyWkOT7CTt-24" value="&lt;span style=&quot;background-color: rgb(204, 255, 255);&quot;&gt;Auth: Bearer {JWT}&lt;br&gt;`api/protected/admin-route`&lt;/span&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="p6PMYkcUD7EyWkOT7CTt-23">
+          <mxGeometry x="-0.0096" y="-2" relative="1" as="geometry">
+            <mxPoint x="9" y="-27" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p6PMYkcUD7EyWkOT7CTt-25" value="" style="endArrow=classic;html=1;rounded=0;entryX=1.002;entryY=0.939;entryDx=0;entryDy=0;exitX=-0.009;exitY=0.885;exitDx=0;exitDy=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="p6PMYkcUD7EyWkOT7CTt-7" target="p6PMYkcUD7EyWkOT7CTt-6">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="511" y="343" as="sourcePoint" />
+            <mxPoint x="294" y="355" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p6PMYkcUD7EyWkOT7CTt-26" value="&lt;span style=&quot;background-color: rgb(204, 204, 255);&quot;&gt;Forbidden&lt;/span&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="p6PMYkcUD7EyWkOT7CTt-25">
+          <mxGeometry x="0.199" y="-4" relative="1" as="geometry">
+            <mxPoint x="19" y="-18" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p6PMYkcUD7EyWkOT7CTt-27" value="User saved in the database" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="515" y="40" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="p6PMYkcUD7EyWkOT7CTt-28" value="JWT issued and signed" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="515" y="160" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="p6PMYkcUD7EyWkOT7CTt-29" value="Request allowed as JWT guard validates a user request" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="515" y="270" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="p6PMYkcUD7EyWkOT7CTt-30" value="Request denied as Role Guard finds endpoint is for admin" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="515" y="380" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="p6PMYkcUD7EyWkOT7CTt-32" value="Client" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1;fontSize=22;" vertex="1" parent="1">
+          <mxGeometry x="158.75" y="-20" width="107.5" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="p6PMYkcUD7EyWkOT7CTt-34" value="Server" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1;fontSize=22;" vertex="1" parent="1">
+          <mxGeometry x="521.25" y="-20" width="107.5" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="p6PMYkcUD7EyWkOT7CTt-35" value="Register endpoint visited" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="152.5" y="20" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="p6PMYkcUD7EyWkOT7CTt-36" value="Login endpoint visited" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="152.5" y="130" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="p6PMYkcUD7EyWkOT7CTt-37" value="Used JWT to authorize request" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="152.5" y="220" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="p6PMYkcUD7EyWkOT7CTt-38" value="Used JWT to authorize request" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="152.5" y="330" width="120" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
