@@ -16,6 +16,7 @@ import { GetUser, Roles } from '../auth/decorator';
 import { AuthGuard, JwtGuard, RolesGuard } from '../auth/guard';
 import { Role } from '../auth/enum';
 import { ApiResponse } from '@nestjs/swagger';
+import { ResumeEntity } from './entity';
 
 @Controller('api/resumes')
 export class ResumeController {
@@ -26,7 +27,9 @@ export class ResumeController {
   @UseGuards(AuthGuard, RolesGuard, JwtGuard)
   @Roles(Role.USER)
   @HttpCode(HttpStatus.OK)
-  public retrieveOwnResume(@GetUser('id') userId: number) {
+  public retrieveOwnResume(
+    @GetUser('id') userId: number,
+  ): Promise<ResumeEntity> {
     return this.resumeService.retrieveOwnResume(userId);
   }
 
@@ -51,7 +54,7 @@ export class ResumeController {
         }),
     )
     resumeFile: Express.Multer.File,
-  ) {
+  ): Promise<ResumeEntity> {
     return this.resumeService.uploadResume(userId, resumeFile);
   }
 
@@ -59,7 +62,7 @@ export class ResumeController {
   @Put()
   @UseGuards(AuthGuard, RolesGuard, JwtGuard)
   @Roles(Role.USER)
-  @HttpCode(HttpStatus.CREATED)
+  @HttpCode(HttpStatus.OK)
   @UseInterceptors(FileInterceptor('resume'))
   public reUploadResume(
     @GetUser('id') userId: number,
@@ -76,7 +79,7 @@ export class ResumeController {
         }),
     )
     resumeFile: Express.Multer.File,
-  ) {
+  ): Promise<ResumeEntity> {
     return this.resumeService.reUploadResume(userId, resumeFile);
   }
 }

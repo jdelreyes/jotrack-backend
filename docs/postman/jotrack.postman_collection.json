@@ -256,7 +256,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"city\": \"Toronto\",\n    \"companyName\": \"companyName\",\n    \"country\": \"Canada\",\n    \"description\": \"description\",\n    \"position\": \"position\",\n    \"postalCode\": \"A1A 1A1\",\n    \"province\": \"Ontario\",\n    \"requirements\": \"requirements\",\n    \"street\": \"23 Some Street\",\n    \"title\": \"title\"\n}",
+							"raw": "{\n    \"city\": \"Toronto\",\n    \"companyName\": \"companyName\",\n    \"country\": \"Canada\",\n    \"description\": \"description\",\n    \"position\": \"position\",\n    \"postalCode\": \"A1A 1A1\",\n    \"province\": \"Ontario\",\n    \"requirements\": [\n        \"some\",\n        \"requirements\"\n    ],\n    \"street\": \"23 Some Street\",\n    \"title\": \"title\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -407,6 +407,15 @@
 					"request": {
 						"method": "PUT",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": 1,\n    \"jobId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
 							"raw": "localhost:8000/api/job-applications/accept",
 							"host": [
@@ -427,6 +436,15 @@
 					"request": {
 						"method": "PUT",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": 1,\n    \"jobId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
 							"raw": "localhost:8000/api/job-applications/reject",
 							"host": [
@@ -453,15 +471,20 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8000/api/user-activities/{{userId}}",
+							"raw": "localhost:8000/api/user-activities?userId={{userId}}",
 							"host": [
 								"localhost"
 							],
 							"port": "8000",
 							"path": [
 								"api",
-								"user-activities",
-								"{{userId}}"
+								"user-activities"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "{{userId}}"
+								}
 							]
 						}
 					},
@@ -507,14 +530,43 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8000/api/resume",
+							"raw": "localhost:8000/api/resumes",
 							"host": [
 								"localhost"
 							],
 							"port": "8000",
 							"path": [
 								"api",
-								"resume"
+								"resumes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "reUploadResume",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "resume",
+									"type": "file",
+									"src": "/Users/jeromedelosreyes/Desktop/programming/github/side-projects/jotrack-backend/docs/template/resume-template.pdf"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8000/api/resumes",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"resumes"
 							]
 						}
 					},
@@ -528,7 +580,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEyLCJyb2xlIjoidXNlciIsImlhdCI6MTcwNjc2MzkzMCwiZXhwIjoxNzA3MzY4NzMwfQ.-RtLeL_E2YAXUQMmieDCxqjKQ04IeQ-6LsMNkU3PVCk",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJOYW1lIjoiYWRtaW4iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MDc3NTU0MjQsImV4cCI6MTcwODM2MDIyNH0.9Zekow7IkR15gV4l41rIf-WxFrV1g289ReTsgL-RweU",
 				"type": "string"
 			}
 		]

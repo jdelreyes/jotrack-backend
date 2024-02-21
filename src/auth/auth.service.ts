@@ -34,8 +34,9 @@ export class AuthService {
 
     if (!passwordMatches) throw new ForbiddenException();
 
-    const jwtPayload: { sub: number; role: string } = {
+    const jwtPayload: { sub: number; userName: string; role: string } = {
       sub: user.id,
+      userName: user.userName,
       role: user.role,
     };
     const token: string = await this.jwtService.signAsync(jwtPayload);
@@ -67,8 +68,7 @@ export class AuthService {
     } catch (error) {
       console.error(error);
       if (error instanceof PrismaClientKnownRequestError)
-        if (error.code === 'P2002')
-          throw new ForbiddenException('credentials are taken');
+        if (error.code === 'P2002') throw new ForbiddenException();
       throw new BadRequestException();
     }
   }

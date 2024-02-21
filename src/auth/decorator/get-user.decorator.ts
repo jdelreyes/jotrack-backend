@@ -9,9 +9,7 @@ export const GetUser = createParamDecorator(
     const request: Express.Request = executionContext
       .switchToHttp()
       .getRequest();
-    if (data) {
-      return request['user'][data];
-    }
+    if (data) return request['user'][data];
     return request['user'];
   },
 );

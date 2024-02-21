@@ -41,9 +41,7 @@ export class JobController {
   ): Promise<JobResponseDto[]> {
     if (filter === 'dateTime')
       return this.jobService.retrieveJobsByDateTimePosted();
-    if (title) {
-      return this.jobService.retrieveJobsByJobTitle(title);
-    }
+    if (title) return this.jobService.retrieveJobsByJobTitle(title);
     return this.jobService.retrieveJobs();
   }
 

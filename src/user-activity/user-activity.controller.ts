@@ -1,10 +1,4 @@
-import {
-  Controller,
-  Get,
-  Param,
-  ParseIntPipe,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { UserActivityService } from './user-activity.service';
 import { UserActivity } from '@prisma/client';
 import { AuthGuard, RolesGuard } from '../auth/guard';
@@ -19,12 +13,15 @@ export class UserActivityController {
   ) {}
 
   @ApiResponse({ description: 'retrieves user activities' })
-  @Get('/:userId')
+  @Get()
   @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.ADMIN)
   public retrieveUserActivities(
-    @Param('userId', ParseIntPipe) userId: number,
+    // ! can't parsePipeInt since it expects numeric string even undeclared in the uri
+    @Query('userId')
+    userId: number,
   ): Promise<UserActivity[]> {
-    return this.userActivityService.retrieveUserActivities(userId);
+    if (!userId) return this.userActivityService.retrieveUserActivities();
+    return this.userActivityService.retrieveUserActivitiesByUserId(userId);
   }
 }
