@@ -5,6 +5,7 @@ import OpenAI from 'openai';
 import { Assistant } from 'openai/resources/beta/assistants/assistants';
 import { PrismaService } from 'src/prisma/prisma.service';
 
+// todo: change name to ResumeBuilder
 @Injectable()
 export class OpenaiService extends OpenAI {
   private assistant: Assistant;
@@ -37,13 +38,26 @@ export class OpenaiService extends OpenAI {
       });
   }
 
-  /**
-   *
-   * @param {Resume} resume - the user's main resume
-   * @param {Job} job - the job being applied
-   * @returns {string} thread
-   */
-  public async generateResume(resume: Resume, job: Job): Promise<string> {
+  // todo
+  public generateResume(resume: Resume, job: Job) {
+    console.log(resume, job);
+    return null;
+  }
+
+  private async retrieveRanThread() {
+    const run: OpenAI.Beta.Threads.Runs.Run = await this.runThreadMessage();
+
+    return this.beta.threads.runs.retrieve(this.thread.id, run.id);
+  }
+
+  private async retrieveMessages(): Promise<OpenAI.Beta.Threads.Messages.ThreadMessagesPage> {
+    return await this.beta.threads.messages.list(this.thread.id);
+  }
+
+  private async createThreadMessage(
+    resume: Resume,
+    job: Job,
+  ): Promise<OpenAI.Beta.Threads.Messages.ThreadMessage> {
     const resumeContent: string = await this.mapResumeToMessageBody(resume);
     const jobContent: string = await this.mapJobToMessageBody(job);
 
@@ -55,13 +69,16 @@ export class OpenaiService extends OpenAI {
     ${jobContent}
     `;
 
-    const threadMessage: OpenAI.Beta.Threads.Messages.ThreadMessage =
-      await this.beta.threads.messages.create(this.thread.id, {
-        role: 'user',
-        content,
-      });
+    return await this.beta.threads.messages.create(this.thread.id, {
+      role: 'user',
+      content,
+    });
+  }
 
-    return threadMessage.content.toString();
+  private async runThreadMessage(): Promise<OpenAI.Beta.Threads.Runs.Run> {
+    return await this.beta.threads.runs.create(this.thread.id, {
+      assistant_id: this.assistant.id,
+    });
   }
 
   private async mapResumeToMessageBody(resume: Resume): Promise<string> {
