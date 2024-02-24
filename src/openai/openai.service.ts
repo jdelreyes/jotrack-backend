@@ -1,42 +1,104 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { Job, Resume } from '@prisma/client';
 import OpenAI from 'openai';
 import { Assistant } from 'openai/resources/beta/assistants/assistants';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class OpenaiService extends OpenAI {
   private assistant: Assistant;
   private thread: OpenAI.Beta.Threads.Thread;
 
-  public constructor(readonly configService: ConfigService) {
+  public constructor(
+    readonly configService: ConfigService,
+    private readonly prismaService: PrismaService,
+  ) {
     super({ apiKey: configService.get('OPEN_AI_API_KEY') });
 
-    this.createAssistant().then((assistant): void => {
-      this.assistant = assistant;
-    });
+    this.beta.assistants
+      .retrieve(this.configService.get('OPEN_AI_ASSISTANT_ID'))
+      .then((assistant) => {
+        this.assistant = assistant;
+        console.log(assistant);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
 
-    this.createThread().then((thread) => {
-      this.thread = thread;
-    });
+    this.beta.threads
+      .create()
+      .then((thread) => {
+        this.thread = thread;
+        console.log(thread);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
 
-  private async createAssistant(): Promise<Assistant> {
-    return await this.beta.assistants.create({
-      name: 'Resume Builder',
-      description:
-        "you help build a new resume for a user tailored to their desired job using the user's master or main resume and the job's description.",
-      model: 'gpt-3.5-turbo',
-    });
+  /**
+   *
+   * @param {Resume} resume - the user's main resume
+   * @param {Job} job - the job being applied
+   * @returns {string} thread
+   */
+  public async generateResume(resume: Resume, job: Job): Promise<string> {
+    const resumeContent: string = await this.mapResumeToMessageBody(resume);
+    const jobContent: string = await this.mapJobToMessageBody(job);
+
+    const content: string = `
+    resume:
+    ${resumeContent}
+    ---
+    job:
+    ${jobContent}
+    `;
+
+    const threadMessage: OpenAI.Beta.Threads.Messages.ThreadMessage =
+      await this.beta.threads.messages.create(this.thread.id, {
+        role: 'user',
+        content,
+      });
+
+    return threadMessage.content.toString();
   }
 
-  private async createThread(): Promise<OpenAI.Beta.Threads.Thread> {
-    return await this.beta.threads.create();
+  private async mapResumeToMessageBody(resume: Resume): Promise<string> {
+    const user = await this.prismaService.user.findUnique({
+      where: {
+        id: resume.userId,
+      },
+    });
+
+    return `
+    fullName: ${user.firstName} ${user.lastName}
+    email: ${user.email}
+    phoneNumber: ${user.phoneNumber}
+
+    objective:
+    ${resume.objective}
+    experience:
+    ${resume.experience.toString()}
+    education:
+    ${resume.education.toString()}
+    skills:
+    ${resume.skills.toString()}
+    additionalInformation:
+    ${resume.additionalInformation.toString()}
+    `;
   }
 
-  public async createMessage(content: string) {
-    this.beta.threads.messages.create(this.thread.id, {
-      role: 'user',
-      content,
-    });
+  private async mapJobToMessageBody(job: Job): Promise<string> {
+    return `
+    job title:
+    ${job.title}
+    job description:
+    ${job.description}
+    job requirements:
+    ${job.requirements.toString()}
+    job position:
+    ${job.position}
+    `;
   }
 }
