@@ -10,10 +10,14 @@ import {
   UpdateJobRequestDto,
 } from './dto';
 import { Job } from '@prisma/client';
+import { OpenaiService } from 'src/openai/openai.service';
 
 @Injectable()
 export class JobService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly openaiService: OpenaiService,
+  ) {}
 
   public async retrieveJobs(): Promise<JobResponseDto[]> {
     return (await this.prismaService.job.findMany()).map((job: Job) =>
