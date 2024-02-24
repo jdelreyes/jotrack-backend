@@ -10,7 +10,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 import { UserActivityModule } from './user-activity/user-activity.module';
 import { ResumeModule } from './resume/resume.module';
 import { OpenaiModule } from './openai/openai.module';
-import { OpenService } from './ai/open/open.service';
+import { OpenaiService } from './openai/openai.service';
 
 @Module({
   imports: [
@@ -33,7 +33,7 @@ import { OpenService } from './ai/open/open.service';
     ResumeModule,
     OpenaiModule,
   ],
-  providers: [PrismaService, OpenService],
+  providers: [PrismaService, OpenaiService],
   controllers: [],
 })
 export class AppModule {}
