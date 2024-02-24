@@ -9,10 +9,14 @@ import { Resume } from '@prisma/client';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { ResumeEntity } from './entity';
 import { ResumeBuilder } from './pattern';
+import { OpenaiService } from 'src/openai/openai.service';
 
 @Injectable()
 export class ResumeService {
-  public constructor(private readonly prismaService: PrismaService) {}
+  public constructor(
+    private readonly prismaService: PrismaService,
+    private readonly openaiService: OpenaiService,
+  ) {}
 
   public async uploadResume(
     userId: number,
