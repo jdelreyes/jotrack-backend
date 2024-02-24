@@ -100,6 +100,22 @@ export class UserService {
     changePasswordRequestDto: ChangePasswordRequestDto,
   ): Promise<void> {
     try {
+      const user = await this.prismaService.user.findUnique({
+        where: {
+          id: userId,
+        },
+        select: {
+          hash: true,
+        },
+      });
+
+      const passwordMatches: boolean = await argon.verify(
+        changePasswordRequestDto.oldPassword,
+        user.hash.toString(),
+      );
+
+      if (!passwordMatches) throw new BadRequestException();
+
       const hash: string = await argon.hash(changePasswordRequestDto.password);
 
       await this.prismaService.user.update({
