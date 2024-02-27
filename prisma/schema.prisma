@@ -28,10 +28,12 @@ model User {
 
   phoneNumber Float
 
+  jobs UserJobApplication[]
+
   userActivity UserActivity?
-  jobs         UserJobApplication[]
   address      Address?
   resume       Resume?
+  openai       OpenAI?
 
   @@map("users")
 }
@@ -99,6 +101,7 @@ model UserActivity {
   jobsVisited   Int[]
 
   dateTimeEmitted DateTime @default(now())
+  dateTimeUpdated DateTime @updatedAt
 
   @@id([userId])
   @@map("userActivities")
@@ -111,9 +114,25 @@ model Resume {
   skills                String[]
   additionalInformation String[]
 
+  dateTimeCreated DateTime @default(now())
+  dateTimeUpdated DateTime @updatedAt
+
   userId Int  @unique
   user   User @relation(fields: [userId], references: [id])
 
   @@id([userId])
   @@map("resumes")
+}
+
+model OpenAI {
+  threadId String
+  runId String
+
+  dateTimeCreated DateTime @default(now())
+
+  userId Int  @unique
+  user   User @relation(fields: [userId], references: [id])
+
+  @@id([userId])
+  @@map("openai")
 }

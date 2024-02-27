@@ -29,8 +29,6 @@ export class OpenaiService extends OpenAI {
       .retrieve(this.configService.get('OPEN_AI_ASSISTANT_ID'))
       .then((assistant) => {
         this.assistant = assistant;
-        console.log('1');
-        console.log(assistant);
       })
       .catch((error) => {
         console.error(error);
@@ -40,8 +38,6 @@ export class OpenaiService extends OpenAI {
       .create()
       .then((thread) => {
         this.thread = thread;
-        console.log('2');
-        console.log(thread);
       })
       .catch((error) => {
         console.error(error);
@@ -49,7 +45,7 @@ export class OpenaiService extends OpenAI {
   }
 
   // todo
-  public generateResume(resume: Resume, job: Job) {
+  public async generateResume(resume: Resume, job: Job) {
     console.log(resume, job);
     return null;
   }
@@ -94,7 +90,7 @@ export class OpenaiService extends OpenAI {
   }
 
   /**
-   * retrieves thread that has been previously ran.
+   * retrieves thread that has been previously run.
    * @returns {Promise<OpenAI.Beta.Threads.Runs.Run>}
    */
   private async retrieveRanThread(): Promise<OpenAI.Beta.Threads.Runs.Run> {
