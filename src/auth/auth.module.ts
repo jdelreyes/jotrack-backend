@@ -5,9 +5,11 @@ import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './constants';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './strategy';
+import { OpenAIModule } from 'src/openai/openai.module';
 
 @Module({
   imports: [
+    OpenAIModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
       global: true,

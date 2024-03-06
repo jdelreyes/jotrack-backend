@@ -10,13 +10,13 @@ import {
   UpdateJobRequestDto,
 } from './dto';
 import { Job } from '@prisma/client';
-import { OpenaiService } from 'src/openai/openai.service';
+import { OpenAIService } from 'src/openai/openai.service';
 
 @Injectable()
 export class JobService {
   constructor(
     private readonly prismaService: PrismaService,
-    private readonly openaiService: OpenaiService,
+    private readonly openAIService: OpenAIService,
   ) {}
 
   public async retrieveJobs(): Promise<JobResponseDto[]> {
