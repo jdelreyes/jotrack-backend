@@ -1,14 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Job, Resume } from '@prisma/client';
 import OpenAI from 'openai';
 import { Assistant } from 'openai/resources/beta/assistants/assistants';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
-export class OpenaiService extends OpenAI {
+export class OpenAIService extends OpenAI {
   private assistant: Assistant;
-  private thread: OpenAI.Beta.Threads.Thread;
 
   /**
    * instantiate an instance of OpenAIService that
@@ -33,128 +31,68 @@ export class OpenaiService extends OpenAI {
       .catch((error) => {
         console.error(error);
       });
+  }
 
-    this.beta.threads
-      .create()
-      .then((thread) => {
-        this.thread = thread;
+  public async createThread(): Promise<OpenAI.Beta.Threads.Thread> {
+    return await this.beta.threads.create();
+  }
+
+  public async retrieveUserTheadByUserId(
+    userId: number,
+  ): Promise<OpenAI.Beta.Threads.Thread> {
+    const threadId: string = (
+      await this.prismaService.openAI.findUnique({
+        where: {
+          userId,
+        },
+        select: {
+          threadId: true,
+        },
       })
-      .catch((error) => {
-        console.error(error);
-      });
+    ).threadId;
+
+    return await this.beta.threads.retrieve(threadId);
   }
 
-  // todo
-  public async generateResume(resume: Resume, job: Job) {
-    console.log(resume, job);
-    return null;
-  }
-
-  /**
-   * retrieves message list that have been previously created.
-   * in this case, is an array of newly created stringified resume.
-   * @returns {Promise<OpenAI.Beta.Threads.Messages.ThreadMessagesPage>}
-   */
-  private async retrieveMessages(): Promise<OpenAI.Beta.Threads.Messages.ThreadMessagesPage> {
-    return await this.beta.threads.messages.list(this.thread.id);
-  }
-
-  /**
-   * creates a message in a thread associated with the user.
-   * the content that is sent to the thread is, in this case,
-   * is the stringified resume and job that are to be converted
-   * into a newly created resume.
-   * @param {Resume} resume - applicant's resume.
-   * @param {Job} job - being currently applied.
-   * @returns {Promise<OpenAI.Beta.Threads.Messages.ThreadMessage>}
-   */
-  private async createThreadMessage(
-    resume: Resume,
-    job: Job,
+  public async retrieveLatestMessage(
+    threadId: string,
   ): Promise<OpenAI.Beta.Threads.Messages.ThreadMessage> {
-    const resumeContent: string = await this.mapResumeToMessageBody(resume);
-    const jobContent: string = await this.mapJobToMessageBody(job);
+    const retrievedMessages = await this.retrieveMessages(threadId);
+    const messageListLength = retrievedMessages.data.length;
 
-    const content: string = `
-    resume:
-    ${resumeContent}
-    ---
-    job:
-    ${jobContent}
-    `;
+    return retrievedMessages.data[messageListLength - 1];
+  }
 
-    return await this.beta.threads.messages.create(this.thread.id, {
+  public async retrieveMessages(
+    threadId: string,
+  ): Promise<OpenAI.Beta.Threads.Messages.ThreadMessagesPage> {
+    return await this.beta.threads.messages.list(threadId);
+  }
+
+  public async createMessage(
+    threadId: string,
+    content: string,
+  ): Promise<OpenAI.Beta.Threads.Messages.ThreadMessage> {
+    return await this.beta.threads.messages.create(threadId, {
       role: 'user',
       content,
     });
   }
 
-  /**
-   * retrieves thread that has been previously run.
-   * @returns {Promise<OpenAI.Beta.Threads.Runs.Run>}
-   */
-  private async retrieveRanThread(): Promise<OpenAI.Beta.Threads.Runs.Run> {
-    const run: OpenAI.Beta.Threads.Runs.Run = await this.runThreadMessage();
-
-    return await this.beta.threads.runs.retrieve(this.thread.id, run.id);
+  public async retrieveRun(
+    thread: OpenAI.Beta.Threads.Thread,
+    run: OpenAI.Beta.Threads.Runs.Run,
+  ): Promise<OpenAI.Beta.Threads.Runs.Run> {
+    return await this.beta.threads.runs.retrieve(thread.id, run.id);
   }
 
-  /**
-   * create a thread that is associated with the assistant's capability using its id.
-   * in this case, it's resume building.
-   * @returns {Promise<OpenAI.Beta.Threads.Runs.Run>}
-   */
-  private async runThreadMessage(): Promise<OpenAI.Beta.Threads.Runs.Run> {
-    return await this.beta.threads.runs.create(this.thread.id, {
+  public async run(
+    thread: OpenAI.Beta.Threads.Thread,
+  ): Promise<OpenAI.Beta.Threads.Runs.Run> {
+    return await this.beta.threads.runs.create(thread.id, {
       assistant_id: this.assistant.id,
+      instructions:
+        'do not address the user nor add any additional introductory/closing statements. give the answer right away instead',
     });
-  }
-
-  /**
-   * maps Resume instance to string.
-   * @param {Resume} resume - resume to be mapped.
-   * @returns {Promise<string>} Promise
-   */
-  private async mapResumeToMessageBody(resume: Resume): Promise<string> {
-    const user = await this.prismaService.user.findUnique({
-      where: {
-        id: resume.userId,
-      },
-    });
-
-    return `
-    fullName: ${user.firstName} ${user.lastName}
-    email: ${user.email}
-    phoneNumber: ${user.phoneNumber}
-
-    objective:
-    ${resume.objective}
-    experience:
-    ${resume.experience.toString()}
-    education:
-    ${resume.education.toString()}
-    skills:
-    ${resume.skills.toString()}
-    additionalInformation:
-    ${resume.additionalInformation.toString()}
-    `;
-  }
-
-  /**
-   * maps Job instance to string.
-   * @param {Job} job - resume to be mapped.
-   * @returns {Promise<string>}
-   */
-  private async mapJobToMessageBody(job: Job): Promise<string> {
-    return `
-    job title:
-    ${job.title}
-    job description:
-    ${job.description}
-    job requirements:
-    ${job.requirements.toString()}
-    job position:
-    ${job.position}
-    `;
   }
 }

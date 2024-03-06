@@ -8,6 +8,8 @@ export class ResumeEntity implements Resume {
   skills: string[];
   additionalInformation: string[];
   userId: number;
+  dateTimeCreated: Date;
+  dateTimeUpdated: Date;
 
   constructor(resumeBuilder: ResumeBuilder) {
     this.objective = resumeBuilder.objective;

@@ -9,8 +9,9 @@ import { JobApplicationModule } from './job-application/job-application.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { UserActivityModule } from './user-activity/user-activity.module';
 import { ResumeModule } from './resume/resume.module';
-import { OpenaiModule } from './openai/openai.module';
-import { OpenaiService } from './openai/openai.service';
+import { OpenAIModule } from './openai/openai.module';
+import { OpenAIService } from './openai/openai.service';
+import { ResumeBuilderModule } from './resume-builder/resume-builder.module';
 
 @Module({
   imports: [
@@ -31,9 +32,10 @@ import { OpenaiService } from './openai/openai.service';
     JobApplicationModule,
     UserActivityModule,
     ResumeModule,
-    OpenaiModule,
+    OpenAIModule,
+    ResumeBuilderModule,
   ],
-  providers: [PrismaService, OpenaiService],
+  providers: [PrismaService, OpenAIService],
   controllers: [],
 })
 export class AppModule {}

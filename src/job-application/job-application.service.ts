@@ -12,10 +12,14 @@ import {
   JobApplicationResponseDto,
   UpdateJobApplicationRequestDto,
 } from './dto';
+import { ResumeBuilderService } from 'src/resume-builder/resume-builder.service';
 
 @Injectable()
 export class JobApplicationService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly resumeBuilderService: ResumeBuilderService,
+  ) {}
 
   public async applyJob(
     userId: number,
