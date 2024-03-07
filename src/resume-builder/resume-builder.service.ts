@@ -2,19 +2,22 @@ import { Injectable } from '@nestjs/common';
 import { OpenAIService } from 'src/openai/openai.service';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Job, Resume } from '@prisma/client';
+import { ThreadMessage } from 'openai/resources/beta/threads/messages/messages';
 
 @Injectable()
 export class ResumeBuilderService {
   public constructor(
-    private prismaService: PrismaService,
-    private openAIService: OpenAIService,
+    private readonly prismaService: PrismaService,
+    private readonly openAIService: OpenAIService,
   ) {}
 
-  private async generateResume(resume: Resume, job: Job) {
+  public async generateResume(
+    resume: Resume,
+    job: Job,
+  ): Promise<ThreadMessage> {
     const content = `
     resume:
     ${this.mapResumeToMessageBody(resume)}
-
     ----
     job:
     ${this.mapJobToMessageBody(job)}
@@ -33,8 +36,7 @@ export class ResumeBuilderService {
 
     await this.openAIService.createMessage(threadId, content);
 
-    const newResume = this.openAIService.retrieveLatestMessage(threadId);
-    return newResume;
+    return await this.openAIService.retrieveLatestMessage(threadId);
   }
 
   private async mapResumeToMessageBody(resume: Resume): Promise<string> {

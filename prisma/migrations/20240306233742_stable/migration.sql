@@ -63,6 +63,7 @@ CREATE TABLE "userActivities" (
     "searchHistory" TEXT[],
     "jobsVisited" INTEGER[],
     "dateTimeEmitted" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateTimeUpdated" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "userActivities_pkey" PRIMARY KEY ("userId")
 );
@@ -74,19 +75,59 @@ CREATE TABLE "resumes" (
     "education" TEXT[],
     "skills" TEXT[],
     "additionalInformation" TEXT[],
+    "dateTimeCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateTimeUpdated" TIMESTAMP(3) NOT NULL,
     "userId" INTEGER NOT NULL,
 
     CONSTRAINT "resumes_pkey" PRIMARY KEY ("userId")
+);
+
+-- CreateTable
+CREATE TABLE "generatedResumes" (
+    "objective" TEXT NOT NULL,
+    "experience" TEXT[],
+    "education" TEXT[],
+    "skills" TEXT[],
+    "additionalInformation" TEXT[],
+    "dateTimeCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateTimeUpdated" TIMESTAMP(3) NOT NULL,
+    "userJobApplicationJobId" INTEGER NOT NULL,
+    "userJobApplicationUserId" INTEGER NOT NULL
+);
+
+-- CreateTable
+CREATE TABLE "openAI" (
+    "threadId" TEXT NOT NULL,
+    "runId" TEXT NOT NULL,
+    "dateTimeCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "userId" INTEGER NOT NULL,
+
+    CONSTRAINT "openAI_pkey" PRIMARY KEY ("userId")
 );
 
 -- CreateIndex
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "userJobApplications_jobId_userId_key" ON "userJobApplications"("jobId", "userId");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "addresses_userId_key" ON "addresses"("userId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "resumes_userId_key" ON "resumes"("userId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "generatedResumes_userJobApplicationJobId_key" ON "generatedResumes"("userJobApplicationJobId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "generatedResumes_userJobApplicationUserId_key" ON "generatedResumes"("userJobApplicationUserId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "generatedResumes_userJobApplicationJobId_userJobApplication_key" ON "generatedResumes"("userJobApplicationJobId", "userJobApplicationUserId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "openAI_userId_key" ON "openAI"("userId");
 
 -- AddForeignKey
 ALTER TABLE "userJobApplications" ADD CONSTRAINT "userJobApplications_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -102,3 +143,9 @@ ALTER TABLE "userActivities" ADD CONSTRAINT "userActivities_userId_fkey" FOREIGN
 
 -- AddForeignKey
 ALTER TABLE "resumes" ADD CONSTRAINT "resumes_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "generatedResumes" ADD CONSTRAINT "generatedResumes_userJobApplicationJobId_userJobApplicatio_fkey" FOREIGN KEY ("userJobApplicationJobId", "userJobApplicationUserId") REFERENCES "userJobApplications"("jobId", "userId") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "openAI" ADD CONSTRAINT "openAI_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

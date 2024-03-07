@@ -33,7 +33,7 @@ model User {
   userActivity UserActivity?
   address      Address?
   resume       Resume?
-  openai       OpenAI?
+  openAI       OpenAI?
 
   @@map("users")
 }
@@ -64,7 +64,8 @@ model Job {
 }
 
 model UserJobApplication {
-  status          String   @default("pending")
+  status String @default("pending")
+
   dateTimeApplied DateTime @default(now())
   dateTimeUpdated DateTime @updatedAt
 
@@ -74,8 +75,11 @@ model UserJobApplication {
   job   Job @relation(fields: [jobId], references: [id])
   jobId Int
 
+  generatedResume generatedResume?
+
   @@id([userId, jobId])
   @@map("userJobApplications")
+  @@unique([jobId, userId])
 }
 
 model Address {
@@ -124,9 +128,27 @@ model Resume {
   @@map("resumes")
 }
 
+model generatedResume {
+  objective             String
+  experience            String[]
+  education             String[]
+  skills                String[]
+  additionalInformation String[]
+
+  dateTimeCreated DateTime @default(now())
+  dateTimeUpdated DateTime @updatedAt
+
+  userJobApplicationJobId  Int                @unique
+  userJobApplicationUserId Int                @unique
+  userJobApplication       UserJobApplication @relation(fields: [userJobApplicationJobId, userJobApplicationUserId], references: [jobId, userId])
+
+  @@unique([userJobApplicationJobId, userJobApplicationUserId])
+  @@map("generatedResumes")
+}
+
 model OpenAI {
   threadId String
-  runId String
+  runId    String
 
   dateTimeCreated DateTime @default(now())
 
@@ -134,5 +156,5 @@ model OpenAI {
   user   User @relation(fields: [userId], references: [id])
 
   @@id([userId])
-  @@map("openai")
+  @@map("openAI")
 }

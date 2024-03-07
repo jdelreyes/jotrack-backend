@@ -1,7 +1,7 @@
 {
   "name": "jotrack-backend",
   "version": "0.0.1",
-  "description": "",
+  "description": "A job tracking application that generates a newly AI-generated resume tailored to the user's desired job based on the their master resume and the job description that have been provided.",
   "author": "Jerome Delos Reyes",
   "private": true,
   "license": "MIT",

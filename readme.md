@@ -27,9 +27,10 @@
    ```makefile
    # ...
    # jwt
-   JWT_SECRET="your_jwt_secret" # change
+   JWT_SECRET=your_jwt_secret # change (remove once changed)
    # open ai
-   OPEN_AI_API_KEY="your_open_ai_api_key" # change
+   OPEN_AI_API_KEY=your_open_ai_api_key # change (remove once changed)
+   OPEN_AI_ASSISTANT_ID=your_open_ai_assistant_id # change (remove once changed)
    ```
 
 ## Running
@@ -117,12 +118,10 @@
 | Endpoint                           | Method | Description                      | Role Access   |
 | ---------------------------------- | ------ | -------------------------------- | ------------- |
 | `?filter=dateTime&title={{title}}` | GET    | Retrieve jobs                    | `V`, `U`, `A` |
-| `/event/?title={{title}}`          | GET    | Retrieve jobs and emit an event  | `U`           |
 | N/A                                | POST   | Create a job                     | `A`           |
 | `/{{jobId}}`                       | PUT    | Update a job                     | `A`           |
 | `/{{jobId}}`                       | DELETE | Remove a job                     | `A`           |
 | `/{{jobId}}`                       | GET    | Retrieve a job                   | `V`, `U`, `A` |
-| `/event/{{jobId}}`                 | GET    | Retrieve a job and emit an event | `U`           |
 
 ### Job Applications `/api/job-applications`
 
