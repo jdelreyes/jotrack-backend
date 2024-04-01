@@ -98,7 +98,6 @@ CREATE TABLE "generatedResumes" (
 -- CreateTable
 CREATE TABLE "openAI" (
     "threadId" TEXT NOT NULL,
-    "runId" TEXT NOT NULL,
     "dateTimeCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "userId" INTEGER NOT NULL,
 

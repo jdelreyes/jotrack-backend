@@ -148,7 +148,6 @@ model generatedResume {
 
 model OpenAI {
   threadId String
-  runId    String
 
   dateTimeCreated DateTime @default(now())
 
