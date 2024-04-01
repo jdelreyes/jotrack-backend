@@ -70,13 +70,6 @@ export class OpenAIService extends OpenAI {
     });
   }
 
-  public async retrieveRun(
-    thread: OpenAI.Beta.Threads.Thread,
-    run: OpenAI.Beta.Threads.Runs.Run,
-  ): Promise<OpenAI.Beta.Threads.Runs.Run> {
-    return await this.beta.threads.runs.retrieve(thread.id, run.id);
-  }
-
   public async run(threadId: string): Promise<OpenAI.Beta.Threads.Runs.Run> {
     return await this.beta.threads.runs.create(threadId, {
       assistant_id: this.assistant.id,

@@ -84,11 +84,7 @@ CREATE TABLE "resumes" (
 
 -- CreateTable
 CREATE TABLE "generatedResumes" (
-    "objective" TEXT NOT NULL,
-    "experience" TEXT[],
-    "education" TEXT[],
-    "skills" TEXT[],
-    "additionalInformation" TEXT[],
+    "content" TEXT NOT NULL,
     "dateTimeCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateTimeUpdated" TIMESTAMP(3) NOT NULL,
     "userJobApplicationJobId" INTEGER NOT NULL,

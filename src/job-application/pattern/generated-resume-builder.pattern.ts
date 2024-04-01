@@ -1,38 +1,12 @@
 import { GeneratedResumeEntity } from '../entity';
 
 export class GeneratedResumeBuilder {
-  objective: string;
-  experience: string[];
-  education: string[];
-  skills: string[];
-  additionalInformation: string[];
+  content: string;
   userJobApplicationJobId: number;
   userJobApplicationUserId: number;
 
-  public setObjective(objective: string): GeneratedResumeBuilder {
-    this.objective = objective;
-    return this;
-  }
-
-  public setExperience(experience: string[]): GeneratedResumeBuilder {
-    this.experience = experience;
-    return this;
-  }
-
-  public setEducation(education: string[]): GeneratedResumeBuilder {
-    this.education = education;
-    return this;
-  }
-
-  public setSkills(skills: string[]): GeneratedResumeBuilder {
-    this.skills = skills;
-    return this;
-  }
-
-  public setAdditionalInformation(
-    additionalInformation: string[],
-  ): GeneratedResumeBuilder {
-    this.additionalInformation = additionalInformation;
+  public setContent(content: string): GeneratedResumeBuilder {
+    this.content = content;
     return this;
   }
 

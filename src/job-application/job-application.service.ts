@@ -148,33 +148,11 @@ export class JobApplicationService {
     userId: number,
   ): Promise<GeneratedResumeEntity> {
     try {
-      const resumeSections: string[] = resumeContent.split(/[A-Z][a-z]*:/);
-
-      const objective: string = resumeSections[1].replaceAll('\n', '').trim();
-      const experience: string[] = resumeSections[2]
-        .split('•')
-        .filter((resumeSection) => resumeSection.trim())
-        .map((bulletPoint) => bulletPoint.replaceAll('\n', '').trim());
-      const education: string[] = resumeSections[3]
-        .split('•')
-        .filter((resumeSection) => resumeSection.trim())
-        .map((bulletPoint) => bulletPoint.replaceAll('\n', '').trim());
-      const skills: string[] = resumeSections[4]
-        .split('•')
-        .filter((resumeSection) => resumeSection.trim())
-        .map((bulletPoint) => bulletPoint.replaceAll('\n', '').trim());
-      const additionalInformation: string[] = resumeSections[5]
-        .split('•')
-        .filter((resumeSection) => resumeSection.trim())
-        .map((bulletPoint) => bulletPoint.replaceAll('\n', '').trim());
+      const content: string = resumeContent;
 
       const generatedResume: GeneratedResumeEntity =
         new GeneratedResumeBuilder()
-          .setObjective(objective)
-          .setExperience(experience)
-          .setEducation(education)
-          .setSkills(skills)
-          .setAdditionalInformation(additionalInformation)
+          .setContent(content)
           .setUserJobApplicationJobId(jobId)
           .setUserJobApplicationUserId(userId)
           .build();

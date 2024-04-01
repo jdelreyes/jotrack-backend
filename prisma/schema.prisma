@@ -75,11 +75,11 @@ model UserJobApplication {
   job   Job @relation(fields: [jobId], references: [id])
   jobId Int
 
-  generatedResume generatedResume?
+  generatedResume GeneratedResume?
 
   @@id([userId, jobId])
-  @@map("userJobApplications")
   @@unique([jobId, userId])
+  @@map("userJobApplications")
 }
 
 model Address {
@@ -128,12 +128,8 @@ model Resume {
   @@map("resumes")
 }
 
-model generatedResume {
-  objective             String
-  experience            String[]
-  education             String[]
-  skills                String[]
-  additionalInformation String[]
+model GeneratedResume {
+  content String
 
   dateTimeCreated DateTime @default(now())
   dateTimeUpdated DateTime @updatedAt
