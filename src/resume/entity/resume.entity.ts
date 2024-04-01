@@ -11,7 +11,7 @@ export class ResumeEntity implements Resume {
   dateTimeCreated: Date;
   dateTimeUpdated: Date;
 
-  constructor(resumeBuilder: ResumeBuilder) {
+  public constructor(resumeBuilder: ResumeBuilder) {
     this.objective = resumeBuilder.objective;
     this.experience = resumeBuilder.experience;
     this.education = resumeBuilder.education;

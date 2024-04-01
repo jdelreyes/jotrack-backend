@@ -14,7 +14,6 @@ import { GetUser, Roles } from 'src/auth/decorator';
 import { AuthGuard, JwtGuard, RolesGuard } from 'src/auth/guard';
 import { JobApplicationService } from './job-application.service';
 import { Role } from 'src/auth/enum';
-import { UserJobApplication } from '@prisma/client';
 import {
   JobApplicationResponseDto,
   UpdateJobApplicationRequestDto,
@@ -40,7 +39,7 @@ export class JobApplicationController {
   @Roles(Role.USER)
   public retrieveOwnJobApplications(
     @GetUser('id') userId: number,
-  ): Promise<UserJobApplication[]> {
+  ): Promise<JobApplicationResponseDto[]> {
     return this.jobApplicationService.retrieveOwnJobApplications(userId);
   }
 
@@ -52,8 +51,8 @@ export class JobApplicationController {
   public applyToJob(
     @GetUser('id') userId: number,
     @Param('jobId', ParseIntPipe) jobId: number,
-  ): Promise<UserJobApplication> {
-    return this.jobApplicationService.applyJob(userId, jobId);
+  ): Promise<JobApplicationResponseDto> {
+    return this.jobApplicationService.applyToJob(userId, jobId);
   }
 
   @ApiResponse({ description: 'accepts a job application' })

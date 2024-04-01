@@ -27,9 +27,10 @@
    ```makefile
    # ...
    # jwt
-   JWT_SECRET="your_jwt_secret" # change
+   JWT_SECRET=your_jwt_secret # change (remove once changed)
    # open ai
-   OPEN_AI_API_KEY="your_open_ai_api_key" # change
+   OPEN_AI_API_KEY=your_open_ai_api_key # change (remove once changed)
+   OPEN_AI_ASSISTANT_ID=your_open_ai_assistant_id # change (remove once changed)
    ```
 
 ## Running

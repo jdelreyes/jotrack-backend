@@ -32,6 +32,16 @@ export class UserController {
     return this.userService.retrieveUsers();
   }
 
+  @ApiResponse({ description: 'retrieves own user details' })
+  @UseGuards(AuthGuard, RolesGuard, JwtGuard)
+  @Roles(Role.USER)
+  @Get('/get-profile')
+  public retrieveOwnCredentials(
+    @GetUser('id') userId: number,
+  ): Promise<UserResponseDto> {
+    return this.userService.retrieveUser(userId);
+  }
+
   @ApiResponse({ description: 'updates own credentials' })
   @UseGuards(AuthGuard, JwtGuard)
   @Put('/update-profile')
