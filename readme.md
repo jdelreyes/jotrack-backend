@@ -118,10 +118,12 @@
 | Endpoint                           | Method | Description                      | Role Access   |
 | ---------------------------------- | ------ | -------------------------------- | ------------- |
 | `?filter=dateTime&title={{title}}` | GET    | Retrieve jobs                    | `V`, `U`, `A` |
+| `/event/?title={{title}}`          | GET    | Retrieve jobs and emit an event  | `U`           |
 | N/A                                | POST   | Create a job                     | `A`           |
 | `/{{jobId}}`                       | PUT    | Update a job                     | `A`           |
 | `/{{jobId}}`                       | DELETE | Remove a job                     | `A`           |
 | `/{{jobId}}`                       | GET    | Retrieve a job                   | `V`, `U`, `A` |
+| `/event/{{jobId}}`                 | GET    | Retrieve a job and emit an event | `U`           |
 
 ### Job Applications `/api/job-applications`
 

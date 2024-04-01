@@ -52,7 +52,7 @@ export class JobApplicationController {
     @GetUser('id') userId: number,
     @Param('jobId', ParseIntPipe) jobId: number,
   ): Promise<JobApplicationResponseDto> {
-    return this.jobApplicationService.applyJob(userId, jobId);
+    return this.jobApplicationService.applyToJob(userId, jobId);
   }
 
   @ApiResponse({ description: 'accepts a job application' })

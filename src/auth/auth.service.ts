@@ -56,26 +56,29 @@ export class AuthService {
 
       const user: User = await this.prismaService.user.create({
         data: {
-          ...this.mapToUserRequestDto(signUpRequestDto),
+          ...this.mapToUserObject(signUpRequestDto),
           hash,
           userName,
           address: {
             create: {
-              ...this.mapToAddressRequestDto(signUpRequestDto),
+              ...this.mapToAddressObject(signUpRequestDto),
             },
           },
         },
       });
 
+      // START
+      // create a thread id and run id for the user
       const thread: OpenAI.Beta.Threads.Thread =
         await this.openAIService.createThread();
 
       const run: OpenAI.Beta.Threads.Runs.Run =
         await this.openAIService.run(thread);
 
-      this.prismaService.openAI.create({
+      await this.prismaService.openAI.create({
         data: { userId: user.id, threadId: thread.id, runId: run.id },
       });
+      // END
 
       return user;
     } catch (error) {
@@ -86,7 +89,7 @@ export class AuthService {
     }
   }
 
-  private mapToUserRequestDto(signUpRequestDto: SignUpRequestDto): {
+  private mapToUserObject(signUpRequestDto: SignUpRequestDto): {
     email: string;
     role: string;
     firstName: string;
@@ -102,7 +105,7 @@ export class AuthService {
     };
   }
 
-  private mapToAddressRequestDto(signUpRequestDto: SignUpRequestDto): {
+  private mapToAddressObject(signUpRequestDto: SignUpRequestDto): {
     postalCode: string;
     street: string;
     city: string;

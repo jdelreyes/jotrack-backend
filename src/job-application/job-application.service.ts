@@ -23,7 +23,7 @@ export class JobApplicationService {
     private readonly resumeBuilderService: ResumeBuilderService,
   ) {}
 
-  public async applyJob(
+  public async applyToJob(
     userId: number,
     jobId: number,
   ): Promise<JobApplicationResponseDto> {

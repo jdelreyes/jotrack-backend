@@ -8,15 +8,6 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class OpenAIService extends OpenAI {
   private assistant: Assistant;
 
-  /**
-   * instantiate an instance of OpenAIService that
-   * retrieves assistant capability from the API key using Assistant ID.
-   * it also creates a dedicated thread for the user.
-   * this automatically retrieves the OpenAI API key and OpenAI Assistant ID
-   * from .env file provided by the ConfigService.
-   * @param {ConfigService} configService
-   * @param {PrismaService} prismaService
-   */
   public constructor(
     readonly configService: ConfigService,
     private readonly prismaService: PrismaService,
@@ -86,10 +77,8 @@ export class OpenAIService extends OpenAI {
     return await this.beta.threads.runs.retrieve(thread.id, run.id);
   }
 
-  public async run(
-    thread: OpenAI.Beta.Threads.Thread,
-  ): Promise<OpenAI.Beta.Threads.Runs.Run> {
-    return await this.beta.threads.runs.create(thread.id, {
+  public async run(threadId: string): Promise<OpenAI.Beta.Threads.Runs.Run> {
+    return await this.beta.threads.runs.create(threadId, {
       assistant_id: this.assistant.id,
       instructions:
         'do not address the user nor add any additional introductory/closing statements. give the answer right away instead',

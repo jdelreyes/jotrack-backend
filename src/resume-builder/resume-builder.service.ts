@@ -16,10 +16,14 @@ export class ResumeBuilderService {
     job: Job,
   ): Promise<ThreadMessage> {
     const content = `
+    instructions: make a newly-generated resume based on the resume tailored to the job provided below.
+    ---
     resume:
+    ---
     ${this.mapResumeToMessageBody(resume)}
     ----
     job:
+    ---
     ${this.mapJobToMessageBody(job)}
     `;
 
@@ -33,6 +37,8 @@ export class ResumeBuilderService {
         },
       })
     ).threadId;
+
+    await this.openAIService.run(threadId);
 
     await this.openAIService.createMessage(threadId, content);
 

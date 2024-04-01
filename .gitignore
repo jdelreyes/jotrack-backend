@@ -1,6 +1,7 @@
 # added by @jdelreyes
 .env
 data/
+todo.md
 
 # compiled output
 /dist
