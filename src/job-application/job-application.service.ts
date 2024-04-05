@@ -40,29 +40,32 @@ export class JobApplicationService {
 
       if (!job) throw new NotFoundException('job not found');
 
-      const generatedResume = await this.resumeBuilderService.generateResume(
-        resume,
-        job,
-      );
+      const userJobApplication =
+        await this.prismaService.userJobApplication.create({
+          data: {
+            userId,
+            jobId,
+            status: JobStatus.PENDING,
+          },
+        });
+
+      const generatedResume: string =
+        await this.resumeBuilderService.generateResume(resume, job);
+
+      console.log(generatedResume);
 
       const generatedResumeEntity: GeneratedResumeEntity =
         await this.mapResumeContentToGeneratedResumeEntity(
-          generatedResume.content.toString(),
+          generatedResume,
           jobId,
           userId,
         );
 
-      this.prismaService.generatedResume.create({
+      await this.prismaService.generatedResume.create({
         data: { ...generatedResumeEntity },
       });
 
-      return await this.prismaService.userJobApplication.create({
-        data: {
-          userId,
-          jobId,
-          status: JobStatus.PENDING,
-        },
-      });
+      return userJobApplication;
     } catch (error) {
       console.error(error);
       if (error instanceof PrismaClientKnownRequestError) {

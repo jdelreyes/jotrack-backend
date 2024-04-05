@@ -134,8 +134,8 @@ model GeneratedResume {
   dateTimeCreated DateTime @default(now())
   dateTimeUpdated DateTime @updatedAt
 
-  userJobApplicationJobId  Int                @unique
-  userJobApplicationUserId Int                @unique
+  userJobApplicationJobId  Int
+  userJobApplicationUserId Int
   userJobApplication       UserJobApplication @relation(fields: [userJobApplicationJobId, userJobApplicationUserId], references: [jobId, userId])
 
   @@unique([userJobApplicationJobId, userJobApplicationUserId])

@@ -45,9 +45,7 @@ export class OpenAIService extends OpenAI {
     return await this.beta.threads.retrieve(threadId);
   }
 
-  public async retrieveLatestMessage(
-    threadId: string,
-  ): Promise<OpenAI.Beta.Threads.Messages.ThreadMessage> {
+  public async retrieveLatestMessage(threadId: string) {
     const retrievedMessages = await this.retrieveMessages(threadId);
     const messageListLength = retrievedMessages.data.length;
 
@@ -56,14 +54,18 @@ export class OpenAIService extends OpenAI {
 
   public async retrieveMessages(
     threadId: string,
-  ): Promise<OpenAI.Beta.Threads.Messages.ThreadMessagesPage> {
+  ): Promise<OpenAI.Beta.Threads.Messages.MessagesPage> {
     return await this.beta.threads.messages.list(threadId);
   }
 
-  public async createMessage(
+  public async retrieveRun(
     threadId: string,
-    content: string,
-  ): Promise<OpenAI.Beta.Threads.Messages.ThreadMessage> {
+    run: OpenAI.Beta.Threads.Runs.Run,
+  ): Promise<OpenAI.Beta.Threads.Runs.Run> {
+    return await this.beta.threads.runs.retrieve(threadId, run.id);
+  }
+
+  public async createMessage(threadId: string, content: string) {
     return await this.beta.threads.messages.create(threadId, {
       role: 'user',
       content,
@@ -74,7 +76,7 @@ export class OpenAIService extends OpenAI {
     return await this.beta.threads.runs.create(threadId, {
       assistant_id: this.assistant.id,
       instructions:
-        'do not address the user nor add any additional introductory/closing statements. give the answer right away instead',
+        'Please send the a newly-generated resume tailored to the job provided with the same template without introductory or summary statements',
     });
   }
 }

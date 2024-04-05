@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { OpenAIService } from 'src/openai/openai.service';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Job, Resume } from '@prisma/client';
-import { ThreadMessage } from 'openai/resources/beta/threads/messages/messages';
 
 @Injectable()
 export class ResumeBuilderService {
@@ -11,23 +10,25 @@ export class ResumeBuilderService {
     private readonly openAIService: OpenAIService,
   ) {}
 
-  public async generateResume(
-    resume: Resume,
-    job: Job,
-  ): Promise<ThreadMessage> {
+  public async generateResume(resume: Resume, job: Job) {
+    const resumeContent: string = await this.mapResumeToMessageBody(resume);
+    const jobContent: string = await this.mapJobToMessageBody(job);
+
     const content = `
     instructions: make a newly-generated resume based on the resume tailored to the job provided below.
-    ---
-    resume:
-    ---
-    ${this.mapResumeToMessageBody(resume)}
-    ----
-    job:
-    ---
-    ${this.mapJobToMessageBody(job)}
+
+    -------
+    resume
+    -------
+    ${resumeContent}
+
+    -------
+    job description
+    -------
+    ${jobContent}
     `;
 
-    const threadId = (
+    const threadId: string = (
       await this.prismaService.openAI.findUnique({
         where: {
           userId: resume.userId,
@@ -38,11 +39,26 @@ export class ResumeBuilderService {
       })
     ).threadId;
 
-    await this.openAIService.run(threadId);
-
     await this.openAIService.createMessage(threadId, content);
+    let run = await this.openAIService.run(threadId);
 
-    return await this.openAIService.retrieveLatestMessage(threadId);
+    while (['queued', 'in_progress', 'cancelling'].includes(run.status)) {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      run = await this.openAIService.retrieveRun(run.thread_id, run);
+    }
+
+    if (run.status === 'completed') {
+      const messages = await this.openAIService.retrieveMessages(run.thread_id);
+
+      for (const message of messages.data.reverse()) {
+        if (message.role == 'assistant')
+          return message.content[0]['text']['value'];
+      }
+      return null;
+    } else {
+      console.log(run.status);
+    }
   }
 
   private async mapResumeToMessageBody(resume: Resume): Promise<string> {

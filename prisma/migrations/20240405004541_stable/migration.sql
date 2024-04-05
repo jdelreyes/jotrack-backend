@@ -113,12 +113,6 @@ CREATE UNIQUE INDEX "addresses_userId_key" ON "addresses"("userId");
 CREATE UNIQUE INDEX "resumes_userId_key" ON "resumes"("userId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "generatedResumes_userJobApplicationJobId_key" ON "generatedResumes"("userJobApplicationJobId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "generatedResumes_userJobApplicationUserId_key" ON "generatedResumes"("userJobApplicationUserId");
-
--- CreateIndex
 CREATE UNIQUE INDEX "generatedResumes_userJobApplicationJobId_userJobApplication_key" ON "generatedResumes"("userJobApplicationJobId", "userJobApplicationUserId");
 
 -- CreateIndex

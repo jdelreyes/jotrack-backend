@@ -72,6 +72,7 @@ export class ResumeService {
     try {
       const bufferResult: parsePdf.Result = await parsePdf(resumeFile.buffer);
       const resumeContent: string = bufferResult.text;
+
       const resumeSections: string[] = resumeContent.split(/[A-Z][a-z]*:/);
 
       const objective: string = resumeSections[1].replaceAll('\n', '').trim();
