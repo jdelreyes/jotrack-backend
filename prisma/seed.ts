@@ -142,6 +142,32 @@ const prismaClient: PrismaClient = new PrismaClient();
     country: 'CA',
   });
 
+  const fakerJob5 = async (): Promise<any> => ({
+    title: 'Marketing Manager',
+    description: `The Accencis Group Inc. stands as a prominent franchisor in Canada, specializing in a multi-branded approach across various industries, notably food and beverages. With an impressive portfolio of10+ brands and a network of 40+restaurants, we have solidified our presence in the market.
+
+    Leveraging over 8 years of franchise expertise, we have successfully guided corporations toward financial success through our comprehensive management processes.
+    
+    As a collection of renowned dining establishments, including The Captain's Boil, %Arabica, Midori, and Dear Saigon, the Accencis Group sets itself apart from other restaurant groups by prioritizing unique and innovative dining experiences for our valued guests. Our distinguished journey began in 2014 as a single location and accelerated its expansion in 2020, leading us to establish a Canada-wide chain of 40+restaurants. Throughout our growth, we have continually introduced innovative concepts and turnkey solutions, resulting in a diverse portfolio of 10+ brands. %Arabica is scheduled to open 7 new locations in key trade areas by the end of 2025.
+    
+    The Accencis team comprises seasoned industry experts who possess a deep understanding of driving profitable growth. We are a collective of entrepreneurs, investors, executives, former franchisors, and franchisees, all highly motivated to deliver reliable service to our esteemed clients. With our combined knowledge and dedication, we strive to exceed expectations and foster long-term success in the dynamic world of franchising.`,
+    position: 'Marketing Manager',
+    requirements: [
+      "Bachelor's degree in Marketing, Business, or a related field; MBA is a plus.",
+      'Proven experience in marketing operations, preferably in the food and beverage industry.',
+      'Excellent project management skills with the ability to manage multiple priorities.',
+      'Effective communication and collaboration skills.',
+      'Familiarity with the latest trends and technologies in marketing operations.',
+    ],
+    companyName: 'Accencis Group',
+
+    postalCode: 'L4S 0G6',
+    street: '',
+    city: 'Richmond Hill',
+    province: 'ON',
+    country: 'CA',
+  });
+
   await prismaClient.user.create({ data: await fakerAdmin() });
   for (let i: number = 0; i < fakerRounds; i++) {
     await prismaClient.user.create({ data: await fakerUser() });
@@ -151,6 +177,7 @@ const prismaClient: PrismaClient = new PrismaClient();
   await prismaClient.job.create({ data: await fakerJob2() });
   await prismaClient.job.create({ data: await fakerJob3() });
   await prismaClient.job.create({ data: await fakerJob4() });
+  await prismaClient.job.create({ data: await fakerJob5() });
 })()
   .catch((e) => console.error(e))
   .finally(async (): Promise<void> => {

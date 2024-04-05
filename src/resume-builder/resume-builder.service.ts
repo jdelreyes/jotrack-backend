@@ -8,14 +8,24 @@ export class ResumeBuilderService {
   public constructor(
     private readonly prismaService: PrismaService,
     private readonly openAIService: OpenAIService,
-  ) {}
+  ) {
+    openAIService
+      .createAssistant(
+        'Resume Builder',
+        "you help build resume for a user. you are going to use the user's resume and the job's description to make customized resume tailored to the job requirements.",
+        'gpt-4-turbo-preview',
+      )
+      .catch((error) => {
+        console.error(error);
+      });
+  }
 
   public async generateResume(resume: Resume, job: Job) {
     const resumeContent: string = await this.mapResumeToMessageBody(resume);
     const jobContent: string = await this.mapJobToMessageBody(job);
 
     const content = `
-    instructions: make a newly-generated resume based on the resume tailored to the job provided below.
+    instructions: make a newly-generated resume tailored to the job provided below based on the resume.
 
     -------
     resume
@@ -51,13 +61,13 @@ export class ResumeBuilderService {
     if (run.status === 'completed') {
       const messages = await this.openAIService.retrieveMessages(run.thread_id);
 
-      for (const message of messages.data.reverse()) {
+      for (const message of messages.data) {
         if (message.role == 'assistant')
           return message.content[0]['text']['value'];
       }
       return null;
     } else {
-      console.log(run.status);
+      console.info(run.status);
     }
   }
 

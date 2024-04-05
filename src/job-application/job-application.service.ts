@@ -52,8 +52,6 @@ export class JobApplicationService {
       const generatedResume: string =
         await this.resumeBuilderService.generateResume(resume, job);
 
-      console.log(generatedResume);
-
       const generatedResumeEntity: GeneratedResumeEntity =
         await this.mapResumeContentToGeneratedResumeEntity(
           generatedResume,

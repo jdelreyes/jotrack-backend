@@ -13,15 +13,20 @@ export class OpenAIService extends OpenAI {
     private readonly prismaService: PrismaService,
   ) {
     super({ apiKey: configService.get('OPEN_AI_API_KEY') });
+  }
 
-    this.beta.assistants
-      .retrieve(this.configService.get('OPEN_AI_ASSISTANT_ID'))
-      .then((assistant) => {
-        this.assistant = assistant;
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+  public async createAssistant(
+    name: string,
+    instructions: string,
+    model: string,
+  ) {
+    this.assistant = await this.beta.assistants.create({
+      name,
+      instructions,
+      model,
+    });
+
+    return this.assistant;
   }
 
   public async createThread(): Promise<OpenAI.Beta.Threads.Thread> {
@@ -76,7 +81,7 @@ export class OpenAIService extends OpenAI {
     return await this.beta.threads.runs.create(threadId, {
       assistant_id: this.assistant.id,
       instructions:
-        'Please send the a newly-generated resume tailored to the job provided with the same template without introductory or summary statements',
+        'Please send the a newly-generated resume based on the resume, tailored to the job provided with the same template without introductory or summary statements',
     });
   }
 }

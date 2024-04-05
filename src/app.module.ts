@@ -12,6 +12,7 @@ import { ResumeModule } from './resume/resume.module';
 import { OpenAIModule } from './openai/openai.module';
 import { OpenAIService } from './openai/openai.service';
 import { ResumeBuilderModule } from './resume-builder/resume-builder.module';
+import { GeneratedResumeModule } from './generated-resume/generated-resume.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { ResumeBuilderModule } from './resume-builder/resume-builder.module';
     ResumeModule,
     OpenAIModule,
     ResumeBuilderModule,
+    GeneratedResumeModule,
   ],
   providers: [PrismaService, OpenAIService],
   controllers: [],
