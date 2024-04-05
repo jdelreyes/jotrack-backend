@@ -2,7 +2,11 @@
 
 ## Overview
 
-A job tracking application that lets users utilize AI to build newly-generated resume based off of their uploaded master resume.
+A job tracking application that lets users utilize AI to build newly-generated resumes based off of their uploaded master resume.
+
+## Note
+
+> This project is a part of a larger project called [JoTrack](https://github.com/jayden-n/jotrack) where I am the backend developer, relational database architect and, REST API designer.
 
 ## Architecture
 
@@ -20,10 +24,6 @@ A job tracking application that lets users utilize AI to build newly-generated r
 4. Once uploaded, you are allowed to apply for jobs.
 5. Applying for jobs triggers `AI Resume Builder` to make a newly-created resume based on your master-resume tailored to the job description.
 6. These `GeneratedResume` objects are accessed at `http://localhost:8000/api/generated-resumes`
-
-## Note
-
-> This project is a part of a larger project called [JoTrack](https://github.com/jayden-n/jotrack) where I am the backend developer, relational database architect and, RESTful API designer.
 
 ## Installation
 
@@ -98,7 +98,7 @@ A job tracking application that lets users utilize AI to build newly-generated r
 
 ### Seeding
 
-1. Seed 10 jobs and 10 users into the database
+1. Seed 5 jobs and 10 users into the database
 
    ```shell
    npm run db:dev:seed
@@ -112,7 +112,7 @@ A job tracking application that lets users utilize AI to build newly-generated r
 - `U` - User
 - `A` - Admin
 
-<hr/>
+---
 
 ### Auth - `/api/auth`
 
@@ -126,7 +126,7 @@ A job tracking application that lets users utilize AI to build newly-generated r
 | Endpoint           | Method | Description                      | Role Access   |
 | ------------------ | ------ | -------------------------------- | ------------- |
 | N/A                | GET    | Retrieve users                   | `V`, `U`, `A` |
-| `get-profile`      | GET    | Retrieve own profile information | `U`, `A`      |
+| `/get-profile`      | GET    | Retrieve own profile information | `U`, `A`      |
 | `/change-password` | PUT    | Change password                  | `U`, `A`      |
 | `/update-profile`  | PUT    | Update profile information       | `U`, `A`      |
 | `/{{userId}}`      | DELETE | Remove a user                    | `A`           |

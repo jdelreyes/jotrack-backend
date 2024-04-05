@@ -33,9 +33,9 @@ export class UserController {
   }
 
   @ApiResponse({ description: 'retrieves own user details' })
-  @UseGuards(AuthGuard, RolesGuard, JwtGuard)
-  @Roles(Role.USER)
+  @UseGuards(AuthGuard, JwtGuard)
   @Get('/get-profile')
+  @HttpCode(HttpStatus.OK)
   public retrieveOwnCredentials(
     @GetUser('id') userId: number,
   ): Promise<UserResponseDto> {

@@ -188,6 +188,26 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "retrieveOwnProfile",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/api/users/get-profile",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"users",
+								"get-profile"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -506,7 +526,7 @@
 								{
 									"key": "resume",
 									"type": "file",
-									"src": "/Users/jeromedelosreyes/Desktop/Resume.docx"
+									"src": "/Users/jeromedelosreyes/Desktop/programming/github/side-projects/jotrack-backend/docs/template/jotrack-resume.pdf"
 								}
 							]
 						},
@@ -573,6 +593,30 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "generated-resume",
+			"item": [
+				{
+					"name": "getGeneratedResumes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/api/generated-resumes",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"generated-resumes"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"auth": {
@@ -580,7 +624,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJOYW1lIjoiYWRtaW4iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MDc3NTU0MjQsImV4cCI6MTcwODM2MDIyNH0.9Zekow7IkR15gV4l41rIf-WxFrV1g289ReTsgL-RweU",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEyLCJ1c2VyTmFtZSI6ImVtYWlsIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3MTIzMzg5MzAsImV4cCI6MTcxMjk0MzczMH0.CROHUXKP1taa3yayFyHtExCp8M4f6XK8Y4TkreGcC2c",
 				"type": "string"
 			}
 		]
