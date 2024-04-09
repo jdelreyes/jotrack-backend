@@ -2,13 +2,22 @@
 
 ## Overview
 
-A job tracking application that lets users utilize AI to build newly-generated resumes based off of their uploaded master resume.
+A job tracking application where users apply for jobs, track applied jobs' application status and, utilize AI to generate resume tailored to desired job based on the master resume PDF file uploaded. To moderate the application, an admin account foresees and have access to all operations except resume-upload and job application.
 
 ## Note
 
 > This project is a part of a larger project called [JoTrack](https://github.com/jayden-n/jotrack) where I am the backend developer, relational database architect and, REST API designer.
 
 ## Architecture
+
+A monolithic module-based application for separation of concerns. Each module has its own service and controller which can be exported to other modules.
+
+### Featured Modules
+
+* **OpenAI** module - extends to OpenAI Assistants API to enable to be dependency-injected to other modules.
+* **Resume Builder** module - acts as a client code of OpenAI service which consumes the API for resume-generation capability with the help of AI.
+* **User Activity** module - consumes events such as user job searching.
+* **Prisma** module - provides database access that are exported to all modules.
 
 ![UML of the server](docs/assets/images/infrastructure.png)
 
@@ -20,7 +29,7 @@ A job tracking application that lets users utilize AI to build newly-generated r
 
 1. This application parses resume in a predefined structure.
 2. The PDF format can be obtained under `./docs/template/jotrack-resume.pdf`.
-3. Edit the master resume template as you like or use the template to be uploaded as PDF file to the program.
+3. Edit the master resume template as you like or use the template to be uploaded as a PDF file to the program.
 4. Once uploaded, you are allowed to apply for jobs.
 5. Applying for jobs triggers `AI Resume Builder` to make a newly-created resume based on your master-resume tailored to the job description.
 6. These `GeneratedResume` objects are accessed at `http://localhost:8000/api/generated-resumes`
@@ -173,3 +182,17 @@ A job tracking application that lets users utilize AI to build newly-generated r
 | Endpoint | Method | Description                | Role Access   |
 | -------- | ------ | -------------------------- | ------------- |
 | N/A      | GET    | Retrieve generated resumes | `V`, `U`, `A` |
+
+
+## Featured Technology
+
+| Name                  | Description                                       |
+|-----------------------|---------------------------------------------------|
+| Nest.js               | Backend Framework                                 |
+| Multer                | File Upload                                       |
+| JWT                   | Authentication and Authorization                  |
+| Event Emitter 2       | Event streaming and emitting                      |
+| Class Validator       | Field Validation for Data Transfer Objects (DTO). |
+| Docker                | Containerization technology                       |
+| PDF Parse             | PDF buffer stream into UTF-8 format               |
+| OpenAI Assistants API | Resume-generation capability                      |
